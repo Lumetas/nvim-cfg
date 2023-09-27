@@ -21,6 +21,7 @@ nnoremap <A-C-l> $
 nnoremap <A-C-H> 0
 nnoremap <C-h> b
 nnoremap <C-l> w
+nnoremap <ESC> :nohl<CR>
 
 "Используется vim-plug https://github.com/junegunn/vim-plug
 "PlugInstall
