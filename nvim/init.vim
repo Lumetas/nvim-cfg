@@ -21,6 +21,10 @@ nnoremap <C-b> :NERDTreeFocus<CR>
 inoremap <A-f> <ESC>
 nnoremap <TAB> gt
 
+vnoremap <A-C-l> $
+vnoremap <A-C-H> 0
+vnoremap <C-h> b
+vnoremap <C-l> w
 nnoremap <A-C-l> $
 nnoremap <A-C-H> 0
 nnoremap <C-h> b
