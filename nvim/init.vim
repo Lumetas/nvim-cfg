@@ -27,8 +27,11 @@ nnoremap <C-h> b
 nnoremap <C-l> w
 nnoremap <ESC> :nohl<CR>
 
-"Используется vim-plug https://github.com/junegunn/vim-plug
+vnoremap d "_d
+nnoremap d "_d
+   
 "PlugInstall
+"Используется vim-plug https://github.com/junegunn/vim-plug
 call plug#begin()
 Plug 'https://github.com/tpope/vim-commentary'
 Plug 'https://github.com/ap/vim-css-color'
@@ -41,6 +44,6 @@ set encoding=UTF-8
 call plug#end()
 
 
-"source ~/.config/nvim/themes/monokai.vim
+"source ~/.config/nvim/themes/monokai_pro.vim
 source ~/.config/nvim/themes/iceberg.vim
 "colorscheme elflord
