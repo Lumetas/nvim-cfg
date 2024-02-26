@@ -48,6 +48,6 @@ set encoding=UTF-8
 call plug#end()
 
 
-"source ~/.config/nvim/themes/monokai_pro.vim
-source ~/.config/nvim/themes/iceberg.vim
+source ~/.config/nvim/themes/monokai.vim
+"source ~/.config/nvim/themes/iceberg.vim
 "colorscheme elflord
