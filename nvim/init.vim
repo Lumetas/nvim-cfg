@@ -30,6 +30,8 @@ nnoremap <A-C-H> 0
 nnoremap <C-h> b
 nnoremap <C-l> w
 nnoremap <ESC> :nohl<CR>
+tnoremap <A-f> <C-\><C-n>
+
 
 vnoremap d "_d
 nnoremap d "_d
