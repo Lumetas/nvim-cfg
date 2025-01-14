@@ -53,3 +53,4 @@ call plug#end()
 source ~/.config/nvim/themes/monokai.vim
 "source ~/.config/nvim/themes/iceberg.vim
 "colorscheme elflord
+source ~/.config/nvim/format.vim
