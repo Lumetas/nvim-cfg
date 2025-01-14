@@ -16,7 +16,7 @@
 inoremap <C-BS> <C-w>
 
 nnoremap <C-n> :NERDTreeToggle<CR>
-nnoremap <C-b> :NERDTreeFocus<CR>
+nnoremap <C-b> :NERDTreeRefreshRoot<CR> :NERDTreeFocus<CR>
 
 inoremap <A-f> <ESC>
 nnoremap <TAB> gt
