@@ -50,7 +50,12 @@ set encoding=UTF-8
 call plug#end()
 
 
-source ~/.config/nvim/themes/monokai.vim
-"source ~/.config/nvim/themes/iceberg.vim
-"colorscheme elflord
-source ~/.config/nvim/format.vim
+" source ~/.config/nvim/themes/monokai.vim
+source ~/.config/nvim/themes/iceberg.vim
+" colorscheme elflord
+" Пример скрипта на Vimscript
+
+" Установите переменную с путем к директории форматирования
+let g:formater_dir = '/home/lum/formatters'
+let g:checker_dir = '/home/lum/checkers'
+source ~/.config/nvim/lum_formater.vim
