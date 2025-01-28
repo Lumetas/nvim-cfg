@@ -59,3 +59,5 @@ source ~/.config/nvim/themes/iceberg.vim
 let g:formater_dir = '/home/lum/formatters'
 let g:checker_dir = '/home/lum/checkers'
 source ~/.config/nvim/lum_formater.vim
+
+source ~/.config/nvim/gpt.vim
