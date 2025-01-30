@@ -16,7 +16,7 @@
 inoremap <C-BS> <C-w>
 
 nnoremap <C-n> :NERDTreeToggle<CR>
-nnoremap <C-b> :NERDTreeRefreshRoot<CR> :NERDTreeFocus<CR>
+nnoremap <C-b> :NERDTreeFocus<CR>:NERDTreeRefreshRoot<CR>
 
 inoremap <A-f> <ESC>
 nnoremap <TAB> gt
@@ -59,5 +59,4 @@ source ~/.config/nvim/themes/iceberg.vim
 let g:formater_dir = '/home/lum/formatters'
 let g:checker_dir = '/home/lum/checkers'
 source ~/.config/nvim/lum_formater.vim
-
 source ~/.config/nvim/gpt.vim
