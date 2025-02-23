@@ -52,6 +52,15 @@ set encoding=UTF-8
 call plug#end()
 
 
+command! -nargs=1 Artisan echo system('php artisan ' . <q-args>)
+function! RunArtisan()
+    let command = input('artisan: ')
+    echo system('php artisan ' . command)
+endfunction
+nnoremap <C-a> :call RunArtisan()<CR>
+
+
+
 " source ~/.config/nvim/themes/monokai.vim
 source ~/.config/nvim/themes/iceberg.vim
 " colorscheme elflord
