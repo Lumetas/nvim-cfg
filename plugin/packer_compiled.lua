@@ -74,20 +74,15 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
-  ["awesome-vim-colorschemes"] = {
-    loaded = true,
-    path = "C:\\Users\\pokh9\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\awesome-vim-colorschemes",
-    url = "https://github.com/rafi/awesome-vim-colorschemes"
-  },
   nerdtree = {
     loaded = true,
     path = "C:\\Users\\pokh9\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\nerdtree",
     url = "https://github.com/preservim/nerdtree"
   },
-  ["vim-airline"] = {
+  ["packer.nvim"] = {
     loaded = true,
-    path = "C:\\Users\\pokh9\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\vim-airline",
-    url = "https://github.com/vim-airline/vim-airline"
+    path = "C:\\Users\\pokh9\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\packer.nvim",
+    url = "https://github.com/wbthomason/packer.nvim"
   },
   ["vim-commentary"] = {
     loaded = true,

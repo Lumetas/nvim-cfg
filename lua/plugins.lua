@@ -5,7 +5,7 @@ require('packer').startup(function(use)
     -- Ваши плагины
     use 'tpope/vim-commentary'
     use 'ap/vim-css-color'
-    use 'vim-airline/vim-airline'
+    -- use 'vim-airline/vim-airline'
     use 'preservim/nerdtree'
-    use 'rafi/awesome-vim-colorschemes'
+    -- use 'rafi/awesome-vim-colorschemes'
 end)

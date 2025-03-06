@@ -4,7 +4,7 @@ vim.api.nvim_create_user_command('Artisan', function(opts)
 end, { nargs = 1 })
 
 -- Функция RunArtisan
-local function run_artisan()
+function run_artisan()
     local command = vim.fn.input('artisan: ')
     vim.cmd('echo system("php artisan ' .. command .. '")')
 end
