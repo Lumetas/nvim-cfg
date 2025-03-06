@@ -64,10 +64,3 @@ nnoremap <C-a> :call RunArtisan()<CR>
 " source ~/.config/nvim/themes/monokai.vim
 source ~/.config/nvim/themes/iceberg.vim
 " colorscheme elflord
-" Пример скрипта на Vimscript
-
-" Установите переменную с путем к директории форматирования
-let g:formater_dir = '/home/lum/formatters'
-let g:checker_dir = '/home/lum/checkers'
-source ~/.config/nvim/lum_formater.vim
-source ~/.config/nvim/gpt.vim
