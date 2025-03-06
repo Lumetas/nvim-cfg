@@ -8,7 +8,7 @@
 :set softtabstop=4
 :set mouse=a
 :set noswapfile
-
+:let vimdir = "C:\\Users\\pokh9\\AppData\\Local\\nvim"
 
 :set clipboard=unnamedplus
 
@@ -61,6 +61,6 @@ nnoremap <C-a> :call RunArtisan()<CR>
 
 
 
-" source ~/.config/nvim/themes/monokai.vim
-source ~/.config/nvim/themes/iceberg.vim
+execute 'source' fnameescape(vimdir . "/themes/iceberg.vim")
+" execute 'source' fnameescape(vimdir . "/themes/monokai.vim")
 " colorscheme elflord
