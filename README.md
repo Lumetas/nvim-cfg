@@ -30,5 +30,5 @@ in nvim:
 PackerSync
 ~~~
 install neovim:
-- [linux](https://github.com/lumetas/nvim-cfg/releases/latest/downlaod/nvim)
-- [windows](https://github.com/lumetas/nvim-cfg/releases/latest/downlaod/nvim.msi)
+- [linux](https://github.com/lumetas/nvim-cfg/releases/latest/download/nvim)
+- [windows](https://github.com/lumetas/nvim-cfg/releases/latest/download/nvim.msi)
