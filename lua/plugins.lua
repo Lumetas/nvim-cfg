@@ -7,5 +7,7 @@ require('packer').startup(function(use)
     use 'ap/vim-css-color'
     -- use 'vim-airline/vim-airline'
     use 'preservim/nerdtree'
-    -- use 'rafi/awesome-vim-colorschemes'
+	use 'neovim/nvim-lspconfig'
+
+	-- use 'rafi/awesome-vim-colorschemes'
 end)
