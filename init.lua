@@ -6,7 +6,6 @@ vim.g.reset_layout_on_leave = true -- Сбрасывать ли рассклад
 
 -- Подключение модулей
 require('settings')    -- Основные настройки
-require('keymaps')     -- Ключевые отображения
 require('plugins')     -- Плагины
 require('color') -- Цветовые схемы
 require('statusline') -- Полоса
@@ -16,3 +15,5 @@ require('commands') -- Произвольные команды
 require('map') -- Русский язык
 require('startmenu') -- Стартовое меню
 require('lumSnippets') -- Сниппеты
+
+require('keymaps')     -- Ключевые отображения

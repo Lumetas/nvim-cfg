@@ -29,3 +29,8 @@ vim.api.nvim_set_keymap('n', 'K', '<C-u>', { noremap = true })
 -- Delete without yanking
 vim.api.nvim_set_keymap('v', 'd', '"_d', { noremap = true })
 vim.api.nvim_set_keymap('n', 'd', '"_d', { noremap = true })
+
+
+vim.api.nvim_set_keymap('n', '<C-p>h', ':LumSNhtml<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-p>c', ':LumSNcss<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-p>j', ':LumSNjs<CR>', { noremap = true })
