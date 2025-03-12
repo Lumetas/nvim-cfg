@@ -41,6 +41,7 @@ PackerSync
 
 Навигация происходит по нажатию ctrl+m <type>. Сопоставление типов:
 | key | type |
+| --- | ---- |
 | m | models |
 | r | routers |
 | c | controllers |
