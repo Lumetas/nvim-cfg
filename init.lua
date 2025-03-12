@@ -15,3 +15,4 @@ require('laravel') -- laravel
 require('commands') -- Произвольные команды
 require('map') -- Русский язык
 require('startmenu') -- Стартовое меню
+require('lumSnippets') -- Сниппеты
