@@ -41,9 +41,11 @@ end
 
 -- Функция RunArtisan (глобальная)
 function _G.run_artisan()
-    local command = vim.fn.input('artisan: ')
-    local output = vim.fn.system("php artisan " .. command)
-    vim.notify(output, vim.log.levels.INFO)
+	local command = vim.fn.input('artisan: ')
+	if new_project_name and new_project_name ~= "" then
+		local output = vim.fn.system("php artisan " .. command)
+		vim.notify(output, vim.log.levels.INFO)
+	end
 end
 
 -- Инициализация плагина (только при наличии artisan и lumlaravel)
@@ -73,6 +75,14 @@ local function init_plugin()
     -- Маппинг для RunArtisan
     vim.api.nvim_set_keymap('n', '<C-a>', ':lua _G.run_artisan()<CR>', { noremap = true })
 end
+
+
+vim.api.nvim_create_augroup('lumLaravelUpdate', { clear = true })
+vim.api.nvim_create_autocmd('DirChanged', {
+  group = 'lumLaravelUpdate',
+  pattern = '*',
+  callback = init_plugin,
+})
 
 -- Автоматическая инициализация плагина при запуске Neovim
 init_plugin()
