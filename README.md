@@ -62,6 +62,10 @@ PackerSync
 ```
 Вы можете добавить условие. В таком случае при вставке у вас спросят добавлять ли даный фрагмент в итоговый сниппет. Вопросы обо всех сниппетах маркированы(маркером является строка в фигурных скобках). 
 
+### Мои сниппеты:
+```
+https://github.com/Lumetas/lumSnippets.git
+```
 
 install neovim:
 - [linux](https://github.com/lumetas/nvim-cfg/releases/latest/download/nvim)
