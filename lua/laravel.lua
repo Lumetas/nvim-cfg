@@ -73,7 +73,7 @@ local function init_plugin()
     end, { nargs = 1 })
 
     -- Маппинг для RunArtisan
-    vim.api.nvim_set_keymap('n', '<C-a>', ':lua _G.run_artisan()<CR>', { noremap = true })
+    -- vim.api.nvim_set_keymap('n', '<C-A-a>', ':lua _G.run_artisan()<CR>', { noremap = true })
 end
 
 
