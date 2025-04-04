@@ -1,1 +1,0 @@
-php $PSScriptRoot\markdown.php

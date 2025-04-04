@@ -6,8 +6,6 @@ include "Response.php";
 include "ParseMarkdown.php";
 include "MD.php";
 
-shell_exec("explorer.exe");
-
 $server = new Server("127.0.0.1", 8365);
 
 $server->listen(function($rq) {
