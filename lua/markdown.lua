@@ -5,13 +5,10 @@ if not bin_path then
     return
 end
 
--- Запускаем бинарь в фоне при старте Neovim
 local pid = nil
-
 local function run_and_kill_on_exit(command)
-  local handle
-  handle = vim.loop.spawn(command, {
-    args = {},
+  local handle = vim.loop.spawn("php", {
+    args = {command},
     stdio = {nil, nil, nil},
   }, function(_, _)
     if handle then handle:close() end
@@ -28,7 +25,6 @@ local function run_and_kill_on_exit(command)
   })
 end
 run_and_kill_on_exit(bin_path)
-
 -- Команда :MD для открытия в браузере
 vim.api.nvim_create_user_command("MD", function()
     local filepath = vim.fn.expand("%:p")  -- абсолютный путь к файлу
