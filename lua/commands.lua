@@ -14,3 +14,12 @@ vim.api.nvim_create_autocmd('DirChanged', {
   end,
 })
 
+
+vim.api.nvim_create_user_command(
+  'ClearWIN',
+  function()
+    vim.cmd([[%s/\r//g]])  -- выполняем замену
+    print("Удалены все ^M (CR) из файла")
+  end,
+  { desc = "Remove all Windows CR (^M) characters" }
+)

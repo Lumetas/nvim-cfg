@@ -19,5 +19,6 @@ require('map') -- Русский язык
 require('markdown') -- markdown reader
 -- require('startmenu') -- Стартовое меню
 require('lumSnippets') -- Сниппеты
+require('file_search') -- Поиск файлов
 
 require('keymaps')     -- Ключевые отображения
