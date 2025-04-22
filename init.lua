@@ -1,6 +1,9 @@
 -- Переменные и флаги для модулей и плагинов
 vim.g.reset_layout_on_leave = true -- Сбрасывать ли расскладку на английский при выходе из insert mode
 
+vim_theme = { "cyberpunk", "vim" }
+-- vim_theme = { "neofusion", "nvim" }
+
 -- vim.g.markdown_bin = "php C:\\Users\\pokh9\\lumprojects\\nvim\\libs\\markdown.php"  -- или полный путь к бинарнику markdown
 
 
