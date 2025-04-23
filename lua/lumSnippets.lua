@@ -1,7 +1,7 @@
 local M = {}
 
 -- Путь к папке со сниппетами в корневой директории пользователя
-local snippets_dir = vim.fn.expand("~/lumSnippets/")
+local snippets_dir = vim.fn.expand(vim_dir .. "/lumSnippets/")
 
 -- Функция для чтения содержимого файла
 local function read_file(file_path)

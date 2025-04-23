@@ -6,11 +6,12 @@ local function generate_lumlaravel()
         views = "resources/views",
         routes = "routes",
         migrations = "database/migrations",
-        seeders = "database/seeders"
+        seeders = "database/seeders",
+		cmd = "artisan"
     }
 
     local content = "return " .. vim.inspect(paths)
-    local file = io.open("lumlaravel", "w")
+    local file = io.open("lummvc", "w")
     if file then
         file:write(content)
         file:close()
@@ -21,16 +22,16 @@ local function generate_lumlaravel()
 end
 
 -- Команда для генерации lumlaravel (доступна всегда)
-vim.api.nvim_create_user_command('GenerateLumLaravel', generate_lumlaravel, {})
+vim.api.nvim_create_user_command('GenerateLumMVC', generate_lumlaravel, {})
 
 -- Проверка наличия файла artisan и lumlaravel
 local function is_laravel_project()
-    return vim.fn.filereadable("artisan") == 1 and vim.fn.filereadable("lumlaravel") == 1
+    return vim.fn.filereadable("lummvc") == 1
 end
 
 -- Чтение конфигурации из lumlaravel
 local function read_lumlaravel_config()
-    local config_file = vim.fn.getcwd() .. "/lumlaravel"
+    local config_file = vim.fn.getcwd() .. "/lummvc"
     if vim.fn.filereadable(config_file) == 1 then
         local config = dofile(config_file)
         return config
@@ -41,9 +42,9 @@ end
 
 -- Функция RunArtisan (глобальная)
 function _G.run_artisan()
-	local command = vim.fn.input('artisan: ')
+	local command = vim.fn.input('command: ')
 	if new_project_name and new_project_name ~= "" then
-		local output = vim.fn.system("php artisan " .. command)
+		local output = vim.fn.system("php " .. config.cmd .. command)
 		vim.notify(output, vim.log.levels.INFO)
 	end
 end
@@ -67,13 +68,13 @@ local function init_plugin()
     end
 
     -- Команда Artisan
-    vim.api.nvim_create_user_command('Artisan', function(opts)
-        local output = vim.fn.system("php artisan " .. opts.args)
+    vim.api.nvim_create_user_command('Mvc', function(opts)
+        local output = vim.fn.system("php " .. config.cmd .. " " .. opts.args)
         vim.notify(output, vim.log.levels.INFO)
     end, { nargs = 1 })
 
     -- Маппинг для RunArtisan
-    -- vim.api.nvim_set_keymap('n', '<C-A-a>', ':lua _G.run_artisan()<CR>', { noremap = true })
+    vim.api.nvim_set_keymap('n', '<C-A-a>', ':lua _G.run_artisan()<CR>', { noremap = true })
 end
 
 
@@ -84,5 +85,3 @@ vim.api.nvim_create_autocmd('DirChanged', {
   callback = init_plugin,
 })
 
--- Автоматическая инициализация плагина при запуске Neovim
-init_plugin()
