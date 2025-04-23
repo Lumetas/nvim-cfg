@@ -11,9 +11,6 @@ vim_dir = vim.fn.stdpath('config')
 -- Подключение модулей
 require('settings')    -- Основные настройки
 
--- vim.opt.runtimepath:append(vim_dir .. "/plugins/" .. folder)
-
-require('plugins')     -- Плагины
 require('color') -- Цветовые схемы
 require('statusline') -- Полоса
 require('lsp') -- LSP Автодополнение и прочее
