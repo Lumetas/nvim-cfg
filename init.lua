@@ -20,7 +20,6 @@ require('lsp') -- LSP Автодополнение и прочее
 require('laravel') -- laravel
 require('commands') -- Произвольные команды
 require('map') -- Русский язык
-require('markdown') -- markdown reader
 -- require('startmenu') -- Стартовое меню
 require('lumSnippets') -- Сниппеты
 require('file_search') -- Поиск файлов
