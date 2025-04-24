@@ -1,3 +1,19 @@
+function OpenTerminalWithCommand(cmd)
+-- Создаём вертикальное окно справа (40% ширины) и сразу переходим в него
+vim.cmd('rightbelow vsplit | vertical resize 50')
+
+-- Открываем терминал и запускаем команду
+vim.cmd('terminal ' .. cmd)
+
+-- Автоматически переходим в режим вставки
+vim.cmd('startinsert')
+
+-- Жёстко биндим Esc на закрытие терминала
+vim.cmd([[
+tnoremap <buffer> <Esc> <C-\><C-n>:close!<CR>
+]])
+end
+
 -- Команда для форматирования кода
 vim.api.nvim_create_user_command('Format', function()
     -- Устанавливаем метку 'b' на текущей строке
