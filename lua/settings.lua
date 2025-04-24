@@ -13,3 +13,4 @@ vim.opt.encoding = 'UTF-8'
 vim.opt.completeopt:remove('preview')
 vim.opt.shada = ""
 vim.bo.fileformat = "unix"
+vim.cmd("let g:user_emmet_leader_key='<C-Z>'")
