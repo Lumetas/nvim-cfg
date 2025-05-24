@@ -28,7 +28,7 @@ telescope.setup({
 			-- },
 			sorting_strategy = 'ascending',                          -- Сортировка сверху
 			file_ignore_patterns = {                                 -- Игнорируемые файлы
-				'node_modules', '.git', '__pycache__', 'vendor'
+				'node_modules', '.git', '__pycache__', 'vendor', 'storage'
 			},
 		},
 		pickers = {
