@@ -17,6 +17,35 @@
 - [vim-commentary](https://github.com/tpope/vim-commentary)
 
 
+## Установка
+Склонировать данный репозиторий в директорию конфига.
+linux/mac:
+```
+~/.config/nvim
+```
+windows:
+```
+~\AppData\Local\nvim
+```
+Установить lsp:
+```
+npm install -g intelephense
+```
+
+Так же необходимо установить утилиту fd примеры для систем:
+```
+winget install sharkdp.fd
+brew install fd
+pacman -S fd
+apk add fd
+dnf install fd-find
+api istall fd
+
+dnf copr enable tkbcopr/fd
+dnf install fd
+```
+
+
 
 
 <!-- # vim-plug -->

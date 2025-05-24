@@ -25,39 +25,45 @@ telescope.setup({
 				end,
 			},
 		},
-		-- layout_strategy = 'vertical',                            -- Вертикальный layout
-		-- layout_config = {
-			--   vertical = { width = 0.9, height = 0.95 },
-			-- },
-			sorting_strategy = 'ascending',                          -- Сортировка сверху
-			file_ignore_patterns = {
-				"vendor/*",      -- Игнор всей папки vendor
-				"node_modules/*", 
-				"storage/*",
-				"bootstrap/*",
-				"public/*",
-				"docker/*",
-				".git/*",
-			},
+		sorting_strategy = 'ascending',                          -- Сортировка сверху
+		file_ignore_patterns = {
+			"vendor/*",      -- Игнор всей папки vendor
+			"node_modules/*", 
+			"storage/*",
+			"bootstrap/*",
+			"public/*",
+			"docker/*",
+			".git/*",
 		},
-		pickers = {
-			find_files = {
-				hidden = true,                                         -- Показывать скрытые файлы
-				no_ignore = false,                                    -- Учитывать .gitignore
-			},
+	},
+	pickers = {
+		find_files = {
+			hidden = true,                                         -- Показывать скрытые файлы
+			no_ignore = false,                                    -- Учитывать .gitignore
 		},
-	})
+	},
+})
 
-	-- Глобальные маппинги
-	vim.keymap.set('n', '<C-f>', builtin.find_files, { desc = '[F]ind [F]iles' })
-	-- Редко используемые
-	vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = '[F]ind [H]elp' })
-	vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = '[F]ind [K]eymaps' })
+-- Глобальные маппинги
+vim.keymap.set('n', '<C-f>', builtin.find_files, { desc = '[F]ind [F]iles' })
+-- Редко используемые
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = '[F]ind [H]elp' })
+vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = '[F]ind [K]eymaps' })
 
-	-- Автокоманда для Telescope (опционально)
-	vim.api.nvim_create_autocmd('FileType', {
-		pattern = 'TelescopeResults',
-		callback = function()
-			vim.opt.cursorline = true                               -- Подсветка текущей строки
-		end,
+-- Автокоманда для Telescope (опционально)
+vim.api.nvim_create_autocmd('FileType', {
+	pattern = 'TelescopeResults',
+	callback = function()
+		vim.opt.cursorline = true                               -- Подсветка текущей строки
+	end,
+})
+
+
+vim.keymap.set('n', '<leader>ps', function()
+	require('telescope.builtin').grep_string({
+		search = 'ERROR:',
+		cwd = vim.fn.systemlist('git rev-parse --show-toplevel')[1],
 	})
+end, { desc = '[P]HP[S]tan Errors' })
+
+
