@@ -5,6 +5,9 @@ local builtin = require('telescope.builtin')
 -- Основная настройка Telescope
 telescope.setup({
 	defaults = {
+		file_previewer = require('telescope.previewers').vim_buffer_cat.new({
+			preview_limit = 1024 * 1024  -- 1 МБ
+		}),
 		mappings = {
 			i = {
 				['<Esc>'] = actions.close,                           -- Закрыть по Esc
@@ -27,8 +30,14 @@ telescope.setup({
 			--   vertical = { width = 0.9, height = 0.95 },
 			-- },
 			sorting_strategy = 'ascending',                          -- Сортировка сверху
-			file_ignore_patterns = {                                 -- Игнорируемые файлы
-				'node_modules', '.git', '__pycache__', 'vendor', 'storage'
+			file_ignore_patterns = {
+				"vendor/*",      -- Игнор всей папки vendor
+				"node_modules/*", 
+				"storage/*",
+				"bootstrap/*",
+				"public/*",
+				"docker/*",
+				".git/*",
 			},
 		},
 		pickers = {
