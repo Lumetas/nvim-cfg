@@ -14,7 +14,6 @@ require('settings')    -- Основные настройки
 require('color') -- Цветовые схемы
 require('statusline') -- Полоса
 require('lsp') -- LSP Автодополнение и прочее
-require('lummvc') -- mvc
 require('commands') -- Произвольные команды
 require('map') -- Русский язык
 -- require('startmenu') -- Стартовое меню
