@@ -5,32 +5,7 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts) -- Переход к объявлению
 	vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts) -- Переход к реализации
 	vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts) -- Показать ссылки
-	vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts) -- Показать информацию о символе
-
-	-- Переход к предыдущему буферу и закрытие текущего (если возможно)
-	vim.keymap.set('n', 'gp', function()
-		-- Получаем текущий буфер
-		local current_buf = vim.api.nvim_get_current_buf()
-
-		-- Проверяем, можно ли удалить текущий буфер
-		local is_deletable = vim.fn.buflisted(current_buf) == 1
-
-		-- Получаем предыдущий буфер
-		local prev_buf = vim.fn.bufnr('#')
-
-		-- Если предыдущий буфер существует и доступен, переходим к нему
-		if prev_buf ~= -1 and vim.fn.buflisted(prev_buf) == 1 then
-			vim.cmd('b#') -- Переход к предыдущему буферу
-
-			-- Если текущий буфер можно удалить, закрываем его
-			if is_deletable then
-				vim.api.nvim_buf_delete(current_buf, { force = true })
-			end
-		else
-			-- Если предыдущего буфера нет, просто выводим сообщение
-			vim.notify("Нет предыдущего буфера для перехода", vim.log.levels.WARN)
-		end
-	end, opts)
+	vim.keymap.set('n', 'gk', vim.lsp.buf.hover, opts) -- Показать информацию о символе
 end
 
 local lspconfig = require('lspconfig')
