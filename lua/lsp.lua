@@ -40,3 +40,20 @@ lspconfig.intelephense.setup {
 		}
 	}
 }
+
+lspconfig.rust_analyzer.setup {
+  on_attach = on_attach,  -- Ваша функция on_attach (если есть)
+  cmd = { "rust-analyzer" },  -- Путь к бинарнику (обычно в PATH после `rustup component add rust-analyzer`)
+  filetypes = { "rust" },
+  root_dir = lspconfig.util.root_pattern("Cargo.toml", ".git"),  -- Ищет Cargo.toml или .git как корень проекта
+  settings = {
+    ["rust-analyzer"] = {
+      cargo = {
+        allFeatures = true,  -- Анализировать все фичи Cargo
+      },
+      diagnostics = {
+        enable = true,  -- Включить диагностику
+      },
+    },
+  },
+}

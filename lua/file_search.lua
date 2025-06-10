@@ -49,6 +49,7 @@ vim.keymap.set('n', '<C-f>', builtin.find_files, { desc = '[F]ind [F]iles' })
 -- Редко используемые
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = '[F]ind [H]elp' })
 vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = '[F]ind [K]eymaps' })
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = '[F]ind with [G]rep' })
 
 -- Автокоманда для Telescope (опционально)
 vim.api.nvim_create_autocmd('FileType', {

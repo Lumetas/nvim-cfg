@@ -39,3 +39,16 @@ vim.api.nvim_create_user_command(
   end,
   { desc = "Remove all Windows CR (^M) characters" }
 )
+
+
+vim.api.nvim_create_user_command('W', function()
+    local tmpfile = vim.fn.tempname()
+    local filepath = vim.fn.expand('%:p')
+    vim.cmd('w! ' .. tmpfile)
+    vim.fn.inputsave()  -- Сохраняем текущий ввод
+    local password = vim.fn.inputsecret('Пароль sudo: ')  -- Скрытый ввод пароля
+    vim.fn.inputrestore()  -- Восстанавливаем ввод
+    local cmd = string.format('echo %s | sudo -S cp -f %s %s && rm -f %s', 
+        vim.fn.shellescape(password), tmpfile, filepath, tmpfile)
+    vim.cmd('!' .. cmd)
+end, { bang = true })

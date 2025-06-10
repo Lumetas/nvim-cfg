@@ -22,3 +22,5 @@ require('file_search') -- Поиск файлов
 require('php-cs') -- Интеграия с php-cs-fixer : composer global require friendsofphp/php-cs-fixer
 
 require('keymaps')     -- Ключевые отображения
+vim.cmd('hi Normal guibg=NONE ctermbg=NONE');
+vim.g.neovide_opacity = 0.75
