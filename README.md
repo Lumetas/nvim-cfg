@@ -3,10 +3,6 @@
 Мне хотелось использовать по минимуму сторонних плагинов, и добиться максимальной автономности моего nvim, для работы приемущественно с PHP
 На данный момент используется тема gruvbox, но они периодически меняются
 
-
-![image1](images/1.png)
-![image2](images/2.png)
-![image3](images/3.png)
 ## Менеджер плагинов
 Мне намного удобнее утсанавливать плагины руками + плюс их не так много, так что все плагины устанавливаются прямо в директорию конфига. Список используемых здесь плагинов:
 - [nvim-tree](https://github.com/nvim-tree/nvim-tree.lua)
@@ -39,12 +35,17 @@ brew install fd
 pacman -S fd
 apk add fd
 dnf install fd-find
-api istall fd
+apt istall fd
 
 dnf copr enable tkbcopr/fd
 dnf install fd
 ```
-
+# Галерея
+![image1](images/1.png)
+![image2](images/2.png)
+![image3](images/3.png)
+![image4](images/4.png)
+![image5](images/5.png)
 
 
 
