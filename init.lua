@@ -20,7 +20,36 @@ require('map') -- Русский язык
 require('lumSnippets') -- Сниппеты
 require('file_search') -- Поиск файлов
 require('php-cs') -- Интеграия с php-cs-fixer : composer global require friendsofphp/php-cs-fixer
+require("lum-projects"); -- Менеджер проектов
+require('keymaps')     -- Хоткеи
 
-require('keymaps')     -- Ключевые отображения
 vim.cmd('hi Normal guibg=NONE ctermbg=NONE');
+
 vim.g.neovide_opacity = 0.75
+
+require("nvim-tree").setup({
+  git = {
+    enable = true,
+    timeout = 400,
+  },
+  filesystem_watchers = {
+    enable = false,  -- ускоряет работу, но требует ручного обновления (клавиша `R`)
+  },
+  renderer = {
+    group_empty = true,  -- схлопывать пустые папки
+    indent_markers = {
+      enable = true,
+    },
+  },
+  actions = {
+    change_dir = {
+      global = false,  -- не менять корневую папку без указания
+    },
+    open_file = {
+      quit_on_open = false,
+    },
+  },
+})
+
+
+

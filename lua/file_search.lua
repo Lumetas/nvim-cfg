@@ -59,7 +59,6 @@ vim.api.nvim_create_autocmd('FileType', {
 	end,
 })
 
-
 vim.keymap.set('n', '<leader>ps', function()
 	require('telescope.builtin').grep_string({
 		search = 'ERROR:',
@@ -67,4 +66,11 @@ vim.keymap.set('n', '<leader>ps', function()
 	})
 end, { desc = '[P]HP[S]tan Errors' })
 
-
+vim.keymap.set("n", "<leader>fb", function()  
+  builtin.buffers({  
+    sort_mru = true,      -- Сначала последние использованные  
+    ignore_current = true, -- Показывать текущий буфер  
+    previewer = true,      -- Превью содержимого  
+    layout_strategy = "horizontal", -- Или "horizontal"  
+  })  
+end, { desc = "[F]ind [B]uffers (Telescope)" })  

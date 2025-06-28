@@ -2,8 +2,12 @@
 vim.api.nvim_set_keymap('i', '<C-BS>', '<C-w>', { noremap = true })
 
 -- NERDTree mappings
-vim.api.nvim_set_keymap('n', '<C-n>', ':NERDTreeToggle<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<C-b>', ':NERDTreeFocus<CR>:NERDTreeRefreshRoot<CR>', { noremap = true })
+-- vim.api.nvim_set_keymap('n', '<C-n>', ':NERDTreeToggle<CR>', { noremap = true })
+-- vim.api.nvim_set_keymap('n', '<C-b>', ':NERDTreeFocus<CR>:NERDTreeRefreshRoot<CR>', { noremap = true })
+
+vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-b>', ':NvimTreeFocus<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-m>', ':NvimTreeRefresh<CR>', { noremap = true })
 
 -- General mappings
 vim.api.nvim_set_keymap('i', '<A-f>', '<ESC>', { noremap = true })
@@ -61,3 +65,7 @@ vim.keymap.set('n', 'gp', function()
 		vim.notify("Нет предыдущего буфера для перехода", vim.log.levels.WARN)
 	end
 end, opts)
+
+
+
+vim.api.nvim_set_keymap('n', '<leader>lp', ':ShowLumProjects<CR>', { noremap = true })

@@ -6,6 +6,7 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts) -- Переход к реализации
 	vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts) -- Показать ссылки
 	vim.keymap.set('n', 'gk', vim.lsp.buf.hover, opts) -- Показать информацию о символе
+	-- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, opts)
 end
 
 local lspconfig = require('lspconfig')
@@ -21,6 +22,33 @@ local lspconfig = require('lspconfig')
 -- 		["language_server_psalm.enabled"] = false,
 -- 	}
 -- }
+
+vim.diagnostic.config({
+    virtual_text = {
+        source = "always",  -- Показывать источник диагностики
+        prefix = '■',       -- Префикс для виртуального текста
+        spacing = 4,
+    },
+    signs = true,
+    underline = true,
+    update_in_insert = false,
+    severity_sort = true,
+    float = {
+        source = "always",  -- Показывать источник в float окне
+    }
+})
+
+-- Кастомизация float окна с диагностикой
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+        virtual_text = true,
+        signs = true,
+        update_in_insert = false,
+    }
+)
+
+
+
 
 lspconfig.intelephense.setup {
 	on_attach = on_attach,
