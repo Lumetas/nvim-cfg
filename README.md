@@ -9,7 +9,7 @@
 ![image3](images/3.png)
 ## Менеджер плагинов
 Мне намного удобнее утсанавливать плагины руками + плюс их не так много, так что все плагины устанавливаются прямо в директорию конфига. Список используемых здесь плагинов:
-- [nerdtree](https://github.com/preservim/nerdtree)
+- [nvim-tree](https://github.com/nvim-tree/nvim-tree.lua)
 - [emmet-vim](https://github.com/mattn/emmet-vim)
 - [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
 - [plenaty.nvim](https://github.com/nvim-lua/plenary.nvim)
