@@ -7,7 +7,6 @@ vim.api.nvim_set_keymap('i', '<C-BS>', '<C-w>', { noremap = true })
 
 vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-b>', ':NvimTreeFocus<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<C-m>', ':NvimTreeRefresh<CR>', { noremap = true })
 
 -- General mappings
 vim.api.nvim_set_keymap('i', '<A-f>', '<ESC>', { noremap = true })

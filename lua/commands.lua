@@ -109,3 +109,16 @@ local function setup_resize_mode()
 end
 
 setup_resize_mode()
+
+
+
+
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    if vim.fn.argc() == 0 then  -- Только если Neovim запущен без файлов
+      vim.cmd([[
+        echo "╔════════════════════════════════════╗\n║   UGANDA, FUCK YOU                 ║\n║   \\lp - LumProjects                ║\n║   :cd <folder> - Open Folder       ║\n║   :e <file> - Open File            ║\n╚════════════════════════════════════╝"
+      ]])
+    end
+  end
+})
