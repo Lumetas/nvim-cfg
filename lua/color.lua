@@ -8,3 +8,6 @@ elseif vim_theme[2] == "nvim" then
 else 
 	print("no theme")
 end
+
+
+

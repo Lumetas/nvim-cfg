@@ -103,8 +103,21 @@ cmp.setup({
 		["<C-p>"] = cmp.mapping.select_prev_item(),
 	},
 	sources = {
-		{ name = "nvim_lsp", option = {         php = {
-			keyword_pattern = [=[[\%(\$\k*\)\|\k\+]]=],
-		}}},    -- LSP-дополнения
+		{ 
+			name = "nvim_lsp",
+			option = {
+				php = {
+					keyword_pattern = [=[[\%(\$\k*\)\|\k\+]]=],
+				}
+			}
+
+		},
+		{
+			name = "buffer",
+			option = {
+
+			}
+
+		},
 	},
 })

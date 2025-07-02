@@ -71,3 +71,17 @@ end, opts)
 
 
 vim.api.nvim_set_keymap('n', '<leader>lp', ':ShowLumProjects<CR>', { noremap = true })
+
+
+
+local custom_actions = require("getRelativePath")
+vim.keymap.set("i", "<C-f>", function()
+  require("telescope.builtin").find_files({
+    attach_mappings = function(_, map)
+      -- Настройка маппингов только для этого вызова
+      map("i", "<CR>", custom_actions.insert_relative_path)
+      map("n", "<CR>", custom_actions.insert_relative_path)
+      return true
+    end
+  })
+end, {desc = "Вставить относительный путь файла"})
