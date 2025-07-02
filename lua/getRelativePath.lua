@@ -46,13 +46,13 @@ function M.insert_relative_path(prompt_bufnr)
   vim.schedule(function()
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     -- Вставляем текст
-    vim.api.nvim_buf_set_text(0, row-1, col, row-1, col, {rel_path})
+    vim.api.nvim_buf_set_text(0, row-1, col+1, row-1, col+1, {rel_path})
     -- Устанавливаем курсор ПОСЛЕ последнего символа
     vim.api.nvim_win_set_cursor(0, {row, col + #rel_path})
     -- Возвращаем в insert mode и перемещаем курсор в конец
     vim.cmd("startinsert!")
     -- Дополнительное перемещение на случай, если startinsert сбросил позицию
-    vim.api.nvim_win_set_cursor(0, {row, col + #rel_path})
+    vim.api.nvim_win_set_cursor(0, {row, col + 1 + #rel_path})
   end)
 end
 
