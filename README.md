@@ -8,6 +8,8 @@
 - [nvim-tree](https://github.com/nvim-tree/nvim-tree.lua)
 - [emmet-vim](https://github.com/mattn/emmet-vim)
 - [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
+- [nvim-cmp](https://github.com/hrsh7th/nvim-cmp)
+- [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp)
 - [plenaty.nvim](https://github.com/nvim-lua/plenary.nvim)
 - [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
 - [vim-commentary](https://github.com/tpope/vim-commentary)

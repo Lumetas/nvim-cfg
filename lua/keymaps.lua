@@ -32,14 +32,17 @@ vim.api.nvim_set_keymap('n', 'q:', '<Nop>', { noremap = true })
 vim.api.nvim_set_keymap('n', 'J', '<C-d>', { noremap = true })
 vim.api.nvim_set_keymap('n', 'K', '<C-u>', { noremap = true })
 
+vim.api.nvim_set_keymap('v', 'J', '<C-d>', { noremap = true })
+vim.api.nvim_set_keymap('v', 'K', '<C-u>', { noremap = true })
+
 -- Delete without yanking
 vim.api.nvim_set_keymap('v', 'd', '"_d', { noremap = true })
 vim.api.nvim_set_keymap('n', 'd', '"_d', { noremap = true })
 
 
-vim.api.nvim_set_keymap('n', '<C-p>h', ':LumSNhtml<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<C-p>c', ':LumSNcss<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<C-p>j', ':LumSNjs<CR>', { noremap = true })
+-- vim.api.nvim_set_keymap('n', '<C-p>h', ':LumSNhtml<CR>', { noremap = true })
+-- vim.api.nvim_set_keymap('n', '<C-p>c', ':LumSNcss<CR>', { noremap = true })
+-- vim.api.nvim_set_keymap('n', '<C-p>j', ':LumSNjs<CR>', { noremap = true })
 
 vim.keymap.set('n', 'gp', function()
 	-- Получаем текущий буфер

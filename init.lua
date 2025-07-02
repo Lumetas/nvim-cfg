@@ -17,7 +17,7 @@ require('lsp') -- LSP Автодополнение и прочее
 require('commands') -- Произвольные команды
 require('map') -- Русский язык
 -- require('startmenu') -- Стартовое меню
-require('lumSnippets') -- Сниппеты
+-- require('lumSnippets') -- Сниппеты
 require('file_search') -- Поиск файлов
 require('php-cs') -- Интеграия с php-cs-fixer : composer global require friendsofphp/php-cs-fixer
 require("lum-projects"); -- Менеджер проектов
