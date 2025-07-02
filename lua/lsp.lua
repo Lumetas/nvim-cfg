@@ -92,7 +92,9 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 
 local cmp = require("cmp")
 cmp.setup({
-
+	completion = {
+		-- autocomplete = false, -- Отключаем автоматическое открытие
+	},
 	mapping = {
 		["<C-Space>"] = cmp.mapping.complete(),
 		-- Стандартные хоткеи
