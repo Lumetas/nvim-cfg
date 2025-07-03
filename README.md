@@ -9,10 +9,13 @@
 - [emmet-vim](https://github.com/mattn/emmet-vim)
 - [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
 - [nvim-cmp](https://github.com/hrsh7th/nvim-cmp)
+- [cmp-buffer](https://github.com/hrsh7th/cmp-buffer.git)
 - [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp)
 - [plenaty.nvim](https://github.com/nvim-lua/plenary.nvim)
 - [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
 - [vim-commentary](https://github.com/tpope/vim-commentary)
+- [nvim-dap](https://github.com/mfussenegger/nvim-dap)
+- [nvim-dap-ui](https://github.com/rcarriga/nvim-dap-ui.git)
 
 
 ## Установка
@@ -41,6 +44,15 @@ apt istall fd
 
 dnf copr enable tkbcopr/fd
 dnf install fd
+```
+
+Для использования xdebug Необходимо поставить vscode-php-debug
+```
+cd ~
+git clone https://github.com/xdebug/vscode-php-debug.git
+cd vscode-php-debug
+npm install
+npm run build
 ```
 # Галерея
 ![image1](images/1.png)
