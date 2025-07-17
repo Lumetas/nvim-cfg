@@ -81,6 +81,8 @@ end, opts)
 
 
 vim.api.nvim_set_keymap('n', '<leader>lp', ':ShowLumProjects<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>lr', ':RunLumProject<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>lb', ':BuildLumProject<CR>', { noremap = true })
 
 
 
