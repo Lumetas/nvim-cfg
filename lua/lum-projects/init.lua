@@ -207,15 +207,14 @@ function M.open_project_manager()
 	-- Закрываем предыдущее окно если оно есть
 	safe_close()
 
-	-- Создаем новый буфер
 	state.buf = vim.api.nvim_create_buf(false, true)
-	local width = config.window.width
-	local height = config.window.height
+	local ui = vim.api.nvim_list_uis()[1]
+	local width = math.min(config.window.width, ui.width - 20)
+	local height = math.min(config.window.height, ui.height - 10)
 
 	-- Получаем размеры окна
-	local ui = vim.api.nvim_list_uis()[1]
 	local opts = {
-		relative = "bufpos",
+		relative = "editor",
 		width = width,
 		height = height,
 		col = (ui.width - width) / 2,
@@ -330,12 +329,16 @@ end
 local function run_command_live(command)
     -- Создаём новый буфер
     local buf = vim.api.nvim_create_buf(false, true)
+    local ui = vim.api.nvim_list_uis()[1]
+    local width = math.min(80, ui.width - 20)
+    local height = math.min(20, ui.height - 10)
+    
     local win = vim.api.nvim_open_win(buf, true, {
         relative = "editor",
-        width = 80,
-        height = 20,
-        col = (vim.o.columns - 80) / 2,
-        row = (vim.o.lines - 20) / 2,
+        width = width,
+        height = height,
+        col = (ui.width - width) / 2,
+        row = (ui.height - height) / 2,
         style = "minimal",
         border = "rounded",
     })
@@ -346,75 +349,103 @@ local function run_command_live(command)
     vim.api.nvim_buf_set_option(buf, "buftype", "nofile")
     vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe")
 
+    -- Добавим переменную для отслеживания состояния
+    local is_window_valid = true
+
+    -- Функция для безопасного добавления текста
+    local function safe_add_lines(lines)
+        if not is_window_valid or not vim.api.nvim_buf_is_valid(buf) then
+            return
+        end
+        
+        vim.schedule(function()
+            if vim.api.nvim_buf_is_valid(buf) and vim.api.nvim_win_is_valid(win) then
+                local current_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+                for _, line in ipairs(lines) do
+                    if line ~= "" then
+                        table.insert(current_lines, line)
+                    end
+                end
+                vim.api.nvim_buf_set_lines(buf, 0, -1, false, current_lines)
+                vim.api.nvim_win_set_cursor(win, { #current_lines, 0 })
+            end
+        end)
+    end
+
     -- Запускаем команду асинхронно
-    local job_id = vim.fn.jobstart(command, {
+    local job_id
+    job_id = vim.fn.jobstart(command, {
         stdout_buffered = false,
         on_stdout = function(_, data, _)
             if data then
-                -- Добавляем вывод в буфер
-                vim.schedule(function()
-                    local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-                    for _, line in ipairs(data) do
-                        if line ~= "" then
-                            table.insert(lines, line)
-                        end
-                    end
-                    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-                    -- Автопрокрутка вниз
-                    vim.api.nvim_win_set_cursor(win, { #lines, 0 })
-                end)
+                safe_add_lines(data)
             end
         end,
         on_exit = function(_, exit_code, _)
-            vim.schedule(function()
-                vim.api.nvim_buf_set_lines(buf, -1, -1, false, { "---", "Завершено с кодом: " .. exit_code })
-            end)
+            safe_add_lines({"---", "Process exited with code: " .. exit_code})
         end,
     })
 
     -- Закрытие окна по `q`
     vim.api.nvim_buf_set_keymap(buf, "n", "q", "", {
         callback = function()
-            if vim.fn.jobstop(job_id) == 1 then
-                print("Команда остановлена")
+            is_window_valid = false
+            if job_id and vim.fn.jobstop(job_id) == 1 then
+                print("Command stopped")
             end
-            vim.api.nvim_win_close(win, true)
+            if vim.api.nvim_win_is_valid(win) then
+                vim.api.nvim_win_close(win, true)
+            end
+            if vim.api.nvim_buf_is_valid(buf) then
+                vim.api.nvim_buf_delete(buf, {force = true})
+            end
         end,
         noremap = true,
         silent = true,
     })
+
+    -- Автоматическое закрытие при выходе из буфера
+    vim.api.nvim_create_autocmd("BufWipeout", {
+        buffer = buf,
+        callback = function()
+            is_window_valid = false
+            if job_id and vim.fn.jobstop(job_id) == 1 then
+                print("Command stopped")
+            end
+        end,
+    })
 end
 
 function M.start_project()
-    local name = get_project_name()
-    if name ~= nil then
-        local project_info = get_project_info(name)
-        if project_info.run and type(project_info.run) == 'string' then
-            if project_info.runInTerm and project_info.runInTerm == 'true' then
-                local current_win = vim.api.nvim_get_current_win()
-                vim.cmd("botright vsplit | terminal " .. project_info.run)
-                vim.api.nvim_set_current_win(current_win)
-            else
-                run_command_live(project_info.run)
-            end
-        end
-    end
+	local name = get_project_name()
+	if name ~= nil then
+		local project_info = get_project_info(name)
+		if project_info.run and type(project_info.run) == 'string' then
+			if project_info.runInTerm and project_info.runInTerm == 'true' then
+				local current_win = vim.api.nvim_get_current_win()
+				vim.cmd("botright vsplit | terminal " .. project_info.run)
+				vim.api.nvim_set_current_win(current_win)
+			else
+				run_command_live(project_info.run)
+			end
+		end
+	end
 end
 
 function M.build_project()
-    local name = get_project_name()
-    if name ~= nil then
-        local project_info = get_project_info(name)
-        if project_info.build and type(project_info.build) == 'string' then
-            if project_info.buildInTerm and project_info.buildInTerm == 'true' then
-                local current_win = vim.api.nvim_get_current_win()
-                vim.cmd("botright vsplit | terminal " .. project_info.build)
-                vim.api.nvim_set_current_win(current_win)
-            else
-                run_command_live(project_info.build)
-            end
-        end
-    end
+	local name = get_project_name()
+	if name ~= nil then
+		local project_info = get_project_info(name)
+		if project_info.build and type(project_info.build) == 'string' then
+			if project_info.buildInTerm and project_info.buildInTerm == 'true' then
+				local current_win = vim.api.nvim_get_current_win()
+				vim.cmd("botright vsplit | terminal " .. project_info.build)
+				vim.api.nvim_set_current_win(current_win)
+			else
+				run_command_live(project_info.build)
+			end
+		end
+	end
 end
 
 -- Команда для вызова менеджера
