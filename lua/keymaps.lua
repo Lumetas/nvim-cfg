@@ -17,6 +17,8 @@ vim.api.nvim_set_keymap('n', '<A-j>', '<C-w>j', {noremap = true, silent = true})
 
 vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-b>', ':NvimTreeFocus<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>rr', ':%s/\\v', { noremap = true })
+vim.api.nvim_set_keymap('v', '<leader>rr', ':s/\\v', { noremap = true })
 
 -- General mappings
 vim.api.nvim_set_keymap('i', '<A-f>', '<ESC>', { noremap = true })
