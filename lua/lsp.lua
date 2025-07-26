@@ -73,51 +73,52 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 
 
 
--- lspconfig.rust_analyzer.setup {
---   on_attach = on_attach,  -- Ваша функция on_attach (если есть)
---   cmd = { "rust-analyzer" },  -- Путь к бинарнику (обычно в PATH после `rustup component add rust-analyzer`)
---   filetypes = { "rust" },
---   root_dir = lspconfig.util.root_pattern("Cargo.toml", ".git"),  -- Ищет Cargo.toml или .git как корень проекта
---   settings = {
-	--     ["rust-analyzer"] = {
-		--       cargo = {
-			--         allFeatures = true,  -- Анализировать все фичи Cargo
-			--       },
-			--       diagnostics = {
-				--         enable = true,  -- Включить диагностику
-				--       },
-				--     },
-				--   },
-				-- }
+			-- lspconfig.rust_analyzer.setup {
+				--   on_attach = on_attach,  -- Ваша функция on_attach (если есть)
+				--   cmd = { "rust-analyzer" },  -- Путь к бинарнику (обычно в PATH после `rustup component add rust-analyzer`)
+				--   filetypes = { "rust" },
+				--   root_dir = lspconfig.util.root_pattern("Cargo.toml", ".git"),  -- Ищет Cargo.toml или .git как корень проекта
+				--   settings = {
+					--     ["rust-analyzer"] = {
+						--       cargo = {
+							--         allFeatures = true,  -- Анализировать все фичи Cargo
+							--       },
+							--       diagnostics = {
+								--         enable = true,  -- Включить диагностику
+								--       },
+								--     },
+								--   },
+								-- }
 
-local cmp = require("cmp")
-cmp.setup({
-	completion = {
-		-- autocomplete = false, -- Отключаем автоматическое открытие
-	},
-	mapping = {
-		["<C-Space>"] = cmp.mapping.complete(),
-		-- Стандартные хоткеи
-		["<C-CR>"] = cmp.mapping.confirm({ select = true }),
-		["<C-n>"] = cmp.mapping.select_next_item(),
-		["<C-p>"] = cmp.mapping.select_prev_item(),
-	},
-	sources = {
-		{ 
-			name = "nvim_lsp",
-			option = {
-				php = {
-					keyword_pattern = [=[[\%(\$\k*\)\|\k\+]]=],
-				}
-			}
+								local cmp = require("cmp")
+								cmp.setup({
+									completion = {
+										-- autocomplete = false, -- Отключаем автоматическое открытие
+									},
+									mapping = {
+										["<C-Space>"] = cmp.mapping.complete(),
+										-- Стандартные хоткеи
+										["<C-CR>"] = cmp.mapping.confirm({ select = true }),
+										["<C-n>"] = cmp.mapping.select_next_item(),
+										["<C-p>"] = cmp.mapping.select_prev_item(),
+									},
+									sources = {
+										{ name = 'orgmode' },
+										{ 
+											name = "nvim_lsp",
+											option = {
+												php = {
+													keyword_pattern = [=[[\%(\$\k*\)\|\k\+]]=],
+												}
+											}
 
-		},
-		{
-			name = "buffer",
-			option = {
+										},
+										{
+											name = "buffer",
+											option = {
 
-			}
+											}
 
-		},
-	},
-})
+										},
+									},
+								})

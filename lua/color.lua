@@ -5,6 +5,8 @@ if vim_theme[2] == "vim" then
 	vim.cmd('source ' .. vim.fn.fnameescape(vimdir .. '/' .. vim_theme[1] .. '.vim'))
 elseif vim_theme[2] == "nvim" then
 	require(vim_theme[1]).start()
+elseif vim_theme[2] == "scheme" then
+	vim.cmd("colorscheme " .. vim_theme[1])
 else 
 	print("no theme")
 end

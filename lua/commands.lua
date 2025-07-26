@@ -133,3 +133,13 @@ end
 
 setup_resize_mode()
 
+vim.api.nvim_create_autocmd("FileType", { -- Скрипт для отключения автоотступов в указанных типах буферов
+  pattern = { "org", "markdown", "text", "gitcommit" },
+  callback = function()
+    vim.bo.autoindent = false
+    vim.bo.smartindent = false
+    vim.bo.cindent = false
+    vim.bo.indentexpr = ""
+    vim.bo.formatoptions = vim.bo.formatoptions:gsub("[cro]", "")
+  end,
+})

@@ -3,17 +3,17 @@ vim.g.reset_layout_on_leave = true -- Сбрасывать ли рассклад
 
 vim_theme = { "gruvbox", "vim" }
 -- vim_theme = { "neofusion", "nvim" }
+-- vim_theme = { "everforest", "scheme" }
+
 
 vim_dir = vim.fn.stdpath('config')
-
-
 
 -- Подключение модулей
 require('settings')    -- Основные настройки
 
 require('color') -- Цветовые схемы
-require('statusline') -- Полоса
 require('lsp') -- LSP Автодополнение и прочее
+require('statusline') -- статус-лайн
 require('commands') -- Произвольные команды
 require('map') -- Русский язык
 -- require('lumSnippets') -- Сниппеты
@@ -24,6 +24,8 @@ require('keymaps')     -- Хоткеи
 require('nvimtree') -- config для nvim-tree
 
 require("dapconf") -- debug(для php)
+
+require("org") -- orgmode
 
 vim.cmd('hi Normal guibg=NONE ctermbg=NONE');
 
