@@ -24,7 +24,7 @@ require('keymaps')     -- Хоткеи
 require('nvimtree') -- config для nvim-tree
 
 require("dapconf") -- debug(для php)
-
+require("ufo-conf") -- ufo config
 require("org") -- orgmode
 
 vim.cmd('hi Normal guibg=NONE ctermbg=NONE');
