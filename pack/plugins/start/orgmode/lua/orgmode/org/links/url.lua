@@ -19,6 +19,9 @@ end
 
 ---@return string | nil
 function OrgLinkUrl:get_file_path()
+  if self.protocol == 'vim' then
+    return self.path
+  end
   if self.protocol == 'file' then
     return self:get_real_path() or self.path
   end
