@@ -20,6 +20,7 @@
 - [hop.nvim](https://github.com/hadronized/hop.nvim)
 - [nvim-ufo](https://github.com/kevinhwang91/nvim-ufo)
 - [yazi.nvim](https://github.com/mikavilpas/yazi.nvim)
+- [nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons)
 
 
 ## Установка

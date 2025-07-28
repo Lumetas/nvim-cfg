@@ -33,3 +33,17 @@ vim.cmd('hi Normal guibg=NONE ctermbg=NONE');
 vim.g.neovide_opacity = 0.75
 
 vim.opt.shortmess:append("I")
+
+require("lexecute").setup({
+    ["<leader>el"] = "neovim",
+    ["<leader>eph"] = {
+        command = "php",
+        run = "stdin",
+        prefix = "<?php ",
+        postfix = " ?>"
+    },
+    ["<leader>eb"] = {
+        command = "bash",
+        run = "stdin"
+    },
+})
