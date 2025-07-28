@@ -16,6 +16,9 @@
 - [vim-commentary](https://github.com/tpope/vim-commentary)
 - [nvim-dap](https://github.com/mfussenegger/nvim-dap)
 - [nvim-dap-ui](https://github.com/rcarriga/nvim-dap-ui.git)
+- [nvim-orgmode](https://github.com/nvim-orgmode/orgmode)
+- [hop.nvim](https://github.com/hadronized/hop.nvim)
+- [nvim-ufo](https://github.com/kevinhwang91/nvim-ufo)
 
 
 ## Установка
@@ -60,37 +63,3 @@ npm run build
 ![image3](images/3.png)
 ![image4](images/4.png)
 ![image5](images/5.png)
-
-
-
-<!-- # vim-plug -->
-<!-- linux/mac -->
-<!-- ~~~ -->
-<!-- sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \ -->
-<!--        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' -->
-<!-- ~~~ -->
-<!-- windows(powershell) -->
-<!-- ~~~ -->
-<!-- iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |` -->
-<!--     ni "$(@($env:XDG_DATA_HOME, $env:LOCALAPPDATA)[$null -eq $env:XDG_DATA_HOME])/nvim-data/site/autoload/plug.vim" -Force -->
-<!-- ~~~  -->
-<!-- in nvim: -->
-<!-- ~~~ -->
-<!-- PlugInstall -->
-<!-- ~~~ -->
-
-
-<!-- # packer -->
-<!-- linux/mac -->
-<!-- ~~~ -->
-<!-- git clone --depth 1 https://github.com/wbthomason/packer.nvim\ -->
-<!--  ~/.local/share/nvim/site/pack/packer/start/packer.nvim -->
-<!-- ~~~ -->
-<!-- windows(powershell) -->
-<!-- ~~~ -->
-<!-- git clone https://github.com/wbthomason/packer.nvim "$env:LOCALAPPDATA\nvim-data\site\pack\packer\start\packer.nvim" -->
-<!-- ~~~ -->
-<!-- in nvim: -->
-<!-- ~~~ -->
-<!-- PackerSync -->
-<!-- ~~~ -->

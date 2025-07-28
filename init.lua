@@ -26,6 +26,7 @@ require('nvimtree') -- config для nvim-tree
 require("dapconf") -- debug(для php)
 require("ufo-conf") -- ufo config
 require("org") -- orgmode
+require('hop-conf') -- Конфиг для быстрых перемещений
 
 vim.cmd('hi Normal guibg=NONE ctermbg=NONE');
 
