@@ -1,6 +1,8 @@
 -- Insert mode mappings
 vim.api.nvim_set_keymap('i', '<C-BS>', '<C-w>', { noremap = true })
 
+vim.keymap.set('n', '\\', ':echo "Use Space now!"<CR>', { noremap = true })
+
 -- NERDTree mappings
 -- vim.api.nvim_set_keymap('n', '<C-n>', ':NERDTreeToggle<CR>', { noremap = true })
 -- vim.api.nvim_set_keymap('n', '<C-b>', ':NERDTreeFocus<CR>:NERDTreeRefreshRoot<CR>', { noremap = true })
@@ -91,6 +93,8 @@ vim.api.nvim_set_keymap('n', '<leader>lp', ':ShowLumProjects<CR>', { noremap = t
 vim.api.nvim_set_keymap('n', '<leader>lr', ':RunLumProject<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>lb', ':BuildLumProject<CR>', { noremap = true })
 
+
+vim.api.nvim_set_keymap('v', '<leader>el', ':lua<CR>', { noremap = true })
 
 
 local custom_actions = require("getRelativePath")

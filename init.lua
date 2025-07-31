@@ -1,4 +1,3 @@
--- Переменные и флаги для модулей и плагинов
 vim.g.reset_layout_on_leave = true -- Сбрасывать ли расскладку на английский при выходе из insert mode
 
 vim_theme = { "gruvbox", "vim" }
@@ -34,16 +33,3 @@ vim.g.neovide_opacity = 0.75
 
 vim.opt.shortmess:append("I")
 
-require("lexecute").setup({
-    ["<leader>el"] = "neovim",
-    ["<leader>eph"] = {
-        command = "php",
-        run = "stdin",
-        prefix = "<?php ",
-        postfix = " ?>"
-    },
-    ["<leader>eb"] = {
-        command = "bash",
-        run = "stdin"
-    },
-})
