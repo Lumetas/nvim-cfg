@@ -2,6 +2,9 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.opt.number = true
 vim.opt.relativenumber = true
+if vim.fn.has('gui_running') == 0 then  -- Если не в GUI, то применяем cmdheight=0
+  vim.opt.cmdheight = 0
+end
 vim.opt.autoindent = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4

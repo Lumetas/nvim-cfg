@@ -1,7 +1,7 @@
 vim.g.reset_layout_on_leave = true -- Сбрасывать ли расскладку на английский при выходе из insert mode
 
-vim_theme = { "gruvbox", "vim" }
--- vim_theme = { "neofusion", "nvim" }
+-- vim_theme = { "gruvbox", "vim" }
+vim_theme = { "neofusion", "nvim" }
 -- vim_theme = { "everforest", "scheme" }
 
 
