@@ -168,7 +168,6 @@ local function prompt_create_project()
 				local success, err = create_project(name, template, description)
 				if success then
 					vim.notify("Project created: " .. name, vim.log.levels.INFO)
-					M.open_project_manager() -- Обновляем список
 				else
 					vim.notify("Error: " .. err, vim.log.levels.ERROR)
 				end
@@ -279,6 +278,7 @@ function M.open_project_manager()
 		end},
 		{mode = "n", key = "a", action = function()
 			prompt_create_project()
+			update_buffer_content()
 		end},
 		{mode = "n", key = "q", action = function()
 			safe_close()
@@ -448,9 +448,121 @@ function M.build_project()
 	end
 end
 
+function M.telescope_projects()
+    local has_telescope, telescope = pcall(require, "telescope")
+    if not has_telescope then
+        vim.notify("Telescope not found. Please install telescope.nvim", vim.log.levels.ERROR)
+        return
+    end
+
+    local actions = require("telescope.actions")
+    local action_state = require("telescope.actions.state")
+    local pickers = require("telescope.pickers")
+    local finders = require("telescope.finders")
+    local conf = require("telescope.config").values
+    local previewers = require("telescope.previewers")
+
+    ensure_dirs()
+    local projects = get_projects()
+
+    -- Создаем кастомный previewer
+    local project_previewer = previewers.new_buffer_previewer({
+        title = "Project Info",
+        define_preview = function(self, entry)
+            local info = get_project_info(entry.value)
+            local lines = {
+                "Name: " .. info.name,
+                "Description: " .. info.description,
+                "",
+                "Path: " .. config.projects_dir .. "/" .. info.name,
+                ""
+            }
+
+            if info.run then
+                table.insert(lines, "Run command: " .. info.run)
+                table.insert(lines, "Run in terminal: " .. (info.runInTerm == "true" and "Yes" or "No"))
+                table.insert(lines, "")
+            end
+
+            if info.build then
+                table.insert(lines, "Build command: " .. info.build)
+                table.insert(lines, "Build in terminal: " .. (info.buildInTerm == "true" and "Yes" or "No"))
+            end
+
+            vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, lines)
+            vim.api.nvim_buf_set_option(self.state.bufnr, "filetype", "markdown")
+        end
+    })
+
+    pickers.new({
+        prompt_title = "Lum Projects",
+        finder = finders.new_table({
+            results = projects,
+            entry_maker = function(entry)
+                local info = get_project_info(entry)
+                return {
+                    value = entry,
+                    display = entry .. (info.description ~= "" and (" - " .. info.description) or ""),
+                    ordinal = entry,
+                    info = info
+                }
+            end
+        }),
+        sorter = conf.generic_sorter({}),
+        previewer = project_previewer,
+        layout_config = {
+            width = 0.8,
+            height = 0.8
+        },
+        attach_mappings = function(prompt_bufnr, map)
+            -- Открытие проекта при нажатии Enter
+            actions.select_default:replace(function()
+                actions.close(prompt_bufnr)
+                local selection = action_state.get_selected_entry()
+                if selection then
+                    local project_path = config.projects_dir .. "/" .. selection.value
+                    vim.cmd("cd " .. project_path)
+                    vim.notify("Opened project: " .. selection.value, vim.log.levels.INFO)
+                end
+            end)
+
+            -- Удаление проекта при нажатии d
+            map("i", "<c-d>", function()
+                actions.close(prompt_bufnr)
+                local selection = action_state.get_selected_entry()
+                if selection then
+                    vim.ui.select({"Yes", "No"}, {
+                        prompt = "Delete project '" .. selection.value .. "'?"
+                    }, function(choice)
+                        if choice == "Yes" then
+                            local success, err = delete_project(selection.value)
+                            if success then
+                                vim.notify("Project deleted: " .. selection.value, vim.log.levels.INFO)
+                                M.telescope_projects() -- Обновляем список
+                            else
+                                vim.notify("Error: " .. err, vim.log.levels.ERROR)
+                            end
+                        end
+                    end)
+                end
+            end)
+
+            -- Создание нового проекта при нажатии a
+            map("i", "<c-a>", function()
+                actions.close(prompt_bufnr)
+                prompt_create_project()
+                M.telescope_projects() -- Обновляем список
+            end)
+
+            return true
+        end
+    }):find()
+end
+
 -- Команда для вызова менеджера
-vim.api.nvim_create_user_command("ShowLumProjects", M.open_project_manager, {})
-vim.api.nvim_create_user_command("RunLumProject", M.start_project, {})
-vim.api.nvim_create_user_command("BuildLumProject", M.build_project, {})
+vim.api.nvim_create_user_command("LumProjectsShow", M.open_project_manager, {})
+vim.api.nvim_create_user_command("LumProjectsRun", M.start_project, {})
+vim.api.nvim_create_user_command("LumProjectsBuild", M.build_project, {})
+vim.api.nvim_create_user_command("LumProjectsTelescope", M.telescope_projects, {})
 
 return M
