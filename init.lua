@@ -26,10 +26,10 @@ require("dapconf") -- debug(для php)
 require("ufo-conf") -- ufo config
 require("org") -- orgmode
 require('hop-conf') -- Конфиг для быстрых перемещений
+require("startup-conf") -- Конфиг для стартового меню
 
 vim.cmd('hi Normal guibg=NONE ctermbg=NONE');
 
 vim.g.neovide_opacity = 0.75
 
 vim.opt.shortmess:append("I")
-

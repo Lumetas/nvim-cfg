@@ -2,7 +2,7 @@
 local function setup_ufo()
   require('ufo').setup({
     provider_selector = function(bufnr, filetype, buftype)
-      if filetype == 'org' then
+      if filetype == 'org' or filetype == 'startup' then
         return '' -- отключаем UFO для org-файлов
       end
       return {'treesitter', 'indent'} -- включаем для остальных
@@ -28,7 +28,7 @@ vim.api.nvim_create_autocmd({'FileType'}, {
 
 -- Для org-файлов используем другую настройку
 vim.api.nvim_create_autocmd({'FileType'}, {
-  pattern = {'org'},
+  pattern = {'org', 'startup'},
   callback = function()
     vim.o.foldcolumn = '1'
     vim.o.foldlevel = 99
