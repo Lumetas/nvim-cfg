@@ -1,0 +1,48 @@
+name: Generate docs
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore:
+      - master
+  pull_request_target:
+    branches:
+      - master
+
+jobs:
+  docgen:
+    name: Generate docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: date +%F > todays-date
+
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: stable
+
+      - uses: actions/cache@v3
+        with:
+          path: deps
+          key: ${{ runner.os }}-deps-${{ matrix.version }}-${{ hashFiles('todays-date') }}
+          restore-keys: |
+            ${{ runner.os }}-deps-${{ matrix.version }}-
+
+      - name: Generating
+        run: make docgen
+
+      - name: Commit changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMIT_MSG: |
+            [docgen] Update doc/telescope-file-browser.txt
+            skip-checks: true
+        run: |
+          git config user.email "actions@github"
+          git config user.name "Github Actions"
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+          git add doc/
+          # Only commit and push if we have changes
+          git diff --quiet && git diff --staged --quiet || (git commit -m "${COMMIT_MSG}"; git push origin HEAD:${GITHUB_REF})
+
