@@ -11,7 +11,7 @@
 - [nvim-cmp](https://github.com/hrsh7th/nvim-cmp)
 - [cmp-buffer](https://github.com/hrsh7th/cmp-buffer.git)
 - [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp)
-- [plenaty.nvim](https://github.com/nvim-lua/plenary.nvim)
+- [plenary.nvim](https://github.com/nvim-lua/plenary.nvim)
 - [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
 - [vim-commentary](https://github.com/tpope/vim-commentary)
 - [nvim-dap](https://github.com/mfussenegger/nvim-dap)
@@ -21,6 +21,9 @@
 - [nvim-ufo](https://github.com/kevinhwang91/nvim-ufo)
 - [yazi.nvim](https://github.com/mikavilpas/yazi.nvim)
 - [nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons)
+- [promise-async](https://github.com/kevinhwang91/promise-async)
+- [nvim-bqf](https://github.com/kevinhwang91/nvim-bqf)
+- [startup.nvim](https://github.com/max397574/startup.nvim)
 
 
 ## Установка
