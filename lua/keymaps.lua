@@ -95,10 +95,11 @@ vim.api.nvim_set_keymap('n', '<leader>lr', ':LumProjectsRun<CR>', { noremap = tr
 vim.api.nvim_set_keymap('n', '<leader>lb', ':LumProjectsBuild<CR>', { noremap = true })
 
 
-vim.api.nvim_set_keymap('n', '<leader>f/', ':Telescope current_buffer_fuzzy_find<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>ft', ':Telescope treesitter<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>fgc', ':Telescope git_commits<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>fls', ':Telescope lsp_document_symbols<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>f/', ':Telescope current_buffer_fuzzy_find<CR>', { noremap = true , desc = "[F]ind [/] this"})
+vim.api.nvim_set_keymap('n', '<leader>ft', ':Telescope treesitter<CR>', { noremap = true , desc = "[F]ind [T]reesitter"})
+vim.api.nvim_set_keymap('n', '<leader>fgc', ':Telescope git_commits<CR>', { noremap = true , desc = "[F]ind [G]it [C]ommits"})
+vim.api.nvim_set_keymap('n', '<leader>fgb', ':Telescope git_branches<CR>', { noremap = true , desc = "[F]ind [G]it [B]ranches"})
+vim.api.nvim_set_keymap('n', '<leader>fls', ':Telescope lsp_document_symbols<CR>', { noremap = true , desc = "[F]ind [L]sp [S]ymbols"})
 
 
 
