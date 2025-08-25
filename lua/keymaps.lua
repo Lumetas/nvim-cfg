@@ -117,3 +117,8 @@ vim.keymap.set("i", "<C-f>", function()
     end
   })
 end, {desc = "Вставить относительный путь файла"})
+
+vim.api.nvim_set_keymap('n', '{', ':BufferPrevious<CR>', { noremap = true})
+vim.api.nvim_set_keymap('n', '}', ':BufferNext<CR>', { noremap = true})
+vim.api.nvim_set_keymap('n', '<Leader>tp', ':BufferPin<CR>', { noremap = true})
+vim.api.nvim_set_keymap('n', '<Leader>tc', ':BufferClose<CR>', { noremap = true})

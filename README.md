@@ -25,6 +25,7 @@
 - [nvim-bqf](https://github.com/kevinhwang91/nvim-bqf)
 - [startup.nvim](https://github.com/max397574/startup.nvim)
 - [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter.git)
+- [barbar.nvim](https://github.com/romgrk/barbar.nvim)
 - [vim-fugitive](https://github.com/tpope/vim-fugitive)
 
 

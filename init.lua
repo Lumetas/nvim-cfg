@@ -28,6 +28,7 @@ require("ufo-conf") -- ufo config
 require("org") -- orgmode
 require('hop-conf') -- Конфиг для быстрых перемещений
 require("startup-conf") -- Конфиг для стартового меню
+require("tabbar") -- Вкладки
 
 vim.cmd('hi Normal guibg=NONE ctermbg=NONE');
 
