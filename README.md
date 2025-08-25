@@ -56,13 +56,9 @@ dnf copr enable tkbcopr/fd
 dnf install fd
 ```
 
-Для использования xdebug Необходимо поставить vscode-php-debug
+Для использования xdebug Необходимо поставить vscode-php-debug Ввести в виме:
 ```
-cd ~
-git clone https://github.com/xdebug/vscode-php-debug.git
-cd vscode-php-debug
-npm install
-npm run build
+:LumInstallXdebug
 ```
 # Галерея
 ![image1](images/1.png)

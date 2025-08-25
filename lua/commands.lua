@@ -143,3 +143,29 @@ vim.api.nvim_create_autocmd("FileType", { -- Скрипт для отключе�
     vim.bo.formatoptions = vim.bo.formatoptions:gsub("[cro]", "")
   end,
 })
+
+
+
+vim.api.nvim_create_user_command('LumInstallXdebug', function()
+    local config_dir = vim.fn.stdpath('config')
+    local xdebug_dir = config_dir .. '/xdebug'
+    
+    -- Проверяем существование директории
+    if vim.fn.isdirectory(xdebug_dir) == 0 then
+        vim.notify("❌ Директория xdebug не найдена: " .. xdebug_dir, vim.log.levels.ERROR)
+        return
+    end
+    
+    -- Проверяем наличие package.json
+    local package_json = xdebug_dir .. '/package.json'
+    if vim.fn.filereadable(package_json) == 0 then
+        vim.notify("❌ package.json не найден в директории xdebug", vim.log.levels.WARN)
+        return
+    end
+    
+    vim.notify("🚀 Переход в " .. xdebug_dir .. " и запуск npm install...", vim.log.levels.INFO)
+    
+    -- Меняем рабочую директорию и выполняем команду
+    vim.cmd('cd ' .. vim.fn.fnameescape(xdebug_dir))
+    vim.cmd('terminal npm install')
+end, {})
