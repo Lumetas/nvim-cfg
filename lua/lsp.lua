@@ -30,7 +30,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 	vim.lsp.diagnostic.on_publish_diagnostics, {
 		virtual_text = true,
 		signs = true,
-		update_in_insert = false,
+		update_in_insert = true,
 	}
 )
 
@@ -72,6 +72,15 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 
 
 
+lspconfig.ts_ls.setup {
+    capabilities = require('cmp_nvim_lsp').default_capabilities(),
+    on_attach = on_attach,
+    cmd = { "typescript-language-server", "--stdio" },
+    filetypes = {"javascript", "typescript"},
+    root_dir = function(fname)
+        return lspconfig.util.root_pattern("composer.json", ".git")(fname) or vim.fn.getcwd()
+    end,
+}
 
 			-- lspconfig.rust_analyzer.setup {
 				--   on_attach = on_attach,  -- Ваша функция on_attach (если есть)
