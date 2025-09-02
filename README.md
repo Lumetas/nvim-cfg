@@ -27,6 +27,7 @@
 - [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter.git)
 - [barbar.nvim](https://github.com/romgrk/barbar.nvim)
 - [vim-fugitive](https://github.com/tpope/vim-fugitive)
+- [supermaven](https://github.com/supermaven-inc/supermaven-nvim)
 
 
 ## Установка

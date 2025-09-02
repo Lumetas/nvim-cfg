@@ -169,3 +169,48 @@ vim.api.nvim_create_user_command('LumInstallXdebug', function()
     vim.cmd('cd ' .. vim.fn.fnameescape(xdebug_dir))
     vim.cmd('terminal npm install')
 end, {})
+
+
+vim.api.nvim_create_user_command('EmfyGenerateEnvWithConfig', function()
+    local json_str = vim.fn.getline(1, '$')
+    json_str = table.concat(json_str, '\n')
+    
+    -- Парсим JSON
+    local ok, json_data = pcall(vim.fn.json_decode, json_str)
+    if not ok or type(json_data) ~= 'table' or #json_data == 0 then
+        vim.notify('Invalid JSON format', vim.log.levels.ERROR)
+        return
+    end
+    
+    local widget_data = json_data[1]
+    local first_key = next(widget_data)
+    if not first_key then
+        vim.notify('No widget data found', vim.log.levels.ERROR)
+        return
+    end
+    
+    local data = widget_data[first_key]
+    
+    -- Создаем .env содержимое
+    local env_lines = {
+        string.format('FOLDER_WIDGET="%s"', data.developer or ''),
+        string.format('WIDGET_NAME="%s"', first_key),
+        string.format('CLIENT_SECRET="%s"', data.client_secret or ''),
+        string.format('CLIENT_ID="%s"', data.client_id or ''),
+        string.format('APP_NAME="%s"', data.app_name or ''),
+        string.format('WIDGET_NAME_RU="%s"', data.widget_name or ''),
+        string.format('API_KEY="%s"', data.api_key or ''),
+        string.format('REDIRECT_URL="%s"', data.redirect_uri or ''),
+        string.format('PARENT_FOLDER_NAME="%s"', data.folder or ''),
+        'API_TOKEN=028d485e3428d07a563b140239a28b34',
+        '',
+        'RABBIT_MQ_HOST=api.emfy.com',
+        'RABBIT_MQ_PORT=5672',
+        'RABBIT_MQ_USER=rabbitmqadmin',
+        'RABBIT_MQ_PASSWORD=aY9DeshWP6awkWIB'
+    }
+    
+    -- Заменяем содержимое буфера
+    vim.api.nvim_buf_set_lines(0, 0, -1, false, env_lines)
+    vim.notify('JSON converted to .env format', vim.log.levels.INFO)
+end, {})
