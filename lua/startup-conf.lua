@@ -26,7 +26,8 @@ require('startup').setup({
     title = "Commands",
     margin = 5,
     content = {
-      {"  Lum Projects", "LumProjectsTelescope", "fg"},
+      {"  Lum Projects", "LumProjectsTelescope", "fg"},
+      {"  Org Files", "cd" .. org_path ..  " | NvimTreeOpen", "fo"},
       {"  File Browser", "Yazi", "fb"},
       {"  Keymaps", "Telescope keymaps", "fk"},
     },

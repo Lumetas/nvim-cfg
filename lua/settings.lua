@@ -2,9 +2,9 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.opt.number = true
 vim.opt.relativenumber = true
-if vim.fn.has('gui_running') == 0 then  -- Если не в GUI, то применяем cmdheight=0
-  vim.opt.cmdheight = 0
-end
+-- if vim.fn.has('gui_running') == 0 then  -- Если не в GUI, то применяем cmdheight=0
+--   vim.opt.cmdheight = 0
+-- end
 vim.opt.autoindent = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
@@ -19,13 +19,5 @@ vim.opt.completeopt:remove('preview')
 vim.opt.shada = ""
 vim.bo.fileformat = "unix"
 vim.cmd("let g:user_emmet_leader_key='<C-Z>'")
-
-vim.api.nvim_set_hl(0, "CursorLine", { bg = "#2d2d2d" })
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = {"php", "javascript", "css", "html", "lua", "python"},
-  callback = function()
-    vim.opt.colorcolumn = "80"
-  end
-})
 
 vim.opt.cursorline = true
