@@ -1,4 +1,4 @@
-local palette = require("neofusion.palette")
+local palette = require("leos.palette")
 
 return {
   normal = {

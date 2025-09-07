@@ -3,7 +3,7 @@ vim.g.reset_layout_on_leave = true -- Сбрасывать ли рассклад
 -- vim_theme = { "gruvbox", "vim" }
 -- vim_theme = { "monokai", "vim" }
 -- vim_theme = { "neofusion", "nvim" }
-vim_theme = { "lumos", "nvim" }
+vim_theme = { "leos", "nvim" }
 
 org_path = "~/org"
 -- vim_theme = { "everforest", "scheme" }
