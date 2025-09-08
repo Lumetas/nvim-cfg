@@ -94,6 +94,12 @@ vim.api.nvim_set_keymap('n', '<leader>lt', ':LumProjectsTelescope<CR>', { norema
 vim.api.nvim_set_keymap('n', '<leader>lr', ':LumProjectsRun<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>lb', ':LumProjectsBuild<CR>', { noremap = true })
 
+vim.api.nvim_set_keymap('n', '<leader>st', ':diffthis<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>sp', ':diffput<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>sg', ':diffget<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>so', ':diffoff<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>sd', ':diffoff!<CR>', { noremap = true })
+
 
 vim.api.nvim_set_keymap('n', '<leader>f/', ':Telescope current_buffer_fuzzy_find<CR>', { noremap = true , desc = "[F]ind [/] this"})
 vim.api.nvim_set_keymap('n', '<leader>ft', ':Telescope treesitter<CR>', { noremap = true , desc = "[F]ind [T]reesitter"})
