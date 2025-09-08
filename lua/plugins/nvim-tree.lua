@@ -40,6 +40,7 @@ return function(lnpm)
 
 	end, {
 	name = "nvim-tree",
-	git = false
+	git = false,
+	install_path = '~'
 })
 end

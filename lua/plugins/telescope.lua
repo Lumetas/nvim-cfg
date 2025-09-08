@@ -82,5 +82,20 @@ return function(lnpm)
 		vim.api.nvim_set_keymap('n', '<leader>fgc', ':Telescope git_commits<CR>', { noremap = true , desc = "[F]ind [G]it [C]ommits"})
 		vim.api.nvim_set_keymap('n', '<leader>fgb', ':Telescope git_branches<CR>', { noremap = true , desc = "[F]ind [G]it [B]ranches"})
 		vim.api.nvim_set_keymap('n', '<leader>fls', ':Telescope lsp_document_symbols<CR>', { noremap = true , desc = "[F]ind [L]sp [S]ymbols"})
+
+		local custom_actions = require("getRelativePath")
+		vim.keymap.set("i", "<C-f>", function()
+			require("telescope.builtin").find_files({
+				attach_mappings = function(_, map)
+					-- Настройка маппингов только для этого вызова
+					map("i", "<CR>", custom_actions.insert_relative_path)
+					map("n", "<CR>", custom_actions.insert_relative_path)
+					return true
+				end
+			})
+		end, {desc = "Вставить относительный путь файла"})
+
+
+
 	end)
 end

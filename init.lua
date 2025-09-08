@@ -13,14 +13,25 @@ require("plugins/cmp")(lnpm)
 require("plugins/lsp")(lnpm)
 require("plugins/telescope")(lnpm)
 -- require("plugins/ufo")(lnpm)
+
+lnpm.load('tpope/vim-commentary')
 lnpm.load('nvim-treesitter/nvim-treesitter')
 lnpm.load('tpope/vim-fugitive')
 lnpm.load('mattn/emmet-vim')
+
 require('plugins/orgmode')(lnpm)
 require('plugins/supermaven')(lnpm)
 lnpm.load('kevinhwang91/nvim-bqf')
+require('custom')
+require('russian')
+require('statusline')
+lnpm.load('mikavilpas/yazi.nvim', function() 
+	vim.api.nvim_set_keymap('n', 'zx', ':Yazi<CR>', { noremap = true })
+end)
 
 
 
 
 require("hotkeys")
+
+lnpm.load_after_install()
