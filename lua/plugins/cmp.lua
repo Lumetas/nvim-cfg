@@ -1,4 +1,12 @@
 return function(lnpm)
+lnpm.load('hrsh7th/cmp-nvim-lsp', function()
+	local cmp = require("cmp")
+	cmp.setup({
+		sources = {
+			{ name = 'nvim_lsp' }
+		}
+	})
+end)
 	lnpm.load('hrsh7th/nvim-cmp', function()
 		local cmp = require("cmp")
 		cmp.setup({
@@ -35,12 +43,4 @@ return function(lnpm)
 	end, {
 	git = false
 })
-lnpm.load('hrsh7th/cmp-nvim-lsp', function()
-	local cmp = require("cmp")
-	cmp.setup({
-		sources = {
-			{ name = 'nvim_lsp' }
-		}
-	})
-end)
 end

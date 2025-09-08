@@ -38,7 +38,6 @@ return function(lnpm)
 			end,
 		})
 
-		print("plugins loaded")
 	end, {
 	name = "nvim-tree",
 	git = false
