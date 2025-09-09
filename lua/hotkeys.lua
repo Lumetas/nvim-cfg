@@ -83,13 +83,11 @@ vim.keymap.set('n', 'gp', function()
 end, opts)
 
 
-
--- vim.api.nvim_set_keymap('n', '<leader>lp', ':LumProjectsShow<CR>', { noremap = true })
--- vim.api.nvim_set_keymap('n', '<leader>lt', ':LumProjectsTelescope<CR>', { noremap = true })
--- vim.api.nvim_set_keymap('n', '<leader>lr', ':LumProjectsRun<CR>', { noremap = true })
--- vim.api.nvim_set_keymap('n', '<leader>lb', ':LumProjectsBuild<CR>', { noremap = true })
-
-
+vim.api.nvim_set_keymap('n', '<leader>st', ':diffthis<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>sp', ':diffput<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>sg', ':diffget<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>so', ':diffoff<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>sd', ':diffoff!<CR>', { noremap = true })
 
 
 vim.api.nvim_set_keymap('v', '<leader>el', ':lua<CR>', { noremap = true })
@@ -99,4 +97,5 @@ vim.api.nvim_set_keymap('n', '<Leader>w', ':w<CR>', { noremap = true})
 vim.api.nvim_set_keymap('n', '<Leader>q', ':q<CR>', { noremap = true})
 vim.api.nvim_set_keymap('n', '<Leader>ga', ':G add .<CR>', { noremap = true})
 vim.api.nvim_set_keymap('n', '<Leader>gc', ':G commit<CR>', { noremap = true})
+vim.api.nvim_set_keymap('n', '<Leader>gac', ':G add . | G commit<CR>', { noremap = true})
 vim.api.nvim_set_keymap('n', '<Leader>g', ':G ', { noremap = true})

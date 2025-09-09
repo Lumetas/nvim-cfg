@@ -1,7 +1,7 @@
 lnpm = require("lnpm")
 org_path = '~/org/'
 
-require("themes/neofusion")(lnpm)
+require("themes")(lnpm)
 
 require('settings')
 
@@ -24,17 +24,28 @@ lnpm.load('mattn/emmet-vim')
 
 require('plugins/orgmode')(lnpm)
 require('plugins/supermaven')(lnpm)
+
+require('plugins/dap')(lnpm)
+
 lnpm.load('kevinhwang91/nvim-bqf')
 require('custom')
 require('russian')
 require('statusline')
+
 lnpm.load('mikavilpas/yazi.nvim', function() 
 	vim.api.nvim_set_keymap('n', 'zx', ':Yazi<CR>', { noremap = true })
 end)
 
-require('lum-projects')
-
+lnpm.load('lumetas/lum-projects.nvim', function(lumProjects)
+	lumProjects.setup()
+	vim.api.nvim_set_keymap('n', '<leader>lp', ':LumProjectsShow<CR>', { noremap = true })
+	vim.api.nvim_set_keymap('n', '<leader>lt', ':LumProjectsTelescope<CR>', { noremap = true })
+	vim.api.nvim_set_keymap('n', '<leader>lr', ':LumProjectsRun<CR>', { noremap = true })
+	vim.api.nvim_set_keymap('n', '<leader>lb', ':LumProjectsBuild<CR>', { noremap = true })
+end, {name = 'lum-projects'})
 
 require("hotkeys")
 
 lnpm.load_after_install()
+
+vim.cmd('colorscheme leos')

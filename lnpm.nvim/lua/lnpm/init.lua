@@ -293,7 +293,9 @@ function M.list()
 	local orphan_plugins = {}
 	for plugin_name, _ in pairs(installed_plugins) do
 		if not all_plugins[plugin_name] then
-			table.insert(orphan_plugins, plugin_name)
+			if plugin_name ~= 'lnpm.lua' then
+				table.insert(orphan_plugins, plugin_name)
+			end
 		end
 	end
 
