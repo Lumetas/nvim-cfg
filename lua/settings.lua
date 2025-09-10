@@ -21,3 +21,5 @@ vim.bo.fileformat = "unix"
 vim.cmd("let g:user_emmet_leader_key='<C-Z>'")
 
 vim.opt.cursorline = true
+
+vim.g.reset_layout_on_leave = true -- Сбрасывать ли расскладку на английский при выходе из insert mode
