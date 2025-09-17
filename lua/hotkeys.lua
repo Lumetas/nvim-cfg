@@ -21,9 +21,8 @@ vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-b>', ':NvimTreeFocus<CR>', { noremap = true })
 
 vim.api.nvim_set_keymap('n', 'zz', ':FZF<CR>', { noremap = true })
-
-vim.api.nvim_set_keymap('n', '<leader>rr', ':%s/\\v', { noremap = true })
-vim.api.nvim_set_keymap('v', '<leader>rr', ':s/\\v', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>rr', ':%s/\\v', { noremap = true, desc = 'Replace' })
+vim.api.nvim_set_keymap('v', '<leader>rr', ':s/\\v', { noremap = true, desc = 'Replace' })
 
 -- General mappings
 vim.api.nvim_set_keymap('i', '<A-f>', '<ESC>', { noremap = true })
@@ -83,22 +82,23 @@ vim.keymap.set('n', 'gp', function()
 end, opts)
 
 
-vim.api.nvim_set_keymap('n', '<leader>st', ':diffthis<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>sp', ':diffput<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>sg', ':diffget<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>so', ':diffoff<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>sd', ':diffoff!<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>st', ':diffthis<CR>', { noremap = true, desc = 'Open Diff' })
+vim.api.nvim_set_keymap('n', '<leader>sp', ':diffput<CR>', { noremap = true, desc = 'Diff Put' })
+vim.api.nvim_set_keymap('n', '<leader>sg', ':diffget<CR>', { noremap = true, desc = 'Diff Get' })
+vim.api.nvim_set_keymap('n', '<leader>so', ':diffoff<CR>', { noremap = true, desc = 'Disable Diff' })
+vim.api.nvim_set_keymap('n', '<leader>sd', ':diffoff!<CR>', { noremap = true, desc = 'Disable Diff!' })
 
 
-vim.api.nvim_set_keymap('v', '<leader>el', ':lua<CR>', { noremap = true })
+vim.api.nvim_set_keymap('v', '<leader>el', ':lua<CR>', { noremap = true, desc = 'Execute Lua' })
 
 
-vim.api.nvim_set_keymap('n', '<Leader>w', ':w<CR>', { noremap = true})
-vim.api.nvim_set_keymap('n', '<Leader>q', ':q<CR>', { noremap = true})
-vim.api.nvim_set_keymap('n', '<Leader>ga', ':G add .<CR>', { noremap = true})
-vim.api.nvim_set_keymap('n', '<Leader>gc', ':G commit<CR>', { noremap = true})
-vim.api.nvim_set_keymap('n', '<Leader>gp', ':G pull<CR>', { noremap = true})
-vim.api.nvim_set_keymap('n', '<Leader>gP', ':G push<CR>', { noremap = true})
-vim.api.nvim_set_keymap('n', '<Leader>gl', ':Gllog<CR>', { noremap = true})
-vim.api.nvim_set_keymap('n', '<Leader>gac', ':G add . | G commit<CR>', { noremap = true})
-vim.api.nvim_set_keymap('n', '<Leader>gg', ':G ', { noremap = true})
+vim.api.nvim_set_keymap('n', '<Leader>w', ':w<CR>', { noremap = true, desc = 'Write'})
+vim.api.nvim_set_keymap('n', '<Leader>q', ':q<CR>', { noremap = true, desc = 'Quit'})
+
+vim.api.nvim_set_keymap('n', '<Leader>ga', ':G add .<CR>', { noremap = true, desc = 'Git add'})
+vim.api.nvim_set_keymap('n', '<Leader>gc', ':G commit<CR>', { noremap = true, desc = 'Git commit'})
+vim.api.nvim_set_keymap('n', '<Leader>gp', ':G pull<CR>', { noremap = true, desc = 'Git pull'})
+vim.api.nvim_set_keymap('n', '<Leader>gP', ':G push<CR>', { noremap = true, desc = 'Git push'})
+vim.api.nvim_set_keymap('n', '<Leader>gl', ':Gllog<CR>', { noremap = true, desc = 'Git log'})
+vim.api.nvim_set_keymap('n', '<Leader>gac', ':G add . | G commit<CR>', { noremap = true, desc = 'Git add and commit'})
+vim.api.nvim_set_keymap('n', '<Leader>gg', ':G ', { noremap = true, desc = 'Git custom'})

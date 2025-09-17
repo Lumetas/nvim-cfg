@@ -4,12 +4,14 @@ return function(lnpm)
 		local on_attach = function(client, bufnr)
 			local opts = { noremap = true, silent = true, buffer = bufnr }
 
-			vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts) -- Переход к определению
-			vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts) -- Переход к объявлению
-			vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts) -- Переход к реализации
-			vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts) -- Показать ссылки
-			vim.keymap.set('n', 'gk', vim.lsp.buf.hover, opts) -- Показать информацию о символе
-			vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+			vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { noremap = true, desc = "Go to definition", silent = true, buffer = bufnr })
+			vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { noremap = true, desc = "Go to declaration", silent = true, buffer = bufnr })
+			vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { noremap = true, desc = "Go to implementation", silent = true, buffer = bufnr })
+			vim.keymap.set('n', '<leader>ar', vim.lsp.buf.references, { noremap = true, desc = "References", silent = true, buffer = bufnr })
+			vim.keymap.set('n', '<leader>ac', vim.lsp.buf.code_action, { noremap = true, desc = "Code action", silent = true, buffer = bufnr })
+			vim.keymap.set('n', '<leader>af', vim.lsp.buf.format, { noremap = true, desc = "Format", silent = true, buffer = bufnr })
+			vim.keymap.set('n', '<leader>ai', vim.lsp.buf.hover, { noremap = true, desc = "Symbol Info", silent = true, buffer = bufnr })
+			vim.keymap.set('n', '<leader>al', vim.lsp.buf.rename, { noremap = true, desc = "Rename", silent = true, buffer = bufnr })
 		end
 
 		vim.diagnostic.config({
@@ -58,6 +60,19 @@ return function(lnpm)
 			}
 		}
 
+		-- lspconfig.phpactor.setup {
+		-- 	capabilities = require('cmp_nvim_lsp').default_capabilities(),
+		-- 	on_attach = on_attach,
+		-- 	cmd = { "phpactor", "language-server" },
+		-- 	filetypes = { "php" },
+		-- 	-- Всегда используем текущую рабочую директорию как root
+		-- 	root_dir = function(fname)
+		-- 		return vim.fn.getcwd()
+		-- 	end,
+		-- 	init_options = {
+		-- 		-- Дополнительные опции инициализации если нужны
+		-- 	}
+		-- }
 
 
 		lspconfig.ts_ls.setup {

@@ -16,6 +16,7 @@ require("plugins/telescope")(lnpm)
 -- require("plugins/ufo")(lnpm)
 require("plugins/hop")(lnpm)
 require("plugins/startup")(lnpm)
+require("plugins/whichkey")(lnpm)
 
 lnpm.load('tpope/vim-commentary')
 lnpm.load('nvim-treesitter/nvim-treesitter')

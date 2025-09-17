@@ -31,6 +31,7 @@
 <!-- - [barbar.nvim](https://github.com/romgrk/barbar.nvim) -->
 - [vim-fugitive](https://github.com/tpope/vim-fugitive)
 - [supermaven](https://github.com/supermaven-inc/supermaven-nvim)
+- [which-key.nvim](https://github.com/folke/which-key.nvim)
 
 
 ## Установка
