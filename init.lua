@@ -15,11 +15,16 @@ require("plugins/lsp")(lnpm)
 require("plugins/telescope")(lnpm)
 -- require("plugins/ufo")(lnpm)
 require("plugins/hop")(lnpm)
+require('scratch')
 require("plugins/startup")(lnpm)
 require("plugins/whichkey")(lnpm)
 
 lnpm.load('tpope/vim-commentary')
-lnpm.load('nvim-treesitter/nvim-treesitter')
+
+lnpm.load('nvim-treesitter/nvim-treesitter', nil, { onInstall = function() 
+	vim.cmd('TSInstall php javascript css html markdown lua go python')
+end })
+
 lnpm.load('tpope/vim-fugitive')
 lnpm.load('mattn/emmet-vim')
 
