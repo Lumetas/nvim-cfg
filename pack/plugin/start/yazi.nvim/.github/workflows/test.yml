@@ -1,0 +1,123 @@
+---
+name: Run tests
+on:
+  pull_request: ~
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name:
+      "Test (neovim ${{ matrix.neovim_version }}, yazi ${{
+      matrix.yazi-version.name }})"
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        neovim_version: ["nightly", "stable"]
+        yazi-version:
+          - name: nightly
+            method: cargo-install
+            # renovate: datasource=git-refs packageName=https://github.com/sxyazi/yazi
+            commit: e9742cb80935d1072fabb4bd8c52a49e2218eeaf
+          - name: stable
+            method: download
+            # renovate: datasource=github-releases depName=sxyazi/yazi
+            version: v25.5.31
+
+    env:
+      MISE_ENV: ci
+
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Compile and install `yazi-fm` from source
+        if: matrix.yazi-version.method == 'cargo-install'
+        uses: baptiste0928/cargo-install@b687c656bda5733207e629b50a22bf68974a0305 # v3.3.2
+        with:
+          # Due to Cargo's limitations, the `yazi-fm` and `yazi-cli` crates on
+          # crates.io must be built with `cargo install --force yazi-build`
+          # https://github.com/sxyazi/yazi/blob/2ec3a6c645324295331c0f2ef6d4d946cf11c06b/yazi-fm/build.rs?plain=1#L23-L25
+          crate: yazi-build
+          git: https://github.com/sxyazi/yazi
+          commit: ${{ matrix.yazi-version.commit }}
+          # tag: ${{ matrix.yazi-version.tag }}
+
+      - name: Download prebuilt yazi version
+        if: matrix.yazi-version.method == 'download'
+        run: |
+          URL="https://github.com/sxyazi/yazi/releases/download/${{ matrix.yazi-version.version }}/yazi-x86_64-unknown-linux-gnu.zip"
+          echo "Downloading yazi from $URL"
+          curl -L $URL -o yazi.zip
+          mkdir -p yazi-zip
+          unzip yazi.zip
+          chmod +x yazi-x86_64-unknown-linux-gnu/{yazi,ya}
+          mv -v yazi-x86_64-unknown-linux-gnu/{yazi,ya} "$HOME/.cargo/bin/"
+
+      - name: Make sure yazi and ya are installed
+        run: |
+          echo "PATH:"
+          echo "$PATH"
+
+          yazi --version
+          ya --version
+
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+        with:
+          # https://github.com/pnpm/action-setup?tab=readme-ov-file#use-cache-to-reduce-installation-time
+          run_install: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: "pnpm"
+      - run: pnpm install
+
+      - uses: jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566 # v3.2.0
+
+      - name: Run tests
+        uses: nvim-neorocks/nvim-busted-action@d30f6d4d794c0e77b6edb530872205f98ae969c4 # v1.1.1
+        with:
+          nvim_version: ${{ matrix.neovim_version }}
+          luarocks_version: "3.11.1"
+          before: |
+            mise run build
+
+      - name: Verify that dependencies are available
+        run: |
+          # ripgrep is a dependency of telescope and fzf-lua
+          #
+          # fd is a dependency of telescope and fzf-lua
+          # https://github.com/sharkdp/fd?tab=readme-ov-file#on-ubuntu
+          # make sure it's available as `fd` - there seems to be some conflict in Ubuntu
+          #
+          # realpath is used to resolve relative paths in yazi.nvim
+          fd --version
+          fzf --version
+          rg --version
+          which realpath || { exit 1; }
+
+      - working-directory: integration-tests
+        name: Prepare Neovim for integration tests
+        run: |
+          # NVIM_APPNAME=nvim is the default, but spelled out here for clarity
+          NVIM_APPNAME=nvim pnpm tui neovim prepare
+          NVIM_APPNAME=nvim_integrations pnpm tui neovim prepare
+
+      # need to work around https://github.com/cypress-io/github-action/issues/1246
+      - run: pnpm --filter integration-tests exec cypress install
+
+      - name: Cypress test
+        uses: cypress-io/github-action@v6
+        with:
+          install: false
+          command: pnpm tui run
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        # add the line below to store screenshots only on failures
+        # if: failure()
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: integration-tests/cypress/screenshots
+          if-no-files-found: ignore # 'warn' or 'error' are also available, defaults to `warn`
+

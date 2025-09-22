@@ -1,0 +1,133 @@
+#+TITLE: Lum Projects Manager
+#+AUTHOR: Lumetas 
+#+DATE: <2025-09-09 Tue>
+A Neovim plugin for managing development projects with templates and build/run configurations.
+
+** Features
+
+- Project management with templates
+- Build and run command configurations
+- Telescope integration
+
+** Installation
+
+Using packer.nvim:
+
+#+BEGIN_SRC lua
+use {
+  'lumetas/lum-projects.nvim',
+  config = function()
+    require('lum-projects').setup({
+      -- Optional configuration
+      projects_dir = "~/MyProjects",
+      templates_dir = "~/.my-templates",
+      window = {
+        width = 70,
+        height = 25,
+        border = "single"
+      }
+    })
+  end
+}
+#+END_SRC
+
+Using lazy.nvim:
+
+#+BEGIN_SRC lua
+{
+  "lumetas/lum-projects.nvim",
+  opts = {
+    projects_dir = "~/MyProjects",
+    templates_dir = "~/.my-templates"
+  }
+}
+#+END_SRC
+
+Using lnpm.nvim:
+#+BEGIN_SRC lua
+lnpm.load('lumetas/lum-projects.nvim', function(lumProjects)
+	lumProjects.setup()
+end, {name = 'lum-projects'})
+#+END_SRC
+** Configuration
+
+Available configuration options:
+
+#+BEGIN_SRC lua
+{
+  projects_dir = "~/LumProjects",    -- Directory for projects
+  templates_dir = "~/.lumProjectsTemplates", -- Directory for templates
+  window = {                         -- UI window settings
+    width = 60,                      -- Window width
+    height = 20,                     -- Window height
+    border = "rounded"               -- Border style
+  }
+}
+#+END_SRC
+
+** Usage
+
+*** Commands
+
+- =:LumProjectsShow= - Open projects manager window
+- =:LumProjectsRun= - Run current project (if in project directory)
+- =:LumProjectsBuild= - Build current project (if in project directory)
+- =:LumProjectsTelescope= - Open projects in Telescope
+
+*** Keybindings 
+**** Projects window
+
+- =<Enter>= or =o= - Open selected project
+- =d= - Delete selected project (with confirmation)
+- =a= - Add new project
+- =r= - Refresh projects list
+- =q= or =<Esc>= - Close window
+
+**** Telescope
+- =<Enter>= - Open selected project
+- =<C-d>= - Delete selected project (with confirmation)
+- =<C-a>= - Add new project
+
+*** Project Configuration
+
+Create a =.lumproject= file in your project directory:
+
+#+BEGIN_SRC
+name=my-project
+description=A sample project
+run=npm start
+runInTerm=true
+build=npm run build
+buildInTerm=false
+#+END_SRC
+
+*** Templates
+
+Create templates in your templates directory (~/.lumProjectsTemplates by default). Each template should be a directory containing the project structure.
+
+** Example Setup
+
+#+BEGIN_SRC lua
+require('lum-projects').setup({
+  projects_dir = "~/Development/Projects",
+  templates_dir = "~/.config/nvim/templates",
+  window = {
+    width = 80,
+    height = 25,
+    border = "double"
+  }
+})
+
+-- Optional key mappings
+vim.keymap.set('n', '<leader>pp', ':LumProjectsShow<CR>')
+vim.keymap.set('n', '<leader>pr', ':LumProjectsRun<CR>')
+vim.keymap.set('n', '<leader>pb', ':LumProjectsBuild<CR>')
+vim.keymap.set('n', '<leader>pt', ':LumProjectsTelescope<CR>')
+#+END_SRC
+
+** Requirements
+
+- Neovim 0.7+
+- Telescope.nvim (optional, for telescope integration)
+
+
