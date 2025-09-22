@@ -24,5 +24,63 @@ return function(lnpm)
 		vim.api.nvim_set_keymap('n', '<Leader>gCnm', ':G config user.name Lumetas | echo "set main name"<CR>', { noremap = true, desc = 'Set main name'})
 		vim.api.nvim_set_keymap('n', '<Leader>gCnw', ':G config user.name Pavel | echo "set work name"<CR>', { noremap = true, desc = 'Set work name'})
 		vim.api.nvim_set_keymap('n', '<Leader>gCn', ':G config user.name<CR>', { noremap = true, desc = 'Name'})
+
+
+
+
+		vim.api.nvim_set_keymap('n', '<Leader>ge', '', { noremap = true, desc = 'Git edit'})
+		vim.keymap.set('n', '<leader>gel', function()
+			-- Получаем ID последнего коммита
+			local cid = vim.fn.system('git log -1 --pretty=format:"%H"')
+			-- Убираем перенос строки
+			cid = cid:gsub('\n', '')
+
+			if cid and cid ~= '' then
+				-- Выполняем команду Gedit
+				vim.cmd('Gedit ' .. cid .. ':%')
+			else
+				vim.notify('Не удалось получить ID последнего коммита', vim.log.levels.ERROR)
+			end
+		end, { desc = 'Last Commit' })
+
+
+
+
+		vim.keymap.set('n', '<leader>ges', function()
+			-- Получаем список коммитов
+			local commits = vim.fn.systemlist('git log --oneline -20')  -- последние 20 коммитов
+
+			-- Создаем picker для Telescope
+			local pickers = require('telescope.pickers')
+			local finders = require('telescope.finders')
+			local conf = require('telescope.config').values
+			local actions = require('telescope.actions')
+			local action_state = require('telescope.actions.state')
+
+			pickers.new({}, {
+				prompt_title = 'Выбери коммит для Gedit',
+				finder = finders.new_table({
+					results = commits,
+					entry_maker = function(entry)
+						return {
+							value = entry:match('^(%x+)'),  -- хэш коммита
+							display = entry,
+							ordinal = entry,
+						}
+					end
+				}),
+				sorter = conf.generic_sorter({}),
+				attach_mappings = function(prompt_bufnr, map)
+					actions.select_default:replace(function()
+						actions.close(prompt_bufnr)
+						local selection = action_state.get_selected_entry()
+						if selection then
+							vim.cmd('Gedit ' .. selection.value .. ':%')
+						end
+					end)
+					return true
+				end,
+			}):find()
+		end, { desc = 'Select commit for Gedit' })
 	end)
 end

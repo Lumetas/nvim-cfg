@@ -62,24 +62,8 @@ vim.api.nvim_set_keymap('n', 'd', '"_d', { noremap = true })
 -- vim.api.nvim_set_keymap('n', '<C-p>j', ':LumSNjs<CR>', { noremap = true })
 
 vim.keymap.set('n', 'gp', function()
-	-- Получаем текущий буфер
-	local current_buf = vim.api.nvim_get_current_buf()
-
-	-- Проверяем, можно ли удалить текущий буфер
-
-	-- Получаем предыдущий буфер
-	local prev_buf = vim.fn.bufnr('#')
-
-	-- Если предыдущий буфер существует и доступен, переходим к нему
-	if prev_buf ~= -1 and vim.fn.buflisted(prev_buf) == 1 then
-		vim.cmd('b#') -- Переход к предыдущему буферу
-
-		-- Если текущий буфер можно удалить, закрываем его
-	else
-		-- Если предыдущего буфера нет, просто выводим сообщение
-		vim.notify("Нет предыдущего буфера для перехода", vim.log.levels.WARN)
-	end
-end, opts)
+	vim.cmd('b#')
+end, { noremap = true, desc = 'Go to previous buffer' })
 
 
 vim.api.nvim_set_keymap('n', '<leader>st', ':diffthis<CR>', { noremap = true, desc = 'Open Diff' })
@@ -94,4 +78,5 @@ vim.api.nvim_set_keymap('v', '<leader>el', ':lua<CR>', { noremap = true, desc = 
 
 vim.api.nvim_set_keymap('n', '<Leader>w', ':w<CR>', { noremap = true, desc = 'Write'})
 vim.api.nvim_set_keymap('n', '<Leader>q', ':q<CR>', { noremap = true, desc = 'Quit'})
+
 

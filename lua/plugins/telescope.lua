@@ -79,9 +79,7 @@ return function(lnpm)
 
 
 
-		vim.api.nvim_set_keymap('n', '<leader>fg', '', { noremap = true , desc = "[G]it"})
-		vim.api.nvim_set_keymap('n', '<leader>fgc', ':Telescope git_commits<CR>', { noremap = true , desc = "[F]ind [G]it [C]ommits"})
-		vim.api.nvim_set_keymap('n', '<leader>fgb', ':Telescope git_branches<CR>', { noremap = true , desc = "[F]ind [G]it [B]ranches"})
+		vim.api.nvim_set_keymap('n', '<leader>gb', ':Telescope git_branches<CR>', { noremap = true , desc = "Git Branches"})
 
 		local custom_actions = require("getRelativePath")
 		vim.keymap.set("i", "<C-f>", function()
@@ -99,3 +97,4 @@ return function(lnpm)
 
 	end)
 end
+
