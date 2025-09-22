@@ -51,5 +51,6 @@ vim.g.neovide_opacity = 0.75
 
 vim.cmd('colorscheme leos')
 
+vim.lsp.enable({"intelephense", "ts_ls"})
 
 lnpm.load_after_install()
