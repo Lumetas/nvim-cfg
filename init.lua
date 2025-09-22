@@ -42,25 +42,10 @@ lnpm.load('mikavilpas/yazi.nvim', function()
 	vim.api.nvim_set_keymap('n', 'zx', ':Yazi<CR>', { noremap = true })
 end)
 
-lnpm.load('lumetas/lum-projects.nvim', function(lumProjects)
-	lumProjects.setup()
-	vim.api.nvim_set_keymap('n', '<leader>lp', ':LumProjectsShow<CR>', { noremap = true })
-	vim.api.nvim_set_keymap('n', '<leader>lt', ':LumProjectsTelescope<CR>', { noremap = true })
-	vim.api.nvim_set_keymap('n', '<leader>lr', ':LumProjectsRun<CR>', { noremap = true })
-	vim.api.nvim_set_keymap('n', '<leader>lb', ':LumProjectsBuild<CR>', { noremap = true })
-end, {name = 'lum-projects'})
+require('plugins/lumprojects')(lnpm)
+require('plugins/lqc')(lnpm)
 
 require("hotkeys")
-
-lnpm.load('lumetas/LQC', function(LQC)
-	LQC.setup({
-		name_separator = '     ',
-    })
-
-	vim.api.nvim_set_keymap('n', '<leader>la', ':LumQuickCommandsAdd<CR>', { noremap = true, desc = 'Add quick command' })
-	vim.api.nvim_set_keymap('n', '<leader>ls', ':LumQuickCommandsShow<CR>', { noremap = true, desc = 'Show quick commands' })
-end)
-
 
 vim.g.neovide_opacity = 0.75
 
