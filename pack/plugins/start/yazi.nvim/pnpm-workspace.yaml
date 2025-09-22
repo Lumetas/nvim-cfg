@@ -1,3 +1,0 @@
-packages:
-  - "./integration-tests/"
-# https://pnpm.io/pnpm-workspace_yaml

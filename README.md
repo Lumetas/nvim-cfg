@@ -4,7 +4,10 @@
 На данный момент используется тема gruvbox, но они периодически меняются
 
 ## Менеджер плагинов
-Мне намного удобнее утсанавливать плагины руками + плюс их не так много, так что все плагины устанавливаются прямо в директорию конфига. Список используемых здесь плагинов:
+[lnpm.nvim](https://github.com/Lumetas/lnpm.nvim)
+
+
+
 - [nvim-tree](https://github.com/nvim-tree/nvim-tree.lua)
 - [emmet-vim](https://github.com/mattn/emmet-vim)
 - [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
@@ -28,6 +31,7 @@
 <!-- - [barbar.nvim](https://github.com/romgrk/barbar.nvim) -->
 - [vim-fugitive](https://github.com/tpope/vim-fugitive)
 - [supermaven](https://github.com/supermaven-inc/supermaven-nvim)
+- [which-key.nvim](https://github.com/folke/which-key.nvim)
 
 
 ## Установка

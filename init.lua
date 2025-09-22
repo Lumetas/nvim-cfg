@@ -1,39 +1,56 @@
-vim.g.reset_layout_on_leave = true -- Сбрасывать ли расскладку на английский при выходе из insert mode
+lnpm = require("lnpm")
+org_path = '~/org/'
 
--- vim_theme = { "gruvbox", "vim" }
--- vim_theme = { "monokai", "vim" }
--- vim_theme = { "neofusion", "nvim" }
-vim_theme = { "leos", "nvim" }
+require("themes")(lnpm)
 
-org_path = "~/org"
--- vim_theme = { "everforest", "scheme" }
+require('settings')
 
-vim_dir = vim.fn.stdpath('config')
+lnpm.load('nvim-lua/plenary.nvim')
+lnpm.load('nvim-tree/nvim-web-devicons')
+lnpm.load('kevinhwang91/promise-async')
 
--- Подключение модулей
-require('settings')    -- Основные настройки
+require("plugins/nvim-tree")(lnpm)
+require("plugins/cmp")(lnpm)
+require("plugins/lsp")(lnpm)
+require("plugins/telescope")(lnpm)
+-- require("plugins/ufo")(lnpm)
+require("plugins/hop")(lnpm)
+require('scratch')
+require("plugins/startup")(lnpm)
+require("plugins/whichkey")(lnpm)
 
-require('color') -- Цветовые схемы
-require('lsp') -- LSP Автодополнение и прочее
-require('statusline') -- статус-лайн
-require('commands') -- Произвольные команды
-require('map') -- Русский язык
--- require('lumSnippets') -- Сниппеты
-require('file_search') -- Поиск файлов
-require('php-cs') -- Интеграия с php-cs-fixer : composer global require friendsofphp/php-cs-fixer
-require("lum-projects"); -- Менеджер проектов
-require('keymaps')     -- Хоткеи
-require('nvimtree') -- config для nvim-tree
+lnpm.load('tpope/vim-commentary')
 
-require("dapconf") -- debug(для php)
-require("ufo-conf") -- ufo config
-require("org") -- orgmode
-require('hop-conf') -- Конфиг для быстрых перемещений
-require("startup-conf") -- Конфиг для стартового меню
-require("supermaven-conf") -- Подсказки
+lnpm.load('nvim-treesitter/nvim-treesitter', nil, { onInstall = function() 
+	vim.cmd('TSInstall php javascript css html markdown lua go python')
+end })
 
-vim.cmd('hi Normal guibg=NONE ctermbg=NONE');
+require("plugins/git")(lnpm)
+lnpm.load('mattn/emmet-vim')
+
+require('plugins/orgmode')(lnpm)
+require('plugins/supermaven')(lnpm)
+
+require('plugins/dap')(lnpm)
+
+lnpm.load('kevinhwang91/nvim-bqf')
+require('custom')
+require('russian')
+require('statusline')
+
+lnpm.load('mikavilpas/yazi.nvim', function() 
+	vim.api.nvim_set_keymap('n', 'zx', ':Yazi<CR>', { noremap = true })
+end)
+
+require('plugins/lumprojects')(lnpm)
+require('plugins/lqc')(lnpm)
+
+require("hotkeys")
 
 vim.g.neovide_opacity = 0.75
 
-vim.opt.shortmess:append("I")
+vim.cmd('colorscheme leos')
+
+vim.lsp.enable({"intelephense", "ts_ls"})
+
+lnpm.load_after_install()

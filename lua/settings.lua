@@ -21,3 +21,23 @@ vim.bo.fileformat = "unix"
 vim.cmd("let g:user_emmet_leader_key='<C-Z>'")
 
 vim.opt.cursorline = true
+
+vim.g.reset_layout_on_leave = true -- Сбрасывать ли расскладку на английский при выходе из insert mode
+
+-- Добавляем необходимые директории в PATH
+local paths_to_add = {
+    "/usr/local/bin",
+    "/usr/bin", 
+    vim.fn.expand("~/.config/composer/vendor/bin"),
+    vim.fn.expand("~/.local/bin")
+}
+
+-- Проверяем и добавляем только существующие директории
+for _, path in ipairs(paths_to_add) do
+    if vim.fn.isdirectory(path) == 1 then
+        -- Проверяем, нет ли уже этого пути в PATH
+        if not string.find(vim.env.PATH, path, 1, true) then
+            vim.env.PATH = path .. ":" .. vim.env.PATH
+        end
+    end
+end
