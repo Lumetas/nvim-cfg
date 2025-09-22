@@ -81,6 +81,6 @@ return function(lnpm)
 					return true
 				end,
 			}):find()
-		end, { desc = 'Select commit for Gedit' })
+		end, { desc = 'Select Commit' })
 	end)
 end
