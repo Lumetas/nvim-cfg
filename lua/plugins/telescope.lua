@@ -51,7 +51,9 @@ return function(lnpm)
 		-- Редко используемые
 		vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = '[F]ind [H]elp' })
 		vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = '[F]ind [K]eymaps' })
-		vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = '[F]ind with [G]rep' })
+		vim.keymap.set('n', '<leader>ff', builtin.live_grep, { desc = '[F]ind in [F]iles' })
+
+		vim.keymap.set('n', '<leader>fc', builtin.command_history, { desc = '[F]ind [C]ommand history' })
 
 		-- Автокоманда для Telescope (опционально)
 		vim.api.nvim_create_autocmd('FileType', {
@@ -61,12 +63,6 @@ return function(lnpm)
 			end,
 		})
 
-		vim.keymap.set('n', '<leader>ps', function()
-			require('telescope.builtin').grep_string({
-				search = 'ERROR:',
-				cwd = vim.fn.systemlist('git rev-parse --show-toplevel')[1],
-			})
-		end, { desc = '[P]HP[S]tan Errors' })
 
 		vim.keymap.set("n", "<leader>fb", function()  
 			builtin.buffers({  
@@ -79,9 +75,13 @@ return function(lnpm)
 
 		vim.api.nvim_set_keymap('n', '<leader>f/', ':Telescope current_buffer_fuzzy_find<CR>', { noremap = true , desc = "[F]ind [/] this"})
 		vim.api.nvim_set_keymap('n', '<leader>ft', ':Telescope treesitter<CR>', { noremap = true , desc = "[F]ind [T]reesitter"})
+		vim.api.nvim_set_keymap('n', '<leader>fls', ':Telescope lsp_document_symbols<CR>', { noremap = true , desc = "[F]ind [L]sp [S]ymbols"})
+
+
+
+		vim.api.nvim_set_keymap('n', '<leader>fg', '', { noremap = true , desc = "[G]it"})
 		vim.api.nvim_set_keymap('n', '<leader>fgc', ':Telescope git_commits<CR>', { noremap = true , desc = "[F]ind [G]it [C]ommits"})
 		vim.api.nvim_set_keymap('n', '<leader>fgb', ':Telescope git_branches<CR>', { noremap = true , desc = "[F]ind [G]it [B]ranches"})
-		vim.api.nvim_set_keymap('n', '<leader>fls', ':Telescope lsp_document_symbols<CR>', { noremap = true , desc = "[F]ind [L]sp [S]ymbols"})
 
 		local custom_actions = require("getRelativePath")
 		vim.keymap.set("i", "<C-f>", function()

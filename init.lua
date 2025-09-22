@@ -25,7 +25,7 @@ lnpm.load('nvim-treesitter/nvim-treesitter', nil, { onInstall = function()
 	vim.cmd('TSInstall php javascript css html markdown lua go python')
 end })
 
-lnpm.load('tpope/vim-fugitive')
+require("plugins/git")(lnpm)
 lnpm.load('mattn/emmet-vim')
 
 require('plugins/orgmode')(lnpm)
@@ -52,8 +52,19 @@ end, {name = 'lum-projects'})
 
 require("hotkeys")
 
-lnpm.load_after_install()
+lnpm.load('lumetas/LQC', function(LQC)
+	LQC.setup({
+		name_separator = '     ',
+    })
+
+	vim.api.nvim_set_keymap('n', '<leader>la', ':LumQuickCommandsAdd<CR>', { noremap = true, desc = 'Add quick command' })
+	vim.api.nvim_set_keymap('n', '<leader>ls', ':LumQuickCommandsShow<CR>', { noremap = true, desc = 'Show quick commands' })
+end)
+
 
 vim.g.neovide_opacity = 0.75
 
 vim.cmd('colorscheme leos')
+
+
+lnpm.load_after_install()

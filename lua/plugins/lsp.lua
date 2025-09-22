@@ -79,7 +79,7 @@ return function(lnpm)
 			capabilities = require('cmp_nvim_lsp').default_capabilities(),
 			on_attach = on_attach,
 			cmd = { "typescript-language-server", "--stdio" },
-			filetypes = {"javascript", "typescript"},
+			filetypes = {"javascript", "typescript", "html"},
 			root_dir = function(fname)
 				return lspconfig.util.root_pattern("composer.json", ".git")(fname) or vim.fn.getcwd()
 			end,
