@@ -1,5 +1,7 @@
 return function(lnpm)
 	lnpm.load('neovim/nvim-lspconfig', function()
+
+		vim.lsp.enable({"intelephense", "ts_ls"})
 		vim.diagnostic.config({
 			virtual_text = {
 				source = "always",  -- Показывать источник диагностики
