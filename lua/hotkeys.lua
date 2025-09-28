@@ -80,3 +80,7 @@ vim.api.nvim_set_keymap('n', '<Leader>w', ':w<CR>', { noremap = true, desc = 'Wr
 vim.api.nvim_set_keymap('n', '<Leader>q', ':q<CR>', { noremap = true, desc = 'Quit'})
 
 
+
+vim.api.nvim_set_keymap('n', '<leader>m', '', { noremap = true, desc = 'Move' }) 
+vim.api.nvim_set_keymap('n', '<leader>mj', ':HopLine<CR>', { noremap = true, desc = 'Move to line' })
+

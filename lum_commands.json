@@ -1,1 +1,1 @@
-[]
+[{"name":"Egti","command":"%s/\\vgitlab\\.emfy\\.com/79\\.143\\.30\\.8/g"},{"name":"Eitg","command":"%s/\\v79\\.143\\.30\\.8/gitlab\\.emfy\\.com/g"},{"name":"EMFY autoformating","command":"autocmd BufWritePre *.js EmfyFormat"},{"name":"Переключить режим для компонентов","command":"normal gggccjgccGgcckgcc"},{"name":"Copy work path","command":"!pwd | wl-copy"},{"name":"Open md","command":"!inlyne -t dark % &"},{"name":"reload containers","command":"!make stop && make up_dev"}]

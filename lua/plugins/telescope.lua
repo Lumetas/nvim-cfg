@@ -93,6 +93,21 @@ return function(lnpm)
 			})
 		end, {desc = "Вставить относительный путь файла"})
 
+		
+		vim.api.nvim_set_keymap('n', '<leader>fe', '' , { noremap = true , desc = "LSP Diagnostics"})
+
+		vim.keymap.set('n', '<leader>few', function()
+			require('telescope.builtin').diagnostics({ severity = "warn" })
+		end, { desc = 'LSP Warnings Only' })
+
+		vim.keymap.set('n', '<leader>fee', function()
+			require('telescope.builtin').diagnostics({ severity = "error" })
+		end, { desc = 'LSP Errors Only' })
+
+		vim.keymap.set('n', '<leader>feh', function()
+			require('telescope.builtin').diagnostics({ severity = "hint" })
+		end, { desc = 'LSP Hints Only' })
+
 
 
 	end)

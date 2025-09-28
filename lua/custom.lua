@@ -34,6 +34,30 @@ vim.api.nvim_create_user_command('EmfyFormat', function()
 	vim.bo.softtabstop = 2
 
 	-- Выполняем форматирование
+	vim.lsp.buf.format()
+	-- Восстанавливаем оригинальные настройки
+	vim.bo.expandtab = old_expandtab
+	vim.bo.shiftwidth = old_shiftwidth
+	vim.bo.tabstop = old_tabstop
+	vim.bo.softtabstop = old_softtabstop
+end, {})
+
+
+
+vim.api.nvim_create_user_command('EmfyFormatNoLsp', function()
+	-- Сохраняем текущие настройки табов
+	local old_expandtab = vim.bo.expandtab
+	local old_shiftwidth = vim.bo.shiftwidth
+	local old_tabstop = vim.bo.tabstop
+	local old_softtabstop = vim.bo.softtabstop
+
+	-- Устанавливаем настройки для 2 пробелов
+	vim.bo.expandtab = true
+	vim.bo.shiftwidth = 2
+	vim.bo.tabstop = 2
+	vim.bo.softtabstop = 2
+
+	-- Выполняем форматирование
 	vim.cmd('normal mbgg=G`b')
 
 	-- Восстанавливаем оригинальные настройки
