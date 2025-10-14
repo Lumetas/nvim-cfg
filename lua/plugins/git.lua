@@ -26,6 +26,11 @@ return function(lnpm)
 		vim.api.nvim_set_keymap('n', '<Leader>gCn', ':G config user.name<CR>', { noremap = true, desc = 'Name'})
 
 
+		vim.api.nvim_set_keymap('n', '<Leader>gCb', '', { noremap = true, desc = 'Set config bundle'})
+		vim.keymap.set('n', '<leader>gCbm', ':G config user.name Lumetas | G config user.email lumetas506@gmail.com | echo "set main bundle"<CR>', { noremap = true, desc = 'Set main bundle'})
+		vim.keymap.set('n', '<leader>gCbw', ':G config user.name Pavel | G config user.email p.teplyakov@emfy.com | echo "set work bundle"<CR>', { noremap = true, desc = 'Set work bundle'})
+
+
 
 
 		vim.api.nvim_set_keymap('n', '<Leader>ge', '', { noremap = true, desc = 'Git edit'})

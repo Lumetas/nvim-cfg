@@ -1,4 +1,5 @@
 lnpm = require("lnpm")
+
 org_path = '~/org/'
 
 require("themes")(lnpm)
@@ -16,7 +17,7 @@ require("plugins/telescope")(lnpm)
 -- require("plugins/ufo")(lnpm)
 require("plugins/hop")(lnpm)
 require('scratch')
-require("plugins/startup")(lnpm)
+-- require("plugins/startup")(lnpm)
 require("plugins/whichkey")(lnpm)
 
 lnpm.load('tpope/vim-commentary')

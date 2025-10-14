@@ -75,6 +75,35 @@ vim.api.nvim_set_keymap('n', '<leader>sd', ':diffoff!<CR>', { noremap = true, de
 
 vim.api.nvim_set_keymap('v', '<leader>el', ':lua<CR>', { noremap = true, desc = 'Execute Lua' })
 
+-- Для Yank (копирования)
+vim.keymap.set({'n', 'v'}, '<leader>y', function()
+    local reg = vim.fn.getchar()
+    if type(reg) == 'number' then
+        reg = string.char(reg)
+    end
+    
+	print("Yank to " .. reg)
+    if vim.fn.mode() == 'n' then
+        -- Нормальный режим: "ayy
+        return '"' .. reg .. 'yy'
+    else
+        -- Визуальный режим: "ay
+        return '"' .. reg .. 'y'
+    end
+end, {expr = true, desc = "Yank to specific register"})
+
+-- Для Paste (вставки) - только в нормальном режиме
+vim.keymap.set('n', '<leader>p', function()
+    local reg = vim.fn.getchar()
+    if type(reg) == 'number' then
+        reg = string.char(reg)
+    end
+	print("Paste from " .. reg)
+    -- Нормальный режим: "ap
+    return '"' .. reg .. 'p'
+
+end, {expr = true, desc = "Paste from specific register"})
+
 
 vim.api.nvim_set_keymap('n', '<Leader>w', ':w<CR>', { noremap = true, desc = 'Write'})
 vim.api.nvim_set_keymap('n', '<Leader>q', ':q<CR>', { noremap = true, desc = 'Quit'})
@@ -83,4 +112,8 @@ vim.api.nvim_set_keymap('n', '<Leader>q', ':q<CR>', { noremap = true, desc = 'Qu
 
 vim.api.nvim_set_keymap('n', '<leader>m', '', { noremap = true, desc = 'Move' }) 
 vim.api.nvim_set_keymap('n', '<leader>mj', ':HopLine<CR>', { noremap = true, desc = 'Move to line' })
+
+
+vim.api.nvim_set_keymap('n', '<C-k>', '5k', { noremap = true, desc = 'Move up 5 lines' })
+vim.api.nvim_set_keymap('n', '<C-j>', '5j', { noremap = true, desc = 'Move down 5 lines' })
 

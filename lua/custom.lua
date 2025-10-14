@@ -238,3 +238,75 @@ vim.api.nvim_create_user_command('EmfyGenerateEnvWithConfig', function()
     vim.api.nvim_buf_set_lines(0, 0, -1, false, env_lines)
     vim.notify('JSON converted to .env format', vim.log.levels.INFO)
 end, {})
+
+local COPY = {}
+-- Функция для копирования файла (уже есть у вас)
+COPY.copy_file = function(filepath)    
+    -- Expand path to absolute
+    filepath = vim.fn.expand(filepath)
+    
+    -- Check if file exists
+    if vim.fn.filereadable(filepath) == 0 then
+        vim.notify(string.format("Error: '%s' does not exist", filepath), vim.log.levels.ERROR)
+        return false
+    end
+    
+    -- Create file URI
+    local file_uri = "file://" .. filepath
+    
+    -- Copy to clipboard using wl-copy
+    local cmd = string.format("echo '%s' | wl-copy --type text/uri-list", file_uri)
+    local result = vim.fn.system(cmd)
+    
+    if vim.v.shell_error == 0 then
+        return true
+    else
+        return false
+    end
+end
+
+vim.api.nvim_set_keymap('n', '<leader>c', '', { desc = 'Copy', noremap = true, silent = true })
+-- Хоткеи для обычных буферов
+vim.keymap.set('n', '<leader>cf', function()
+    if COPY.copy_file(vim.fn.expand('%:p')) then
+		print("File copied")
+	else 
+		print("File copy failed")
+	end
+end, { desc = 'File' })
+
+vim.keymap.set('n', '<leader>ct', function() 
+	vim.cmd("%y+")
+	print("Text copied")
+end, { desc = 'Text' })
+
+-- Интеграция с nvim-tree
+local function setup_nvim_tree_keymaps()
+    local api = require('nvim-tree.api')
+    
+    -- Функция для копирования файла из nvim-tree
+    local function copy_file_from_tree(node)
+        COPY.copy_file(node.absolute_path)
+    end
+    
+    -- Добавляем хоткей для nvim-tree
+    local function on_attach(bufnr)
+        local function opts(desc)
+            return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+        end
+        
+        -- Ваши существующие маппинги...
+        vim.keymap.set('n', '<leader>cf', function()
+            local node = api.tree.get_node_under_cursor()
+            if node then
+                copy_file_from_tree(node)
+            end
+        end, opts('Copy file as file object'))
+    end
+    
+    -- Обновляем конфигурацию nvim-tree
+    require('nvim-tree').setup({
+        on_attach = on_attach,
+    })
+end
+
