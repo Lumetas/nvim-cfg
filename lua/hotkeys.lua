@@ -75,12 +75,14 @@ vim.api.nvim_set_keymap('n', '<leader>sd', ':diffoff!<CR>', { noremap = true, de
 
 vim.api.nvim_set_keymap('v', '<leader>el', ':lua<CR>', { noremap = true, desc = 'Execute Lua' })
 
+local LAST_REGISTER = nil
 -- Для Yank (копирования)
 vim.keymap.set({'n', 'v'}, '<leader>y', function()
     local reg = vim.fn.getchar()
     if type(reg) == 'number' then
         reg = string.char(reg)
     end
+	LAST_REGISTER = reg
     
 	print("Yank to " .. reg)
     if vim.fn.mode() == 'n' then
@@ -91,6 +93,20 @@ vim.keymap.set({'n', 'v'}, '<leader>y', function()
         return '"' .. reg .. 'y'
     end
 end, {expr = true, desc = "Yank to specific register"})
+
+vim.keymap.set('n', '<leader>y<leader>', function()
+	if LAST_REGISTER then
+		if vim.fn.mode() == 'n' then
+			print ("Yank to " .. string.upper(LAST_REGISTER))
+			return '"' .. string.upper(LAST_REGISTER) .. 'yy'
+		else 
+			print ("Yank to " .. string.upper(LAST_REGISTER))
+			return '"' .. string.upper(LAST_REGISTER) .. 'y'
+		end
+	else 
+		print ("Last register is not set")
+	end
+end, {expr = true, desc = "Yank to last register"})
 
 -- Для Paste (вставки) - только в нормальном режиме
 vim.keymap.set('n', '<leader>p', function()
