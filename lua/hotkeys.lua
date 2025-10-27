@@ -94,7 +94,7 @@ vim.keymap.set({'n', 'v'}, '<leader>y', function()
     end
 end, {expr = true, desc = "Yank to specific register"})
 
-vim.keymap.set('n', '<leader>y<leader>', function()
+vim.keymap.set({'n', 'v'}, '<leader>y<leader>', function()
 	if LAST_REGISTER then
 		if vim.fn.mode() == 'n' then
 			print ("Yank to " .. string.upper(LAST_REGISTER))
@@ -121,6 +121,11 @@ vim.keymap.set('n', '<leader>p', function()
 end, {expr = true, desc = "Paste from specific register"})
 
 
+vim.api.nvim_set_keymap('v', '>', '>gv', { noremap = true, desc = 'Move to next match' })
+vim.api.nvim_set_keymap('v', '<', '<gv', { noremap = true, desc = 'Move to previous match' })
+
+
+
 vim.api.nvim_set_keymap('n', '<Leader>w', ':w<CR>', { noremap = true, desc = 'Write'})
 vim.api.nvim_set_keymap('n', '<Leader>q', ':q<CR>', { noremap = true, desc = 'Quit'})
 
@@ -128,7 +133,8 @@ vim.api.nvim_set_keymap('n', '<Leader>q', ':q<CR>', { noremap = true, desc = 'Qu
 
 vim.api.nvim_set_keymap('n', '<leader>m', '', { noremap = true, desc = 'Move' }) 
 vim.api.nvim_set_keymap('n', '<leader>mj', ':HopLine<CR>', { noremap = true, desc = 'Move to line' })
-
+vim.api.nvim_set_keymap('n', '<leader>mn', ':cnext<CR>', { noremap = true, desc = 'Move to next match' })
+vim.api.nvim_set_keymap('n', '<leader>mp', ':cprev<CR>', { noremap = true, desc = 'Move to previous match' })
 
 vim.api.nvim_set_keymap('n', '<C-k>', '5k', { noremap = true, desc = 'Move up 5 lines' })
 vim.api.nvim_set_keymap('n', '<C-j>', '5j', { noremap = true, desc = 'Move down 5 lines' })

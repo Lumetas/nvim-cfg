@@ -310,3 +310,36 @@ local function setup_nvim_tree_keymaps()
     })
 end
 
+if vim.fn.has('gui_running') ~= 0 then 
+	local current_font_size = 12
+	local default_font_size = 12
+	local font_name = "FiraCode Nerd Font Mono Med"
+
+	-- Функция для обновления шрифта
+	local function update_font()
+		vim.opt.guifont = string.format("%s:h%d", font_name, current_font_size)
+	end
+
+	-- Увеличить размер шрифта
+	vim.keymap.set('n', '<C-=>', function()
+		current_font_size = current_font_size + 1
+		update_font()
+	end, { noremap = true, silent = true, desc = "Увеличить шрифт" })
+
+	-- Уменьшить размер шрифта
+	vim.keymap.set('n', '<C-->', function()
+		if current_font_size > 6 then  -- Минимальный размер 6
+			current_font_size = current_font_size - 1
+			update_font()
+		end
+	end, { noremap = true, silent = true, desc = "Уменьшить шрифт" })
+
+	-- Сбросить размер шрифта к 12
+	vim.keymap.set('n', '<C-0>', function()
+		current_font_size = default_font_size
+		update_font()
+	end, { noremap = true, silent = true, desc = "Сбросить шрифт" })
+
+	-- Инициализация шрифта при запуске
+	update_font()
+end
