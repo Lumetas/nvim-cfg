@@ -14,11 +14,51 @@ function OpenTerminalWithCommand(cmd)
 	]])
 end
 
--- Команда для форматирования кода
+
+
 vim.api.nvim_create_user_command('Format', function()
-	-- Устанавливаем метку 'b' на текущей строке
-	vim.cmd('normal mbgg=G`b')
+    local filetype = vim.bo.filetype
+    local filename = vim.fn.expand('%:e')
+    local buf = vim.api.nvim_get_current_buf()
+    
+    local cursor_pos = vim.api.nvim_win_get_cursor(0)
+    vim.cmd('normal mb')
+    
+    -- Проверяем JSON-like файлы
+    if filetype == 'json' or filetype == 'jsonc' or filename == 'vil' then
+        local indent = vim.bo.shiftwidth
+        local use_tabs = not vim.bo.expandtab and ' --tab' or ' --space'
+        
+        local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+        local content = table.concat(lines, '\n')
+        
+        local jq_cmd = string.format('jq --indent %d%s .', indent, use_tabs)
+        local formatted = vim.fn.system(jq_cmd, content)
+        
+        if vim.v.shell_error == 0 then
+            local formatted_lines = vim.split(formatted, '\n', { plain = true })
+            vim.api.nvim_buf_set_lines(buf, 0, -1, false, formatted_lines)
+        else
+            vim.notify('Ошибка jq, используется стандартное форматирование', vim.log.levels.WARN)
+            vim.cmd('normal gg=G`b')
+        end
+    else
+        vim.cmd('normal gg=G`b')
+    end
+    
+    vim.api.nvim_win_set_cursor(0, cursor_pos)
 end, {})
+
+
+
+
+
+
+
+-- vim.api.nvim_create_user_command('Format', function()
+-- 	-- Устанавливаем метку 'b' на текущей строке
+-- 	vim.cmd('normal mbgg=G`b')
+-- end, {})
 -- Команда форматирования кода для emfy
 vim.api.nvim_create_user_command('EmfyFormat', function()
 	-- Сохраняем текущие настройки табов
@@ -343,3 +383,154 @@ if vim.fn.has('gui_running') ~= 0 then
 	-- Инициализация шрифта при запуске
 	update_font()
 end
+
+
+
+
+
+-- Хоткеи для работы с org-файлами
+vim.keymap.set('n', '<leader>ofn', function()
+    -- Проверяем, что переменная установлена
+    if not org_path then
+        vim.notify("Ошибка: переменная org_path не установлена", vim.log.levels.ERROR)
+        return
+    end
+    
+    -- Разворачиваем путь (~/org/ -> /home/user/org/)
+    local expanded_path = vim.fn.expand(org_path)
+    
+    -- Проверяем существование директории
+    if vim.fn.isdirectory(expanded_path) == 0 then
+        vim.notify("Ошибка: директория " .. expanded_path .. " не существует", vim.log.levels.ERROR)
+        return
+    end
+    
+    -- Поиск файлов по имени с помощью Telescope
+    require('telescope.builtin').find_files({
+        cwd = expanded_path,
+        prompt_title = "Поиск org-файлов по имени",
+        find_command = {"find", ".", "-name", "*.org", "-type", "f"},
+    })
+end, { desc = "Поиск org-файлов по имени" })
+
+vim.keymap.set('n', '<leader>ofc', function()
+    -- Проверяем, что переменная установлена
+    if not org_path then
+        vim.notify("Ошибка: переменная org_path не установлена", vim.log.levels.ERROR)
+        return
+    end
+    
+    -- Разворачиваем путь
+    local expanded_path = vim.fn.expand(org_path)
+    
+    -- Проверяем существование директории
+    if vim.fn.isdirectory(expanded_path) == 0 then
+        vim.notify("Ошибка: директория " .. expanded_path .. " не существует", vim.log.levels.ERROR)
+        return
+    end
+    
+    -- Поиск по содержимому с помощью Telescope
+    require('telescope.builtin').live_grep({
+        cwd = expanded_path,
+        prompt_title = "Поиск org-файлов по содержимому",
+        type_filter = "org", -- фильтр для org-файлов
+    })
+end, { desc = "Поиск org-файлов по содержимому" })
+
+vim.keymap.set('n', '<leader>ofa', function()
+    -- Проверяем, что переменная установлена
+    if not org_path then
+        vim.notify("Ошибка: переменная org_path не установлена", vim.log.levels.ERROR)
+        return
+    end
+    
+    -- Разворачиваем путь
+    local expanded_path = vim.fn.expand(org_path)
+    
+    -- Проверяем существование директории
+    if vim.fn.isdirectory(expanded_path) == 0 then
+        vim.notify("Ошибка: директория " .. expanded_path .. " не существует", vim.log.levels.ERROR)
+        return
+    end
+    
+    -- Запрашиваем имя файла у пользователя
+    local filename = vim.fn.input("Имя файла (без расширения .org): ")
+    
+    -- Проверяем, что пользователь ввел имя
+    if filename == "" then
+        vim.notify("Отменено: не введено имя файла", vim.log.levels.WARN)
+        return
+    end
+    
+    -- Добавляем расширение .org если его нет
+    if not filename:match("%.org$") then
+        filename = filename .. ".org"
+    end
+    
+    -- Создаем полный путь к файлу
+    local full_path = expanded_path .. "/" .. filename
+    
+    -- Создаем директории если их нет (для вложенных путей)
+    local dir_path = vim.fn.fnamemodify(full_path, ":h")
+    if vim.fn.isdirectory(dir_path) == 0 then
+        vim.fn.mkdir(dir_path, "p")
+    end
+    
+    -- Создаем файл и открываем его
+    vim.cmd("edit " .. vim.fn.fnameescape(full_path))
+    
+    vim.notify("Создан файл: " .. full_path)
+end, { desc = "Создать новый org-файл" })
+
+
+
+vim.keymap.set('n', '<leader>ml', function()
+    local targets = {}
+    -- Улучшенная команда для поиска целей
+    local handle = io.popen("grep -E '^[^#[:space:]\\.][^:]*:' Makefile | cut -d ':' -f 1 | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'")
+    if handle then
+        for target in handle:read("*a"):gmatch("[^\r\n]+") do
+            if target ~= "" then
+                table.insert(targets, target)
+            end
+        end
+        handle:close()
+    end
+
+    if #targets == 0 then
+        vim.notify("No make targets found", vim.log.levels.WARN)
+        return
+    end
+
+    require('telescope.pickers').new({}, {
+        prompt_title = "Make Targets (" .. #targets .. ")",
+        finder = require('telescope.finders').new_table({
+            results = targets,
+            entry_maker = function(entry)
+                return {
+                    value = entry,
+                    display = entry,
+                    ordinal = entry,
+                }
+            end
+        }),
+        sorter = require('telescope.config').values.generic_sorter({}),
+        -- Отключаем все игноры и фильтры
+        file_ignore_patterns = {},
+        hidden = true,
+        no_ignore = true,
+        no_ignore_parent = true,
+        attach_mappings = function(prompt_bufnr, map)
+            map({'i', 'n'}, '<CR>', function()
+                local selection = require('telescope.actions.state').get_selected_entry()
+                require('telescope.actions').close(prompt_bufnr)
+                if selection then
+                    vim.cmd("!make " .. selection.value .. "")
+                end
+            end)
+            return true
+        end,
+    }):find()
+end, { desc = "List make targets" })
+
+vim.keymap.set('n', '<leader>Q', ':bnext | bdelete! #<CR>', { desc = "Switch to prev and kill current buffer" })

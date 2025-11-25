@@ -12,14 +12,23 @@ return function(lnpm)
 				type = "php",
 				request = "launch",
 				name = "Listen for Xdebug",
-				port = 9003
+				idekey = "PHPSTORM",
+				port = 9003,
+
+				pathMappings = {
+					['/var/www/widgets/controllers/google_sheets/private_tech'] = '/home/lum/LumProjects/google_sheets/widget',
+					['/var/www/'] = '/home/lum/LumProjects/google_sheets/core',
+				}
 			}
+
+
+
 		}
 
 		vim.keymap.set('n', '<Leader>dc', function() require('dap').continue() end, { desc = '[D]ebug [C]onnect menu' })
-		vim.keymap.set('n', '<F10>', function() require('dap').step_over() end, { desc = 'Debug Step Over' })
-		vim.keymap.set('n', '<F8>', function() require('dap').step_into() end, { desc = 'Debug Step Into' })
-		vim.keymap.set('n', '<F9>', function() require('dap').step_out() end, { desc = 'Debug Step Out' })
+		vim.keymap.set('n', '<leader>dn', function() require('dap').step_over() end, { desc = 'Debug Step Over' })
+		vim.keymap.set('n', '<leader>di', function() require('dap').step_into() end, { desc = 'Debug Step Into' })
+		vim.keymap.set('n', '<leader>do', function() require('dap').step_out() end, { desc = 'Debug Step Out' })
 		-- vim.keymap.set('n', '<F11>', function() require('dap').step_into() end)
 		-- vim.keymap.set('n', '<F12>', function() require('dap').step_out() end)
 		vim.keymap.set('n', '<Leader>db', function() require('dap').toggle_breakpoint() end, { desc = '[D]ebug [B]reakpoint' })

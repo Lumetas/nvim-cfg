@@ -13,7 +13,12 @@ return function(lnpm)
 				indent_markers = {
 					enable = true,
 				},
+        root_folder_label = false
 			},
+      view = { 
+        side = "right",
+        width = 30,
+      },
 			actions = {
 				change_dir = {
 					global = false,  -- не менять корневую папку без указания

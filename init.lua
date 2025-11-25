@@ -53,12 +53,3 @@ vim.g.neovide_opacity = 0.75
 vim.cmd('colorscheme leos')
 
 lnpm.load_after_install()
-
-
-lumai = require('lumai')
-lumai.setup({
-  api_url = "http://localhost:1337/v1/chat/completions",
-  api_key = "your-api-key-here", 
-  model = "gpt-4",
-  max_tokens = 4000
-  })

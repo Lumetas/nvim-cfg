@@ -31,17 +31,17 @@ return function(lnpm)
 				file_ignore_patterns = {
 					"vendor/*",      -- Игнор всей папки vendor
 					"node_modules/*", 
-					"storage/*",
-					"bootstrap/*",
-					"public/*",
-					"docker/*",
+					-- "storage/*",
+					-- "bootstrap/*",
+					-- "public/*",
+					-- "docker/*",
 					".git/*",
 				},
 			},
 			pickers = {
 				find_files = {
 					hidden = true,                                         -- Показывать скрытые файлы
-					no_ignore = false,                                    -- Учитывать .gitignore
+					no_ignore = true,                                    -- Учитывать .gitignore
 				},
 			},
 		})
