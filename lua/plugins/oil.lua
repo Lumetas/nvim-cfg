@@ -31,9 +31,9 @@ return function(lnpm)
       -- Опции столбцов
       columns = {
         "icon",
-        "permissions",
-        "size",
-        "mtime",
+        -- "permissions",
+        -- "size",
+        -- "mtime",
       },
       
       -- Клавиши для навигации как в дереве
@@ -56,9 +56,15 @@ return function(lnpm)
         ["g\\"] = "actions.toggle_trash",
 		["s"] = {
 			  callback = function()
+				require("oil").save({ confirm = true })
+			  end,
+			  desc = "Save oil changes",
+		},
+		["S"] = {
+			  callback = function()
 				require("oil").save({ confirm = false })
 			  end,
-			  desc = "Save oil changes without confirmation",
+			  desc = "Save oil changes",
 		},
       },
       
@@ -85,9 +91,10 @@ return function(lnpm)
       silent = true,
       desc = "Open Oil float in current directory"
     })
-
-    vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>Oil<CR>', { 
-      desc = "Open Oil in current directory"
+    vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>Oil --float<CR>', { 
+      noremap = true, 
+      silent = true,
+      desc = "Open Oil float in current directory"
     })
 
   end, {
