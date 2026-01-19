@@ -11,6 +11,7 @@ lnpm.load('nvim-tree/nvim-web-devicons')
 lnpm.load('kevinhwang91/promise-async')
 
 require("plugins/nvim-tree")(lnpm)
+require("plugins/oil")(lnpm)
 require("plugins/cmp")(lnpm)
 require("plugins/lsp")(lnpm)
 require("plugins/telescope")(lnpm)
@@ -53,3 +54,4 @@ vim.g.neovide_opacity = 0.75
 vim.cmd('colorscheme leos')
 
 lnpm.load_after_install()
+vim.api.nvim_set_keymap('n', '<leader>tn', ':lua require("myPlugin")<CR>', {noremap = true, silent = true})

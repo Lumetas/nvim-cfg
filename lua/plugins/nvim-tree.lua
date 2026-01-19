@@ -31,7 +31,7 @@ return function(lnpm)
 
 
 		vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', { noremap = true })
-		vim.api.nvim_set_keymap('n', '<C-b>', ':NvimTreeFocus<CR>', { noremap = true })
+		-- vim.api.nvim_set_keymap('n', '<C-b>', ':NvimTreeFocus<CR>', { noremap = true })
 
 
 		vim.api.nvim_create_augroup('NERDTreeAutoUpdate', { clear = true })

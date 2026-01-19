@@ -108,14 +108,14 @@ vim.api.nvim_create_user_command('EmfyFormatNoLsp', function()
 end, {})
 
 -- Автоматическое обновление древа NERDTree при смене директории
-vim.api.nvim_create_augroup('NERDTreeAutoUpdate', { clear = true })
-vim.api.nvim_create_autocmd('DirChanged', {
-	group = 'NERDTreeAutoUpdate',
-	pattern = '*',
-	callback = function()
-		require("nvim-tree.api").tree.change_root(vim.fn.getcwd())
-	end,
-})
+-- vim.api.nvim_create_augroup('NERDTreeAutoUpdate', { clear = true })
+-- vim.api.nvim_create_autocmd('DirChanged', {
+-- 	group = 'NERDTreeAutoUpdate',
+-- 	pattern = '*',
+-- 	callback = function()
+-- 		require("nvim-tree.api").tree.change_root(vim.fn.getcwd())
+-- 	end,
+-- })
 
 
 vim.api.nvim_create_user_command(
@@ -280,29 +280,134 @@ vim.api.nvim_create_user_command('EmfyGenerateEnvWithConfig', function()
 end, {})
 
 local COPY = {}
--- Функция для копирования файла (уже есть у вас)
-COPY.copy_file = function(filepath)    
-    -- Expand path to absolute
-    filepath = vim.fn.expand(filepath)
+COPY.copy_file = function(filepath)
+    -- Expand path to absolute with proper escaping
+    filepath = vim.fn.fnamemodify(filepath, ':p')
     
-    -- Check if file exists
-    if vim.fn.filereadable(filepath) == 0 then
-        vim.notify(string.format("Error: '%s' does not exist", filepath), vim.log.levels.ERROR)
+    -- Check if file exists and is readable
+    local stat = vim.loop.fs_stat(filepath)
+    if not stat or stat.type ~= 'file' then
+        vim.notify(string.format("❌ Файл не существует или недоступен: '%s'", filepath), vim.log.levels.ERROR)
         return false
     end
     
-    -- Create file URI
-    local file_uri = "file://" .. filepath
+    -- Detect clipboard tool based on environment
+    local clipboard_tool = nil
+    local copy_cmd = nil
     
-    -- Copy to clipboard using wl-copy
-    local cmd = string.format("echo '%s' | wl-copy --type text/uri-list", file_uri)
-    local result = vim.fn.system(cmd)
+    if os.getenv("WAYLAND_DISPLAY") then
+        -- Wayland
+        if vim.fn.executable('wl-copy') == 1 then
+            clipboard_tool = 'wl-copy'
+            local file_uri = "file://" .. vim.fn.shellescape(filepath)
+            copy_cmd = string.format("echo '%s' | wl-copy --type text/uri-list", file_uri)
+        end
+    else
+        -- X11 or other
+        if vim.fn.executable('xclip') == 1 then
+            clipboard_tool = 'xclip'
+            local file_uri = "file://" .. vim.fn.shellescape(filepath)
+            copy_cmd = string.format("echo '%s' | xclip -selection clipboard -t text/uri-list", file_uri)
+        elseif vim.fn.executable('xsel') == 1 then
+            clipboard_tool = 'xsel'
+            local file_uri = "file://" .. vim.fn.shellescape(filepath)
+            copy_cmd = string.format("echo '%s' | xsel --clipboard --input", file_uri)
+        end
+    end
     
-    if vim.v.shell_error == 0 then
+    -- Fallback for macOS
+    if not clipboard_tool and vim.fn.has('mac') == 1 then
+        if vim.fn.executable('pbcopy') == 1 then
+            clipboard_tool = 'pbcopy'
+            copy_cmd = string.format("echo '%s' | pbcopy", vim.fn.shellescape(filepath))
+        end
+    end
+    
+    if not clipboard_tool then
+        vim.notify("🚫 Не найден подходящий инструмент буфера обмена (wl-copy/xclip/xsel/pbcopy)", vim.log.levels.ERROR)
+        return false
+    end
+    
+    -- Execute copy command
+    local success, result = pcall(vim.fn.system, copy_cmd)
+    
+    if success and vim.v.shell_error == 0 then
+        local filename = vim.fn.fnamemodify(filepath, ':t')
+        vim.notify(string.format("📎 Файл скопирован в буфер: '%s' (%s)", filename, clipboard_tool), vim.log.levels.INFO)
+        
+        -- Additional: copy file content as text fallback
+        local content_success = pcall(function()
+            local content = vim.fn.system(string.format("head -n 100 '%s'", vim.fn.shellescape(filepath)))
+            if vim.fn.executable('wl-copy') == 1 then
+                vim.fn.system(string.format("echo '%s' | wl-copy --type text/plain", vim.fn.shellescape(content)))
+            elseif vim.fn.executable('xclip') == 1 then
+                vim.fn.system(string.format("echo '%s' | xclip -selection clipboard -t text/plain", vim.fn.shellescape(content)))
+            end
+        end)
+        
         return true
     else
+        vim.notify(string.format("💥 Ошибка копирования файла: %s", result or 'unknown error'), vim.log.levels.ERROR)
         return false
     end
+end
+
+-- Bonus: функция для копирования нескольких файлов
+COPY.copy_files = function(filepaths)
+    local results = {}
+    for _, path in ipairs(filepaths) do
+        table.insert(results, COPY.copy_file(path))
+    end
+    return results
+end
+
+-- Bonus: функция для копирования файла с разными типами контента
+COPY.copy_file_advanced = function(filepath, options)
+    options = options or {}
+    local content_type = options.content_type or "uri" -- uri, path, content
+    
+    filepath = vim.fn.fnamemodify(filepath, ':p')
+    
+    local stat = vim.loop.fs_stat(filepath)
+    if not stat or stat.type ~= 'file' then
+        vim.notify(string.format("❌ Файл не существует: '%s'", filepath), vim.log.levels.ERROR)
+        return false
+    end
+    
+    local copy_text = ""
+    
+    if content_type == "uri" then
+        copy_text = "file://" .. filepath
+    elseif content_type == "path" then
+        copy_text = filepath
+    elseif content_type == "content" then
+        local file = io.open(filepath, "r")
+        if file then
+            copy_text = file:read("*a")
+            file:close()
+        else
+            vim.notify("❌ Не удалось прочитать файл", vim.log.levels.ERROR)
+            return false
+        end
+    end
+    
+    -- Use the same clipboard detection logic from above
+    local clipboard_tool = nil
+    if os.getenv("WAYLAND_DISPLAY") and vim.fn.executable('wl-copy') == 1 then
+        vim.fn.system(string.format("echo '%s' | wl-copy", vim.fn.shellescape(copy_text)))
+    elseif vim.fn.executable('xclip') == 1 then
+        vim.fn.system(string.format("echo '%s' | xclip -selection clipboard", vim.fn.shellescape(copy_text)))
+    elseif vim.fn.executable('xsel') == 1 then
+        vim.fn.system(string.format("echo '%s' | xsel --clipboard --input", vim.fn.shellescape(copy_text)))
+    elseif vim.fn.has('mac') == 1 and vim.fn.executable('pbcopy') == 1 then
+        vim.fn.system(string.format("echo '%s' | pbcopy", vim.fn.shellescape(copy_text)))
+    else
+        vim.notify("🚫 Clipboard tool not found", vim.log.levels.ERROR)
+        return false
+    end
+    
+    vim.notify(string.format("✅ Скопировано как %s: %s", content_type, vim.fn.fnamemodify(filepath, ':t')), vim.log.levels.INFO)
+    return true
 end
 
 vim.api.nvim_set_keymap('n', '<leader>c', '', { desc = 'Copy', noremap = true, silent = true })
@@ -534,3 +639,21 @@ vim.keymap.set('n', '<leader>ml', function()
 end, { desc = "List make targets" })
 
 vim.keymap.set('n', '<leader>Q', ':bnext | bdelete! #<CR>', { desc = "Switch to prev and kill current buffer" })
+
+
+
+
+vim.cmd([[function! CT(char) abort
+    let current_line = getline('.')
+    let cursor_col = col('.') - 1
+    
+    " Ищем первое вхождение символа ПОСЛЕ курсора
+    let char_pos = stridx(current_line, a:char, cursor_col + 1)
+    
+    if char_pos == -1
+        return ''
+    else
+        " Возвращаем текст от курсора до символа (исключая символ)
+        return strpart(current_line, cursor_col, char_pos - cursor_col)
+    endif
+endfunction]])

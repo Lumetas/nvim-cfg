@@ -1,8 +1,58 @@
 return function(lnpm)
 	lnpm.load('nvim-telescope/telescope.nvim', function()
+
+		local action_state = require('telescope.actions.state')
 		local telescope = require('telescope')
 		local actions = require('telescope.actions')
 		local builtin = require('telescope.builtin')
+
+
+		function select_all()
+			local prompt_bufnr = vim.api.nvim_get_current_buf()
+			local current_picker = action_state.get_current_picker(prompt_bufnr)
+			local i = 1
+			for entry in current_picker.manager:iter() do
+				current_picker._multi:toggle(entry)
+				-- highlighting
+				local row = current_picker:get_row(i)
+				-- validate row is visible; otherwise result negative
+				if row > 0 then
+					if current_picker:can_select_row(row) then
+						current_picker.highlighter:hi_multiselect(row, current_picker._multi:is_selected(entry))
+					end
+				end
+				i = i + 1
+			end
+		end
+
+		local function send_selected_to_args(prompt_bufnr)
+			local picker = action_state.get_current_picker(prompt_bufnr)
+			local selections = picker:get_multi_selection()
+
+			-- Если ничего не выбрано множественным выбором, берем текущий элемент
+			if vim.tbl_isempty(selections) then
+				selections = { action_state.get_selected_entry(prompt_bufnr) }
+			end
+
+			local file_paths = {}
+			for _, selection in ipairs(selections) do
+				-- Убедитесь, что у элемента есть путь (например, в live_grep может быть не путь, а строка текста)
+				if selection.path then
+					table.insert(file_paths, vim.fn.fnameescape(selection.path))
+				end
+			end
+
+			if #file_paths > 0 then
+				-- Используем команду :args {файл1} {файл2} ...
+				local args_command = "args! " .. table.concat(file_paths, " ")
+
+				vim.cmd(args_command)
+
+			else
+				print("Нет файлов для добавления в args.")
+			end
+		end
+
 
 		-- Основная настройка Telescope
 		telescope.setup({
@@ -13,6 +63,9 @@ return function(lnpm)
 				mappings = {
 					i = {
 						['<Esc>'] = actions.close,                           -- Закрыть по Esc
+						['<C-CR>'] = send_selected_to_args,
+						['<M-q>'] = actions.send_selected_to_qflist,
+						['<C-a>'] = select_all,
 						['<A-f>'] = actions.close,                           -- Закрыть по Alt+F (если настроено в терминале)
 						['<C-j>'] = actions.move_selection_next,             -- Навигация вниз
 						['<C-k>'] = actions.move_selection_previous,         -- Навигация вверх
