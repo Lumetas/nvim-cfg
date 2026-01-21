@@ -1,3 +1,4 @@
+require("lnpmInstaller")
 lnpm = require("lnpm")
 
 require("plugins/custom")(lnpm)
