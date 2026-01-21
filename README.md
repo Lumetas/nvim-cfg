@@ -8,30 +8,30 @@
 
 
 
-- [nvim-tree](https://github.com/nvim-tree/nvim-tree.lua)
-- [emmet-vim](https://github.com/mattn/emmet-vim)
-- [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
-- [nvim-cmp](https://github.com/hrsh7th/nvim-cmp)
-- [cmp-buffer](https://github.com/hrsh7th/cmp-buffer.git)
-- [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp)
-- [plenary.nvim](https://github.com/nvim-lua/plenary.nvim)
-- [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
-- [vim-commentary](https://github.com/tpope/vim-commentary)
-- [nvim-dap](https://github.com/mfussenegger/nvim-dap)
-- [nvim-dap-ui](https://github.com/rcarriga/nvim-dap-ui.git)
-- [nvim-orgmode](https://github.com/nvim-orgmode/orgmode)
-- [hop.nvim](https://github.com/hadronized/hop.nvim)
-- [nvim-ufo](https://github.com/kevinhwang91/nvim-ufo)
-- [yazi.nvim](https://github.com/mikavilpas/yazi.nvim)
-- [nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons)
-- [promise-async](https://github.com/kevinhwang91/promise-async)
-- [nvim-bqf](https://github.com/kevinhwang91/nvim-bqf)
-- [startup.nvim](https://github.com/max397574/startup.nvim)
-- [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter.git)
-<!-- - [barbar.nvim](https://github.com/romgrk/barbar.nvim) -->
-- [vim-fugitive](https://github.com/tpope/vim-fugitive)
-- [supermaven](https://github.com/supermaven-inc/supermaven-nvim)
-- [which-key.nvim](https://github.com/folke/which-key.nvim)
+<!-- - [nvim-tree](https://github.com/nvim-tree/nvim-tree.lua) -->
+<!-- - [emmet-vim](https://github.com/mattn/emmet-vim) -->
+<!-- - [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) -->
+<!-- - [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) -->
+<!-- - [cmp-buffer](https://github.com/hrsh7th/cmp-buffer.git) -->
+<!-- - [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp) -->
+<!-- - [plenary.nvim](https://github.com/nvim-lua/plenary.nvim) -->
+<!-- - [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) -->
+<!-- - [vim-commentary](https://github.com/tpope/vim-commentary) -->
+<!-- - [nvim-dap](https://github.com/mfussenegger/nvim-dap) -->
+<!-- - [nvim-dap-ui](https://github.com/rcarriga/nvim-dap-ui.git) -->
+<!-- - [nvim-orgmode](https://github.com/nvim-orgmode/orgmode) -->
+<!-- - [hop.nvim](https://github.com/hadronized/hop.nvim) -->
+<!-- - [nvim-ufo](https://github.com/kevinhwang91/nvim-ufo) -->
+<!-- - [yazi.nvim](https://github.com/mikavilpas/yazi.nvim) -->
+<!-- - [nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons) -->
+<!-- - [promise-async](https://github.com/kevinhwang91/promise-async) -->
+<!-- - [nvim-bqf](https://github.com/kevinhwang91/nvim-bqf) -->
+<!-- - [startup.nvim](https://github.com/max397574/startup.nvim) -->
+<!-- - [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter.git) -->
+<!-- <!-- - [barbar.nvim](https://github.com/romgrk/barbar.nvim) --> -->
+<!-- - [vim-fugitive](https://github.com/tpope/vim-fugitive) -->
+<!-- - [supermaven](https://github.com/supermaven-inc/supermaven-nvim) -->
+<!-- - [which-key.nvim](https://github.com/folke/which-key.nvim) -->
 
 
 ## Установка
