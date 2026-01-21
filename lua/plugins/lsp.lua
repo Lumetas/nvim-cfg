@@ -61,5 +61,5 @@ return function(lnpm)
 			end,
 		})
 
-	end)
+	end, {lrule = function(next) vim.defer_fn(next, 1000) end})
 end

@@ -425,36 +425,6 @@ vim.keymap.set('n', '<leader>ct', function()
 	print("Text copied")
 end, { desc = 'Text' })
 
--- Интеграция с nvim-tree
-local function setup_nvim_tree_keymaps()
-    local api = require('nvim-tree.api')
-    
-    -- Функция для копирования файла из nvim-tree
-    local function copy_file_from_tree(node)
-        COPY.copy_file(node.absolute_path)
-    end
-    
-    -- Добавляем хоткей для nvim-tree
-    local function on_attach(bufnr)
-        local function opts(desc)
-            return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
-        end
-        
-        -- Ваши существующие маппинги...
-        vim.keymap.set('n', '<leader>cf', function()
-            local node = api.tree.get_node_under_cursor()
-            if node then
-                copy_file_from_tree(node)
-            end
-        end, opts('Copy file as file object'))
-    end
-    
-    -- Обновляем конфигурацию nvim-tree
-    require('nvim-tree').setup({
-        on_attach = on_attach,
-    })
-end
-
 if vim.fn.has('gui_running') ~= 0 then 
 	local current_font_size = 12
 	local default_font_size = 12

@@ -1,51 +1,62 @@
+local tree_rule = function(next)
+	vim.keymap.set('n', '<C-n>', function()
+		next()
+		vim.schedule(function()
+			require("nvim-tree.api").tree.toggle()  -- потом открываем
+		end)
+	end, { noremap = true, desc = "Toggle NvimTree" })
+end
+
+
 return function(lnpm)
-	lnpm.load('nvim-tree/nvim-tree.lua', function(tree)
-		tree.setup({
-			git = {
-				enable = true,
-				timeout = 400,
-			},
-			filesystem_watchers = {
-				enable = false,  -- ускоряет работу, но требует ручного обновления (клавиша `R`)
-			},
-			renderer = {
-				group_empty = true,  -- схлопывать пустые папки
-				indent_markers = {
-					enable = true,
-				},
+
+  lnpm.load('nvim-tree/nvim-tree.lua', function(tree)
+    tree.setup({
+      git = {
+        enable = true,
+        timeout = 400,
+      },
+      filesystem_watchers = {
+        enable = false,
+      },
+      renderer = {
+        group_empty = true,
+        indent_markers = {
+          enable = true,
+        },
         root_folder_label = false
-			},
+      },
       view = { 
         side = "right",
         width = 30,
       },
-			actions = {
-				change_dir = {
-					global = false,  -- не менять корневую папку без указания
-				},
-				open_file = {
-					quit_on_open = false,
-				},
-			},
-		})
+      actions = {
+        change_dir = {
+          global = false,
+        },
+        open_file = {
+          quit_on_open = false,
+        },
+      },
+    })
 
+    -- Обновляем хоткей после загрузки плагина
+    vim.keymap.set('n', '<C-n>', ':NvimTreeToggle<CR>', { noremap = true })
 
-		vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', { noremap = true })
-		-- vim.api.nvim_set_keymap('n', '<C-b>', ':NvimTreeFocus<CR>', { noremap = true })
+    -- Автообновление корня при смене директории
+    vim.api.nvim_create_augroup('NvimTreeAutoUpdate', { clear = true })
+    vim.api.nvim_create_autocmd('DirChanged', {
+      group = 'NvimTreeAutoUpdate',
+      pattern = '*',
+      callback = function()
+        if require("nvim-tree.api").tree then
+          require("nvim-tree.api").tree.change_root(vim.fn.getcwd())
+        end
+      end,
+    })
 
-
-		vim.api.nvim_create_augroup('NERDTreeAutoUpdate', { clear = true })
-		vim.api.nvim_create_autocmd('DirChanged', {
-			group = 'NERDTreeAutoUpdate',
-			pattern = '*',
-			callback = function()
-				require("nvim-tree.api").tree.change_root(vim.fn.getcwd())
-			end,
-		})
-
-	end, {
-	name = "nvim-tree",
-	git = false,
-	install_path = '~'
-})
+  end, {
+    name = "nvim-tree",
+    lrule = tree_rule
+  })
 end

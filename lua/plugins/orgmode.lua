@@ -19,6 +19,6 @@ return function(lnpm)
 			org_startup_indented = true,
 			org_babel_default_header_args = { [':tangle'] = 'yes', [':noweb'] = 'yes' }
 		})
-	end)
+	end, {lrule = function(next) vim.defer_fn(next, 1000) end})
 end
 

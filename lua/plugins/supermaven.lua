@@ -18,5 +18,5 @@ return function (lnpm)
 				return false
 			end 
 		})
-	end)
+	end, {lrule = function(next) vim.defer_fn(next, 1000) end})
 end

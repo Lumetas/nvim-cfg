@@ -1,6 +1,7 @@
 return function(lnpm)
-	lnpm.load('rcarriga/nvim-dap-ui')
 	lnpm.load('mfussenegger/nvim-dap', function(dap)
+
+		lnpm.load('rcarriga/nvim-dap-ui')
 		dap.adapters.php = {
 			type = "executable",
 			command = "node",
@@ -43,5 +44,5 @@ return function(lnpm)
 			local widgets = require('dap.ui.widgets')
 			widgets.centered_float(widgets.scopes)
 		end, { desc = '[D]ebug [V]alues' })
-	end, {name = 'dap'})
+	end, {name = 'dap', lrule = function(next) vim.defer_fn(next, 5000) end})
 end

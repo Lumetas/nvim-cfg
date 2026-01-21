@@ -99,7 +99,6 @@ return function(lnpm)
 
   end, {
     name = "oil",
-    git = false,
-    install_path = '~'
+	lrule = function(next) vim.defer_fn(next, 100) end,
   })
 end

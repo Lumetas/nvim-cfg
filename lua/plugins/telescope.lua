@@ -163,6 +163,6 @@ return function(lnpm)
 
 
 
-	end)
+	end, {lrule = function(next) vim.defer_fn(next, 100) end})
 end
 

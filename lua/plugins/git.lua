@@ -87,5 +87,5 @@ return function(lnpm)
 				end,
 			}):find()
 		end, { desc = 'Select Commit' })
-	end)
+	end, {lrule = function(next) vim.defer_fn(next, 100) end})
 end
