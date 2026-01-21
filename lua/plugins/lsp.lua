@@ -1,6 +1,20 @@
 return function(lnpm)
 	lnpm.load('neovim/nvim-lspconfig', function()
 
+		if vim.fn.has('nvim-0.11') == 1 or vim.lsp.commands.restart then
+			vim.api.nvim_create_user_command('LspRestart', function(opts)
+				vim.cmd('silent! lsp restart ' .. (opts.args or ""))
+			end, {
+				nargs = '?',
+				desc = 'Alias for the new built-in :lsp restart',
+				complete = function()
+					-- Поддержка автодополнения имен серверов
+					return vim.tbl_keys(vim.lsp.get_clients({ bufnr = 0 }))
+				end,
+			})
+		end
+
+
 		vim.lsp.enable({"intelephense", "ts_ls"})
 		vim.diagnostic.config({
 			virtual_text = false,  -- Отключаем виртуальный текст в коде

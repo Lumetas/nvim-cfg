@@ -44,6 +44,6 @@ require("hotkeys")
 
 vim.g.neovide_opacity = 0.75
 
-vim.cmd('colorscheme leos')
+-- vim.cmd('colorscheme leos')
 
 -- lnpm.load_after_install()

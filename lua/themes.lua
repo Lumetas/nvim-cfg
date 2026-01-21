@@ -52,6 +52,7 @@ return function(lnpm)
 			dim_inactive = false,
 			transparent_mode = true,
 		})
+		vim.cmd('colorscheme leos')
 	end, {name = "leos"})
 
 	-- lnpm.load('morhetz/gruvbox')
