@@ -38,7 +38,7 @@ require('statusline')
 
 require('plugins/lumprojects')(lnpm)
 require('plugins/lqc')(lnpm)
--- require('plugins/http')(lnpm)
+require('plugins/http')(lnpm)
 require('plugins/sql')(lnpm)
 
 require("hotkeys")

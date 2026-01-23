@@ -57,8 +57,6 @@ return function(lnpm)
 				vim.keymap.set('n', '<leader>ai', vim.lsp.buf.hover, { noremap = true, desc = "Symbol Info", silent = true, buffer = bufnr })
 				vim.keymap.set('n', '<leader>al', vim.lsp.buf.rename, { noremap = true, desc = "Rename", silent = true, buffer = bufnr })
 				
-				-- Показ диагностики по нажатию <leader>k
-				vim.keymap.set('n', '<leader>k', show_diagnostics, { noremap = true, desc = "Show diagnostics", silent = true, buffer = bufnr })
 			end,
 		})
 

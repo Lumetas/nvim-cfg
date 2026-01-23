@@ -1,32 +1,31 @@
 return function(lnpm)
-  lnpm.load("mistweaverco/kulala.nvim", function(kulala)
-    kulala.setup({
-      global_keymaps = false,
-      global_keymaps_prefix = "<leader>R",
-      kulala_keymaps_prefix = "",
+  lnpm.load("lumetas/ht.nvim", function(ht)
+    ht.setup({
+		response = {
+			auto_focus_response = false 
+		}
     })
-    
-    -- Маппинги создаются только когда плагин загружен
-    vim.keymap.set("n", "<leader>RR", function()
-      kulala.run()
-    end, { desc = "Send request" })
-
-    vim.keymap.set("n", "<leader>Ra", function()
-      kulala.run_all()
-    end, { desc = "Send all requests" })
-
-    vim.keymap.set("n", "<leader>Rb", function()
-      kulala.scratchpad()
-    end, { desc = "Open scratchpad" })
-
-    vim.keymap.set("n", "<leader>Rr", function()
-      kulala.replay()
-    end, { desc = "Toggle UI", noremap = true })
+	vim.keymap.set({"n","v"},"<leader>RR", ":HT run<CR>",{desc="[R]esty [R]un request under the cursor"})
+	vim.keymap.set({"n","v"},"<leader>Rr", ":HT last<CR>",{desc="[R]esty [r]un last request"})
+	vim.keymap.set({"n","v"},"<leader>Rf", ":HT favorite<CR>",{desc="[R]esty [V]iew favorites"})   
 
   end, {
-    name = "kulala",
-	  lrule = function(next)
-		  vim.defer_fn(next, 500)
-	  end
+  name = "ht",
+  lrule = function(next)
+	  vim.keymap.set("n", "<leader>Rr", function()
+		  next()
+		  vim.cmd("HT last")
+	  end, {desc="[R]esty [r]un last request"})
+
+	  vim.keymap.set("n", "<leader>RF", function()
+		  next()
+		  vim.cmd("HT favorite")
+	  end, {desc="[R]esty [V]iew favorites"})
+
+	  vim.keymap.set("n", "<leader>RR", function()
+		  next()
+		  vim.cmd("HT run")
+	  end, {desc="[R]esty [R]un request under the cursor"})
+  end
   })
 end
