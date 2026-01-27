@@ -31,9 +31,7 @@ return function(lnpm)
 
 lnpm.load('mattn/emmet-vim', nil, {lrule = function(next) vim.defer_fn(next, 1000) end})
 
-
-lnpm.load('kevinhwang91/nvim-bqf', nil, {lrule = function(next) vim.defer_fn(next, 1000) end})
-
+-- lnpm.load('AndrewRadev/quickpeek.vim', nil)
 
 lnpm.load('mikavilpas/yazi.nvim', function() 
 	vim.api.nvim_set_keymap('n', 'zx', ':Yazi<CR>', { noremap = true })

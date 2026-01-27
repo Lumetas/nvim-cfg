@@ -22,7 +22,6 @@ vim.api.nvim_set_keymap('v', '<A-f>', '<ESC>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<A-f>', ':nohl<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<TAB>', 'gt', { noremap = true })
 
-vim.api.nvim_set_keymap('n', '<CR>', 'za', { noremap = true })
 -- Visual mode mappings
 vim.api.nvim_set_keymap('v', '<A-C-l>', '$', { noremap = true })
 vim.api.nvim_set_keymap('v', '<A-C-H>', '0', { noremap = true })

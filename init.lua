@@ -40,6 +40,7 @@ require('plugins/lumprojects')(lnpm)
 require('plugins/lqc')(lnpm)
 require('plugins/http')(lnpm)
 require('plugins/sql')(lnpm)
+require('plugins/lsyncer')(lnpm)
 
 require("hotkeys")
 
@@ -48,3 +49,5 @@ vim.g.neovide_opacity = 0.75
 -- vim.cmd('colorscheme leos')
 
 -- lnpm.load_after_install()
+-- require("lsyncer").setup()
+
