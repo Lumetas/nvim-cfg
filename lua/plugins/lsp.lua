@@ -16,6 +16,7 @@ return function(lnpm)
 
 
 		vim.lsp.enable({"intelephense", "ts_ls"})
+		-- vim.lsp.enable({"ts_ls", "phpactor"})
 		vim.diagnostic.config({
 			virtual_text = false,  -- Отключаем виртуальный текст в коде
 			signs = true,          -- Включаем значки на номерах строк
