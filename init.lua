@@ -12,7 +12,9 @@ require('settings')
 
 require("plugins/nvim-tree")(lnpm)
 require("plugins/oil")(lnpm)
-require("plugins/cmp")(lnpm)
+-- require("plugins/cmp")(lnpm)
+require("complete-hotkeys")
+
 require("plugins/lsp")(lnpm)
 require("plugins/telescope")(lnpm)
 -- require("plugins/ufo")(lnpm)
