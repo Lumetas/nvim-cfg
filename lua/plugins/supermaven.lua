@@ -2,7 +2,7 @@ return function (lnpm)
 	lnpm.load('supermaven-inc/supermaven-nvim', function(supermaven)
 		supermaven.setup({
 			keymaps = {
-				accept_suggestion = "<C-i>",
+				accept_suggestion = "<C-k>",
 				clear_suggestion = "<C-c>",
 				accept_word = "<C-j>",
 			},
