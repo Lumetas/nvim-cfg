@@ -2,7 +2,6 @@ require("lnpmInstaller")
 lnpm = require("lnpm")
 
 require("plugins/custom")(lnpm)
-
 org_path = '~/org/'
 
 require("themes")(lnpm)
@@ -53,3 +52,4 @@ vim.g.neovide_opacity = 0.75
 -- lnpm.load_after_install()
 -- require("lsyncer").setup()
 
+require('env').setup()
