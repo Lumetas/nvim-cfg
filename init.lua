@@ -2,7 +2,7 @@ require("lnpmInstaller")
 lnpm = require("lnpm")
 
 require("plugins/custom")(lnpm)
-org_path = '~/org/'
+-- org_path = '~/org/'
 
 require("themes")(lnpm)
 
@@ -18,7 +18,7 @@ require("plugins/lsp")(lnpm)
 require("plugins/telescope")(lnpm)
 -- require("plugins/ufo")(lnpm)
 require("plugins/hop")(lnpm)
-require('scratch')
+-- require('scratch')
 -- require("plugins/startup")(lnpm)
 require("plugins/whichkey")(lnpm)
 
@@ -27,7 +27,7 @@ require("plugins/whichkey")(lnpm)
 
 require("plugins/git")(lnpm)
 
-require('plugins/orgmode')(lnpm)
+-- require('plugins/orgmode')(lnpm)
 require('plugins/supermaven')(lnpm)
 
 require('plugins/dap')(lnpm)
@@ -38,10 +38,10 @@ require('statusline')
 
 
 require('plugins/lumprojects')(lnpm)
-require('plugins/lqc')(lnpm)
+-- require('plugins/lqc')(lnpm)
 require('plugins/http')(lnpm)
 require('plugins/sql')(lnpm)
-require('plugins/lsyncer')(lnpm)
+-- require('plugins/lsyncer')(lnpm)
 
 require("hotkeys")
 
