@@ -46,6 +46,7 @@ require('plugins/sql')(lnpm)
 
 require("hotkeys")
 
+-- require("plugins/opencode")(lnpm)
 vim.g.neovide_opacity = 0.75
 
 -- vim.cmd('colorscheme leos')
