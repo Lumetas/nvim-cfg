@@ -128,6 +128,7 @@ return function(lnpm)
 
 		vim.api.nvim_set_keymap('n', '<leader>f/', ':Telescope current_buffer_fuzzy_find<CR>', { noremap = true , desc = "[F]ind [/] this"})
 		vim.api.nvim_set_keymap('n', '<leader>ft', ':Telescope treesitter<CR>', { noremap = true , desc = "[F]ind [T]reesitter"})
+		vim.api.nvim_set_keymap('n', '<leader>fr', ':Telescope quickfix<CR>', { noremap = true , desc = "[F]ind [R]efind"})
 		vim.api.nvim_set_keymap('n', '<leader>fls', ':Telescope lsp_document_symbols<CR>', { noremap = true , desc = "[F]ind [L]sp [S]ymbols"})
 
 
