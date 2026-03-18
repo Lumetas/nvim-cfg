@@ -11,6 +11,7 @@ end
 return function(lnpm)
 
   lnpm.load('nvim-tree/nvim-tree.lua', function(tree)
+	lnpm.load('nvim-tree/nvim-web-devicons', nil)
     tree.setup({
       git = {
         enable = true,

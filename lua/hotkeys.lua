@@ -40,13 +40,7 @@ vim.api.nvim_set_keymap('n', 'd', '"_d', { noremap = true })
 vim.api.nvim_set_keymap('n', 'x', 'd', { noremap = true })
 
 
--- vim.api.nvim_set_keymap('n', '<C-p>h', ':LumSNhtml<CR>', { noremap = true })
--- vim.api.nvim_set_keymap('n', '<C-p>c', ':LumSNcss<CR>', { noremap = true })
--- vim.api.nvim_set_keymap('n', '<C-p>j', ':LumSNjs<CR>', { noremap = true })
-
-vim.keymap.set('n', 'gp', function()
-	vim.cmd('b#')
-end, { noremap = true, desc = 'Go to previous buffer' })
+vim.keymap.set('n', 'gp', '<C-6>', { noremap = true, desc = 'Go to previous buffer' })
 
 
 vim.api.nvim_set_keymap('n', '<leader>st', ':diffthis<CR>', { noremap = true, desc = 'Open Diff' })
@@ -125,6 +119,10 @@ vim.api.nvim_set_keymap('n', '<C-j>', '5j', { noremap = true, desc = 'Move down 
 
 vim.api.nvim_set_keymap('n', '<leader>mv', ':normal `1v`2<CR>',  { noremap = true, desc = 'Select from 1 to 2 marks' })
 
-
-
 vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float, { noremap = true, desc = "Show diagnostics", silent = true, buffer = bufnr })
+
+local hyperlinks = require('hyperlinks')
+local clipboard = require('clipboard')
+
+vim.keymap.set('n', '<leader>cp', hyperlinks.copyFilePath, { desc = 'Copy file path' })
+vim.keymap.set('n', '<leader>cl', hyperlinks.copyFilePathAndString, { desc = 'Copy file path with line' })
