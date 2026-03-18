@@ -60,7 +60,7 @@ vim.keymap.set({'n', 'v'}, '<leader>y', function()
         reg = string.char(reg)
     end
 	LAST_REGISTER = reg
-    
+
 	print("Yank to " .. reg)
     if vim.fn.mode() == 'n' then
         -- Нормальный режим: "ayy
@@ -76,11 +76,11 @@ vim.keymap.set({'n', 'v'}, '<leader>y<leader>', function()
 		if vim.fn.mode() == 'n' then
 			print ("Yank to " .. string.upper(LAST_REGISTER))
 			return '"' .. string.upper(LAST_REGISTER) .. 'yy'
-		else 
+		else
 			print ("Yank to " .. string.upper(LAST_REGISTER))
 			return '"' .. string.upper(LAST_REGISTER) .. 'y'
 		end
-	else 
+	else
 		print ("Last register is not set")
 	end
 end, {expr = true, desc = "Yank to last register"})
@@ -109,7 +109,7 @@ vim.api.nvim_set_keymap('n', '<Leader><leader>q', ':q!<CR>', { noremap = true, d
 
 
 
-vim.api.nvim_set_keymap('n', '<leader>m', '', { noremap = true, desc = 'Move' }) 
+vim.api.nvim_set_keymap('n', '<leader>m', '', { noremap = true, desc = 'Move' })
 vim.api.nvim_set_keymap('n', '<leader>mj', ':HopLine<CR>', { noremap = true, desc = 'Move to line' })
 vim.api.nvim_set_keymap('n', '<leader>mn', ':cnext<CR>', { noremap = true, desc = 'Move to next match' })
 vim.api.nvim_set_keymap('n', '<leader>mp', ':cprev<CR>', { noremap = true, desc = 'Move to previous match' })
@@ -126,3 +126,5 @@ local clipboard = require('clipboard')
 
 vim.keymap.set('n', '<leader>cp', hyperlinks.copyFilePath, { desc = 'Copy file path' })
 vim.keymap.set('n', '<leader>cl', hyperlinks.copyFilePathAndString, { desc = 'Copy file path with line' })
+
+vim.keymap.set('n', '<leader>x', 'x', { noremap = true, desc = 'Delete without yanking' })

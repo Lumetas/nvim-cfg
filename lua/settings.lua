@@ -9,6 +9,7 @@ vim.opt.relativenumber = true
 vim.opt.autoindent = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
+vim.g.editorconfig = true 
 vim.opt.iminsert = 0
 vim.opt.smarttab = true
 vim.opt.softtabstop = 4

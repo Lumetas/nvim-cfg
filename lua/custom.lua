@@ -627,3 +627,37 @@ vim.cmd([[function! CT(char) abort
         return strpart(current_line, cursor_col, char_pos - cursor_col)
     endif
 endfunction]])
+
+
+vim.api.nvim_create_user_command('GenEC', function()
+    -- Вытягиваем настройки прямо из текущего буфера
+    local indent_type = vim.bo.expandtab and "space" or "tab"
+    local indent_size = vim.bo.shiftwidth ~= 0 and vim.bo.shiftwidth or vim.bo.tabstop
+    
+    -- Берем textwidth, если 0 (не задано) — ставим стандартные 80 или 120
+    local max_line = vim.bo.textwidth ~= 0 and vim.bo.textwidth or 120
+
+    local lines = {
+        "root = true",
+        "",
+        "[*]",
+        "charset = utf-8",
+        "end_of_line = lf",
+        "insert_final_newline = true",
+        "trim_trailing_whitespace = true",
+        "indent_style = " .. indent_type,
+        "indent_size = " .. indent_size,
+        "max_line_length = " .. max_line, -- Теперь динамика!
+        "",
+        "[*.md]",
+        "trim_trailing_whitespace = false",
+        "",
+        "[Makefile]",
+        "indent_style = tab",
+        "indent_size = 4"
+    }
+
+    local path = vim.fn.getcwd() .. "/.editorconfig"
+    vim.fn.writefile(lines, path)
+    print("✅ .editorconfig (max_line=" .. max_line .. ") создан!")
+end, {})
