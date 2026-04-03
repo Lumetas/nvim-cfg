@@ -127,4 +127,5 @@ local clipboard = require('clipboard')
 vim.keymap.set('n', '<leader>cp', hyperlinks.copyFilePath, { desc = 'Copy file path' })
 vim.keymap.set('n', '<leader>cl', hyperlinks.copyFilePathAndString, { desc = 'Copy file path with line' })
 
-vim.keymap.set('n', '<leader>x', 'x', { noremap = true, desc = 'Delete without yanking' })
+vim.keymap.set('n', '<leader>x', 'x', { noremap = true, desc = 'Cut' })
+vim.keymap.set('n', '<C-c>', '<C-a>', { noremap = true, desc = 'Increase number' })
