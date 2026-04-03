@@ -128,4 +128,4 @@ vim.keymap.set('n', '<leader>cp', hyperlinks.copyFilePath, { desc = 'Copy file p
 vim.keymap.set('n', '<leader>cl', hyperlinks.copyFilePathAndString, { desc = 'Copy file path with line' })
 
 vim.keymap.set('n', '<leader>x', 'x', { noremap = true, desc = 'Cut' })
-vim.keymap.set('n', '<C-c>', '<C-a>', { noremap = true, desc = 'Increase number' })
+vim.keymap.set({ 'n', 'v', 'i' }, '<C-c>', '<C-a>', { noremap = true, desc = 'Increase number' })
