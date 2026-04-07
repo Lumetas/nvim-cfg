@@ -117,6 +117,12 @@ vim.api.nvim_set_keymap('n', '<leader>mp', ':cprev<CR>', { noremap = true, desc 
 vim.api.nvim_set_keymap('n', '<C-k>', '5k', { noremap = true, desc = 'Move up 5 lines' })
 vim.api.nvim_set_keymap('n', '<C-j>', '5j', { noremap = true, desc = 'Move down 5 lines' })
 
+vim.api.nvim_set_keymap('v', '<C-k>', ":'<,'>move '<-2<CR>gv", 
+  { noremap = true, desc = 'Move selected lines up' })
+
+vim.api.nvim_set_keymap('v', '<C-j>', ":'<,'>move '>+1<CR>gv", 
+  { noremap = true, desc = 'Move selected lines down' })
+
 vim.api.nvim_set_keymap('n', '<leader>mv', ':normal `1v`2<CR>',  { noremap = true, desc = 'Select from 1 to 2 marks' })
 
 vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float, { noremap = true, desc = "Show diagnostics", silent = true, buffer = bufnr })
