@@ -3,7 +3,7 @@ return function(lnpm)
         lnpm.load('hrsh7th/cmp-nvim-lsp')
         lnpm.load('hrsh7th/cmp-buffer')
         lnpm.load('hrsh7th/cmp-path')
-        lnpm.load('hrsh7th/cmp-cmdline')
+        -- lnpm.load('hrsh7th/cmp-cmdline')
         
         local cmp = require("cmp")
         
@@ -44,24 +44,6 @@ return function(lnpm)
                 fetching_timeout = 500,
             },
         })
-        
-        -- Настройка автодополнения для командной строки
-        cmp.setup.cmdline({ '/', '?' }, {
-            mapping = cmp.mapping.preset.cmdline(),
-            sources = {
-                { name = 'buffer' }
-            }
-        })
-        
-        cmp.setup.cmdline(':', {
-            mapping = cmp.mapping.preset.cmdline(),
-            sources = cmp.config.sources({
-                { name = 'path' }
-            }, {
-                { name = 'cmdline' }
-            })
-        })
-
         
     end, {lrule = function(next) vim.defer_fn(next, 2000) end})
 end
