@@ -1,15 +1,15 @@
-vim.lsp.config('ts_ls', {
-	cmd = { "typescript-language-server", "--stdio" },
-	root_markers = { 'package.json', 'tsconfig.json', 'jsconfig.json', '.git' },
-})
-
-vim.lsp.config('intelephense', {
-	cmd = { "intelephense", "--stdio" },
-	root_markers = { '.git', 'composer.json' },
-})
+-- vim.lsp.config('ts_ls', {
+-- 	cmd = { "typescript-language-server", "--stdio" },
+-- 	root_markers = { 'package.json', 'tsconfig.json', 'jsconfig.json', '.git' },
+-- })
+--
+-- vim.lsp.config('intelephense', {
+-- 	cmd = { "intelephense", "--stdio" },
+-- 	root_markers = { '.git', 'composer.json' },
+-- })
 
 -- 2. Включаем серверы
-vim.lsp.enable({ "intelephense", "ts_ls" })
+vim.lsp.enable({ "intelephense", "ts_ls", "html" })
 
 -- 3. Настройка диагностики
 vim.diagnostic.config({

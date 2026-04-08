@@ -11,8 +11,8 @@ require('settings')
 
 require("plugins/nvim-tree")(lnpm)
 require("plugins/oil")(lnpm)
--- require("plugins/cmp")(lnpm)
-require("complete-hotkeys")
+require("plugins/cmp")(lnpm)
+-- require("complete-hotkeys")
 
 -- require("plugins/lsp")(lnpm)
 require("lsp")

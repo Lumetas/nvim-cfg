@@ -24,7 +24,7 @@ return function(lnpm)
             sources = cmp.config.sources({
                 { 
                     name = "nvim_lsp",
-                    keyword_pattern = [=[[\%(\$\k*\)\|\k\+]]=],
+                    -- keyword_pattern = [=[[\%(\$\k*\)\|\k\+]]=],
                 },
                 { 
                     name = "buffer",
