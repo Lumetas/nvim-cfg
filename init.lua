@@ -55,3 +55,6 @@ vim.g.neovide_opacity = 0.75
 -- require("lsyncer").setup()
 
 require('env').setup()
+
+
+require('plugins/treesitter')(lnpm)

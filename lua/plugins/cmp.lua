@@ -12,10 +12,11 @@ return function(lnpm)
                 completeopt = "menu,menuone,noinsert,noselect",
                 keyword_length = 1,
             },
+
             
             mapping = cmp.mapping.preset.insert({
 				['<C-space>'] = cmp.mapping.complete(),
-                ["<C-CR>"] = cmp.mapping.confirm({ select = true }),
+                ["<C-h>"] = cmp.mapping.confirm({ select = true }),
                 ["<C-n>"] = cmp.mapping.select_next_item(),
                 ["<C-p>"] = cmp.mapping.select_prev_item(),
                 

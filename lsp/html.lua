@@ -1,7 +1,7 @@
 return {
 	cmd = { "vscode-html-language-server", "--stdio" },
 
-	filetypes = { "html", "handlebars", "htmldjango" },
+	filetypes = { "html", "handlebars", "htmldjango", "css", "scss" },
 
 	-- Маркеры корня проекта
 	root_markers = { "package.json", ".git" },
