@@ -1,14 +1,3 @@
--- vim.lsp.config('ts_ls', {
--- 	cmd = { "typescript-language-server", "--stdio" },
--- 	root_markers = { 'package.json', 'tsconfig.json', 'jsconfig.json', '.git' },
--- })
---
--- vim.lsp.config('intelephense', {
--- 	cmd = { "intelephense", "--stdio" },
--- 	root_markers = { '.git', 'composer.json' },
--- })
-
--- 2. Включаем серверы
 vim.lsp.enable({ "intelephense", "ts_ls", "html" })
 
 -- 3. Настройка диагностики
@@ -47,14 +36,3 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
--- Команда LspRestart (нативная для 0.11+, эмуляция для 0.10)
--- vim.api.nvim_create_user_command('LspRestart', function()
--- 	vim.cmd('silent! lsp restart') 
--- end, { desc = 'Restart LSP servers' })
---
--- vim.api.nvim_create_autocmd('DirChanged', {
--- 	pattern = '*',
--- 	callback = function()
--- 		vim.cmd('LspRestart')
--- 	end,
--- })
