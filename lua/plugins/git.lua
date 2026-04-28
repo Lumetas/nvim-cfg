@@ -10,28 +10,6 @@ return function(lnpm)
 		vim.api.nvim_set_keymap('n', '<Leader>gg', ':G ', { noremap = true, desc = 'Git custom'})
 
 
-		vim.api.nvim_set_keymap('n', '<Leader>gC', '', { noremap = true, desc = 'Git config'})
-
-
-
-		vim.api.nvim_set_keymap('n', '<Leader>gCem', ':G config user.email lumetas506@gmail.com | echo "set main email"<CR>', { noremap = true, desc = 'Set main email'})
-		vim.api.nvim_set_keymap('n', '<Leader>gCew', ':G config user.email p.teplyakov@emfy.com | echo "set work email"<CR>', { noremap = true, desc = 'Set work email'})
-		vim.api.nvim_set_keymap('n', '<Leader>gCe', ':G config user.email<CR>', { noremap = true, desc = 'Email'})
-
-
-
-
-		vim.api.nvim_set_keymap('n', '<Leader>gCnm', ':G config user.name Lumetas | echo "set main name"<CR>', { noremap = true, desc = 'Set main name'})
-		vim.api.nvim_set_keymap('n', '<Leader>gCnw', ':G config user.name Pavel | echo "set work name"<CR>', { noremap = true, desc = 'Set work name'})
-		vim.api.nvim_set_keymap('n', '<Leader>gCn', ':G config user.name<CR>', { noremap = true, desc = 'Name'})
-
-
-		vim.api.nvim_set_keymap('n', '<Leader>gCb', '', { noremap = true, desc = 'Set config bundle'})
-		vim.keymap.set('n', '<leader>gCbm', ':G config user.name Lumetas | G config user.email lumetas506@gmail.com | echo "set main bundle"<CR>', { noremap = true, desc = 'Set main bundle'})
-		vim.keymap.set('n', '<leader>gCbw', ':G config user.name Pavel | G config user.email p.teplyakov@emfy.com | echo "set work bundle"<CR>', { noremap = true, desc = 'Set work bundle'})
-
-
-
 
 		vim.api.nvim_set_keymap('n', '<Leader>ge', '', { noremap = true, desc = 'Git edit'})
 		vim.keymap.set('n', '<leader>gel', function()
