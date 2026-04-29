@@ -1,4 +1,4 @@
-vim.lsp.enable({ "intelephense", "ts_ls", "html" })
+vim.lsp.enable({ "intelephense", "ts_ls", "html", "vue_ls", "pyright" })
 
 -- 3. Настройка диагностики
 vim.diagnostic.config({
