@@ -27,7 +27,7 @@ brew install fd
 pacman -S fd
 apk add fd
 dnf install fd-find
-apt istall fd
+apt install fd
 
 dnf copr enable tkbcopr/fd
 dnf install fd
