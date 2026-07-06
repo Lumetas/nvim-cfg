@@ -534,6 +534,12 @@ vim.cmd([[function! CT(char) abort
     endif
 endfunction]])
 
+vim.cmd([[
+    function! Sm(num) abort
+        return submatch(a:num)
+    endfunction
+]])
+
 
 vim.api.nvim_create_user_command('GenEC', function()
     -- Вытягиваем настройки прямо из текущего буфера
