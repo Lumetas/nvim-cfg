@@ -15,6 +15,12 @@ function OpenTerminalWithCommand(cmd)
 end
 
 
+-- Коммандная строка хоткеи
+vim.keymap.set('c', '<C-h>', '<Left>',   { desc = 'cmdline: символ влево' })
+vim.keymap.set('c', '<C-l>', '<Right>',  { desc = 'cmdline: символ вправо' })
+vim.keymap.set('c', '<C-d>', '<C-\\>e ""<CR>', { desc = 'cmdline: очистить всё' })
+vim.keymap.set('c', '<C-b>', '<S-Left>',  { desc = 'cmdline: слово назад' })
+vim.keymap.set('c', '<C-w>', '<S-Right>', { desc = 'cmdline: слово вперёд' })
 
 vim.api.nvim_create_user_command('Format', function()
     local filetype = vim.bo.filetype
