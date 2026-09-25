@@ -63,3 +63,5 @@ require('plugins/conflicts')(lnpm)
 require('plugins/gitsigns')(lnpm)
 -- require('plugins/hard')(lnpm)
 -- require('plugins/neorg')(lnpm)
+
+require('a4f').setup({})
