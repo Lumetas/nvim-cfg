@@ -425,14 +425,25 @@ function M.execute(cmd, param, data, plugin)
     return header .. "\n---\n" .. table.concat(lines, "\n")
 
   elseif cmd == "goto" then
-    local l, c = param:match("^(%d+):(%d+)$")
-    if not l then l = param:match("^(%d+)$"); c = "1" end
+    -- Accept optional "path:line[:col]", "line:col", or "line".
+    local l, c
+    local p_l, p_c = param:match(":(%d+):(%d+)$")
+    if p_l then
+      l, c = p_l, p_c
+    else
+      local p_l2 = param:match(":(%d+)$")
+      if p_l2 then l, c = p_l2, "1"
+      else
+        l, c = param:match("^(%d+):(%d+)$")
+        if not l then l = param:match("^(%d+)$"); c = "1" end
+      end
+    end
     if l then
       local w = working_win(plugin)
       vim.api.nvim_win_set_cursor(w, { tonumber(l), tonumber(c) - 1 })
       return "Cursor -> " .. l .. ":" .. c
     end
-    return "[error] goto: bad param (expected line[:col])"
+    return "[error] goto: bad param (expected [path:]line[:col])"
 
   elseif cmd == "select" then
     local a, b = param:match("^(%d+),(%d+)$")

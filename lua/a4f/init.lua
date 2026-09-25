@@ -202,52 +202,72 @@ end
 -- ============================================================
 -- System prompts
 -- ============================================================
-local function cmd_list()
-  local list = {}
-  if not M.is_disabled("shell") then list[#list+1] = "shell - run shell command (data-style)" end
-  if not M.is_disabled("read")  then list[#list+1] = "read|path - read file (uses buffer if open)" end
-  if not M.is_disabled("write") then list[#list+1] = "write|path - write file (uses buffer if open)" end
-  if not M.is_disabled("edit")  then list[#list+1] = "edit|path - edit file (diff lines in data)" end
-  list[#list+1] = "open|path - open file in current window"
-  list[#list+1] = "split|path - horizontal split"
-  list[#list+1] = "vsplit|path - vertical split"
-  list[#list+1] = "tab|path - new tab"
-  list[#list+1] = "close - close current window"
-  list[#list+1] = "save - save current buffer"
-  list[#list+1] = "buffers - list open buffers"
-  list[#list+1] = "buf_content - current buffer content"
-  list[#list+1] = "goto|line:col - move cursor"
-  list[#list+1] = "select|start,end - visual line selection"
-  list[#list+1] = "cursor - current cursor/file info"
-  list[#list+1] = "pwd - print working directory"
-  list[#list+1] = "grep|pattern - ripgrep in cwd (or data)"
-  list[#list+1] = "find|pattern - find files by name (or data)"
-  list[#list+1] = "diagnostics - LSP diagnostics for current buffer"
-  list[#list+1] = "windows - list windows"
-  list[#list+1] = "lsp_format - format current buffer via LSP (sync)"
-  list[#list+1] = "lsp_rename|new_name - rename symbol under cursor via LSP"
-  list[#list+1] = "lsp_code_action|filter - apply code action (e.g. organize imports)"
-  list[#list+1] = "lsp_hover - hover info for symbol under cursor"
-  list[#list+1] = "lsp_definition - go to definition, returns location"
-  list[#list+1] = "lsp_references - find references of symbol under cursor"
-  list[#list+1] = "args - list arglist"
-  list[#list+1] = "args_add|paths - add file(s) to arglist (space/comma separated)"
-  list[#list+1] = "args_set|paths - replace arglist with given file(s)"
-  list[#list+1] = "args_next / args_prev - move through arglist"
-  list[#list+1] = "args_open|index - open arglist entry by index"
-  list[#list+1] = "workspace_diagnostics - diagnostics across all loaded buffers"
-  list[#list+1] = "file_diagnostics|path - diagnostics for a specific file"
-  list[#list+1] = "lsp_actions_at|path:line:col - list code actions at position"
-  list[#list+1] = "lsp_fix_at|path:line:col - apply first code action at position"
-  list[#list+1] = "lsp_fix_all|path - apply all fixable code actions in a file"
-  list[#list+1] = "chat_read - read the a4f://chat buffer"
-  list[#list+1] = "chat_write - replace the chat buffer (data)"
-  list[#list+1] = "chat_append - append text to the chat buffer (data)"
-  list[#list+1] = "ex|:cmd - run a Neovim ex-command (e.g. :e file, :bd, :set ...)"
-  list[#list+1] = "normal|keys - feed normal-mode keys (e.g. ggVG, dd)"
-  list[#list+1] = "feed|mode:keys - feed keys in mode n/v/i/t (e.g. n:gg)"
-  list[#list+1] = "selection - current/last visual selection text + range"
-  return table.concat(list, "\n")
+-- The model has NO prior knowledge of this codebase. Every prompt below must
+-- be fully self-contained: exact tag syntax, exact argument style PER COMMAND,
+-- and the exact failure modes. Grouping commands by argument style removes the
+-- #1 source of malformed calls (data-style vs param-style confusion).
+
+-- Build the COMMAND REFERENCE, grouped by argument style.
+local function cmd_reference()
+  local L = {}
+  local function add(fmt, name, desc) L[#L+1] = string.format("  " .. fmt, name, desc) end
+
+  L[#L+1] = "PARAM-STYLE  ->  <a4f-UID:cmd|PARAM></a4f-UID:cmd|PARAM>   (value AFTER the pipe, empty body)"
+  add("%-30s %s", "read|path",              "read a file (buffer content if already open)")
+  add("%-30s %s", "write|path",             "create / fully replace a file (body = new content)")
+  add("%-30s %s", "edit|path",              "apply a +/- diff (body) to a file")
+  add("%-30s %s", "open|path",              "open file in current window")
+  add("%-30s %s", "split|path",             "open file in horizontal split")
+  add("%-30s %s", "vsplit|path",            "open file in vertical split")
+  add("%-30s %s", "tab|path",               "open file in new tab")
+  add("%-30s %s", "goto|[path:]line[:col]", "move cursor; path optional")
+  add("%-30s %s", "select|start,end",       "visual line selection")
+  add("%-30s %s", "lsp_rename|new_name",    "LSP rename symbol under cursor")
+  add("%-30s %s", "lsp_code_action|filter", "apply code action whose title matches filter")
+  add("%-30s %s", "grep|pattern",           "ripgrep pattern in cwd")
+  add("%-30s %s", "find|pattern",           "find files by name substring")
+  add("%-30s %s", "args_add|paths",         "add file(s) to arglist")
+  add("%-30s %s", "args_set|paths",         "replace arglist with file(s)")
+  add("%-30s %s", "args_open|index",        "open arglist entry by index")
+  add("%-30s %s", "file_diagnostics|path",  "LSP diagnostics for one file")
+  add("%-30s %s", "lsp_actions_at|path:line:col", "list code actions at position")
+  add("%-30s %s", "lsp_fix_at|path:line:col",     "apply first code action at position")
+  add("%-30s %s", "lsp_fix_all|path",       "apply all fixable code actions in file")
+  add("%-30s %s", "ex|:cmd",                "run a Neovim ex-command")
+  add("%-30s %s", "normal|keys",            "feed normal-mode keys (e.g. ggVG, dd)")
+  add("%-30s %s", "feed|mode:keys",         "feed keys in mode n/v/i/t (e.g. n:gg)")
+
+  L[#L+1] = ""
+  L[#L+1] = "DATA-STYLE   ->  <a4f-UID:cmd>DATA</a4f-UID:cmd>   (value BETWEEN the tags, NO pipe)"
+  if not M.is_disabled("shell") then add("%-30s %s", "shell", "run a shell command (git/build/test only)") end
+  add("%-30s %s", "chat_write",  "replace the a4f://chat buffer")
+  add("%-30s %s", "chat_append", "append text to the a4f://chat buffer")
+
+  L[#L+1] = ""
+  L[#L+1] = "NO-ARG       ->  <a4f-UID:cmd></a4f-UID:cmd>   (no pipe, no body)"
+  local noarg = {
+    {"pwd", "print working directory"},
+    {"cursor", "current file + cursor position"},
+    {"buffers", "list open buffers"},
+    {"windows", "list windows"},
+    {"buf_content", "content of current buffer"},
+    {"save", "save current buffer"},
+    {"close", "close current window"},
+    {"diagnostics", "LSP diagnostics for current buffer"},
+    {"lsp_format", "format current buffer via LSP (sync)"},
+    {"lsp_hover", "hover info for symbol under cursor"},
+    {"lsp_definition", "go to definition"},
+    {"lsp_references", "find references of symbol under cursor"},
+    {"args", "list arglist"},
+    {"args_next", "next arglist entry"},
+    {"args_prev", "previous arglist entry"},
+    {"workspace_diagnostics", "diagnostics across all loaded buffers"},
+    {"selection", "current/last visual selection text + range"},
+    {"chat_read", "read the a4f://chat buffer"},
+  }
+  for _, it in ipairs(noarg) do add("%-30s %s", it[1], it[2]) end
+
+  return table.concat(L, "\n")
 end
 
 local function full_prompt()
@@ -263,6 +283,7 @@ local function full_prompt()
 
   return ([[
 You are an AI agent embedded in Neovim. You act on the user's editor, not just files.
+You have NO prior knowledge of this tool. Everything you need is below — read it once, then act.
 
 ENVIRONMENT:
 - cwd: %s
@@ -270,96 +291,113 @@ ENVIRONMENT:
 - host: %s
 - editor: Neovim %s
 %s
-=== HARD RULES ===
-- ONE command per response. NEVER more than one.
-- 1-2 sentences of text, then ONE command block, then STOP.
-- Never write text after closing tag.
-- NEVER guess file content. Always read first.
-- NEVER send an empty command. `shell` needs a non-empty command string.
-- If a tool returns "[error] ...", do NOT repeat the same broken call — fix the args.
+=== RESPONSE SHAPE (non-negotiable) ===
+- Write 1-2 short sentences, then EXACTLY ONE command, then stop.
+- The command is one XML-like tag:
+    <a4f-XXXXXXXX:COMMAND|PARAM>DATA</a4f-XXXXXXXX:COMMAND|PARAM>
+  - XXXXXXXX = any 8 random alphanumerics (unique per message).
+  - COMMAND  = tool name (see reference below).
+  - PARAM    = the pipe-argument (may be empty or omitted entirely).
+  - DATA     = the body between the tags (may be empty).
+- The closing tag MUST mirror the opening tag exactly, with `<` replaced by `</`.
+- Nothing after the closing tag. No markdown code fences. No second command.
 
-=== PATH RULES (VERY IMPORTANT) ===
-- read, write, edit, open, split, vsplit, tab REQUIRE a |param (a path).
-- NEVER emit <a4f-UID:edit|></a4f-UID:edit|> or <a4f-UID:write|> without a path.
-- If you don't know the file path, FIRST call `cursor` (returns "file=...") or `buffers`.
-- NEVER write to a4f://chat. That buffer is the chat itself; you cannot edit it.
+=== ARGUMENT STYLE (the #1 failure mode) ===
+There are exactly three styles. Using the wrong one produces "[error] unknown command"
+or an empty/misparsed argument.
 
-=== EDIT SEMANTICS ===
-- `edit` diff: (-) lines must EXIST VERBATIM in the file (one contiguous block).
-  (+) lines replace them. If the (-) block is not found, the edit fails.
-- To create a new file or replace a whole file: use `write` with full content.
-- To append lines to an existing file: use `edit` with only (+) lines.
+1) PARAM-STYLE — value goes AFTER the pipe; leave the body empty:
+     <a4f-ab12cd34:read|src/main.lua></a4f-ab12cd34:read|src/main.lua>
 
-=== TOOL PRIORITY (highest first) ===
-1. buf_content / read     -> inspect content
-2. edit / write           -> modify content
-3. open / split / vsplit / tab / goto / select / cursor / buffers / windows / pwd
-4. lsp_format / lsp_rename / lsp_code_action / lsp_hover / lsp_definition / lsp_references / diagnostics
-5. shell                  -> ONLY if no nvim equivalent (git, build, test)
-   ls -> buffers/find ; cat -> read ; sed/awk edits -> edit ; formatters -> lsp_format
+2) DATA-STYLE — value goes BETWEEN the tags; no pipe:
+     <a4f-ab12cd34:shell>git status --short</a4f-ab12cd34:shell>
 
-=== ARGUMENT STYLE ===
-- data-style  (arg between tags): shell, grep, find, write, edit
-- param-style (arg after `|`):   read, open, split, vsplit, tab, goto, select,
-                                 lsp_rename, lsp_code_action
+3) NO-ARG — no pipe, no body:
+     <a4f-ab12cd34:pwd></a4f-ab12cd34:pwd>
 
-=== COMMAND FORMAT ===
-<a4f-XXXXXXXX:COMMAND|PARAM>DATA</a4f-XXXXXXXX:COMMAND|PARAM>
-XXXXXXXX = 8 random alnum chars.
-Close tag = copy of the open tag with `<` replaced by `</`.
-For data-style commands (shell, grep, find, write, edit), close tag has NO extra `|`.
-For param-style commands, close tag repeats the |param.
-
-=== EXAMPLES ===
+=== EXACT EXAMPLES (copy the shape) ===
 Pwd:
 <a4f-a1b2c3d4:pwd></a4f-a1b2c3d4:pwd>
 
-Read file:
+Read a file:
 <a4f-q1w2e3r4:read|src/main.php></a4f-q1w2e3r4:read|src/main.php>
 
-Create/replace file:
+Create/replace a file (body = full new content):
 <a4f-b7c8d9e0:write|src/main.php>
 <?php
 // full content here
 </a4f-b7c8d9e0:write|src/main.php>
 
-Edit file (change one block):
+Edit one block (body = `-` old lines VERBATIM, then `+` new lines):
 <a4f-m3n4o5p6:edit|src/main.php>
--<?php
-+<?php
-+
-+function bubbleSort(array $arr): array { /* ... */ }
+-old line A
+-old line B
++new line A
++new line B
 </a4f-m3n4o5p6:edit|src/main.php>
 
-Format via LSP (after edit):
+Move cursor (path optional):
+<a4f-z9y8x7w6:goto|src/main.php:42></a4f-z9y8x7w6:goto|src/main.php:42>
+
+Format via LSP:
 <a4f-z9y8x7w6:lsp_format></a4f-z9y8x7w6:lsp_format>
 
-=== REFACTOR WORKFLOW ===
-1. cursor or buffers -> learn the current file path.
-2. read|path         -> see the code.
-3. write|path (whole file) OR edit|path (single -/+ block).
-4. lsp_format        -> format via LSP. NEVER use stylua/gofmt/prettier via shell.
-5. diagnostics       -> confirm nothing is broken.
-6. Plain text answer, NO tags.
+=== EDIT SEMANTICS (critical) ===
+- The `-` lines in an edit body MUST exist in the file VERBATIM, as ONE contiguous
+  block, in order. If they don't match, the edit fails: "[error] edit: old block not found".
+  ALWAYS read the file before editing it.
+- To add lines without removing any: send only `+` lines (append form).
+- To create a new file or fully rewrite one: use write|path, never edit.
+
+=== PATHS ===
+- read/write/edit/open/split/vsplit/tab REQUIRE a non-empty |path.
+- If you don't know the file path, run `cursor` (returns "file=...") or `buffers` first.
+- NEVER write to a4f://chat; use chat_write / chat_append instead.
+
+=== WHEN THINGS FAIL ===
+- If a tool returns "[error] ...", do NOT resend the same call. Change the
+  arguments based on the error text.
+- Empty `shell` body is an error; always give it a real command.
+
+=== WORKFLOW (default) ===
+1. cursor / buffers   -> learn where the user is.
+2. read|path          -> see the real content before editing.
+3. write|path (whole file) OR edit|path (one +/- block).
+4. lsp_format         -> format via LSP. NEVER call stylua/gofmt/prettier via shell.
+5. diagnostics        -> confirm nothing broke.
+6. When done, reply in plain text with NO tags.
+
+=== COMMAND REFERENCE ===
+%s
 
 === NEVER ===
-- multiple commands
-- markdown fences
-- text after closing tag
+- more than one command per reply
+- markdown fences around the tag
+- text after the closing tag
 - empty shell command
 - edit/write without a path
 - writing to a4f://chat
-- repeating a call that returned [error]
-]]):format(cwd, user, host, vim.version().major .. "." .. vim.version().minor, agents, cmd_list())
+- repeating a call that already returned [error]
+]]):format(cwd, user, host,
+           vim.version().major .. "." .. vim.version().minor,
+           agents, cmd_reference())
 end
 
 local function short_prompt()
   return table.concat({
-    "REMINDER:",
-    "- ONE command per response, 1-2 sentences, then ONE <a4f-XXXX:cmd|param>...</a4f-XXXX:cmd|param>, then STOP.",
-    "- read/write/edit/open/split/tab REQUIRE a non-empty |path.",
-    "- Never write to a4f://chat.",
-    "- If a tool returned [error], do NOT repeat it — change the args.",
+    "REMINDER (same rules as the full system message):",
+    "- 1-2 sentences + EXACTLY ONE tag, then STOP. Nothing after the tag.",
+    "- Tag: <a4f-XXXXXXXX:cmd|param>DATA</a4f-XXXXXXXX:cmd|param> (8 random alnum; close tag mirrors open).",
+    "- PARAM-STYLE (value after |, empty body): read, write, edit, open, split, vsplit, tab,",
+    "  goto, select, grep, find, lsp_rename, lsp_code_action, args_add, args_set, args_open,",
+    "  file_diagnostics, lsp_actions_at, lsp_fix_at, lsp_fix_all, ex, normal, feed.",
+    "- DATA-STYLE (value between tags, no |): shell, chat_write, chat_append.",
+    "- NO-ARG: pwd, cursor, buffers, windows, buf_content, save, close, diagnostics,",
+    "  lsp_format, lsp_hover, lsp_definition, lsp_references, args, args_next, args_prev,",
+    "  workspace_diagnostics, selection, chat_read.",
+    "- read/write/edit/open/split/vsplit/tab need a non-empty |path; unknown path -> cursor/buffers first.",
+    "- edit: `-` lines must match the file verbatim (one contiguous block); `+` lines replace them.",
+    "- Never write to a4f://chat. Never repeat a call that returned [error] — change the args.",
     "- Prefer read/edit/buf_content/lsp_* over shell.",
   }, "\n")
 end
@@ -442,17 +480,22 @@ local function run_iteration(user_msg, is_cmd_result, cb)
           if raw:find("<a4f%-") then
             local snippet = raw:match("<a4f%-[^\n]*") or ""
             M.append_chat("[a4f] malformed command — asking AI to retry\n")
+            -- Send as a NON-command-result so the model gets the format reminder.
             step(
               "[System] Your previous message contained a malformed <a4f-...> tag:\n" ..
               snippet .. "\n" ..
               "Exact format: <a4f-XXXXXXXX:cmd|param>DATA</a4f-XXXXXXXX:cmd|param>. " ..
               "Close tag must mirror the open tag. For `edit`/`write`, the |path MUST be non-empty. " ..
               "Send ONE command, nothing after it.",
-              true
+              false
             )
             return
           end
-          finish(nil)
+          if raw == "" then
+            finish("[a4f] empty AI reply (no text, no command)")
+          else
+            finish(nil)
+          end
           return
         end
 
@@ -604,8 +647,8 @@ function M.do_task(prompt)
   end
   if not busy_guard() then return end
 
-  -- Make sure the chat output is visible WITHOUT stealing focus.
-  M.show_chat_passive()
+  -- Ensure the chat buffer exists so logs are recorded, but do NOT open a window.
+  M.ensure_chat_buf()
 
   local full = prompt
   local ctx = describe_context()
