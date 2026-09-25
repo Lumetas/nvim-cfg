@@ -498,6 +498,46 @@ function M.execute(cmd, param, data, plugin)
     return with_context_win(plugin, lsp_references)
   end
 
+  -- extended tools (arglist + advanced LSP)
+  local extra = require("a4f.extra")
+  if cmd == "args" then
+    return extra.args_list()
+  elseif cmd == "args_add" then
+    return extra.args_add(param)
+  elseif cmd == "args_set" then
+    return extra.args_set(param)
+  elseif cmd == "args_next" then
+    return extra.args_next()
+  elseif cmd == "args_prev" then
+    return extra.args_prev()
+  elseif cmd == "args_open" then
+    return extra.args_open(param)
+  elseif cmd == "workspace_diagnostics" then
+    return extra.workspace_diagnostics()
+  elseif cmd == "file_diagnostics" then
+    return extra.file_diagnostics(plugin, param)
+  elseif cmd == "lsp_actions_at" then
+    return extra.lsp_actions_at(param)
+  elseif cmd == "lsp_fix_at" then
+    return extra.lsp_fix_at(param)
+  elseif cmd == "lsp_fix_all" then
+    return extra.lsp_fix_all(param)
+  elseif cmd == "chat_read" then
+    return extra.chat_read(plugin)
+  elseif cmd == "chat_write" then
+    return extra.chat_write(plugin, data)
+  elseif cmd == "chat_append" then
+    return extra.chat_append(plugin, data)
+  elseif cmd == "ex" then
+    return extra.ex(param ~= "" and param or data)
+  elseif cmd == "normal" then
+    return extra.normal(param ~= "" and param or data)
+  elseif cmd == "feed" then
+    return extra.feed(param ~= "" and param or data)
+  elseif cmd == "selection" then
+    return extra.selection()
+  end
+
   return "[error] unknown command: " .. cmd
 end
 

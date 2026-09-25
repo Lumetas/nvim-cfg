@@ -230,6 +230,23 @@ local function cmd_list()
   list[#list+1] = "lsp_hover - hover info for symbol under cursor"
   list[#list+1] = "lsp_definition - go to definition, returns location"
   list[#list+1] = "lsp_references - find references of symbol under cursor"
+  list[#list+1] = "args - list arglist"
+  list[#list+1] = "args_add|paths - add file(s) to arglist (space/comma separated)"
+  list[#list+1] = "args_set|paths - replace arglist with given file(s)"
+  list[#list+1] = "args_next / args_prev - move through arglist"
+  list[#list+1] = "args_open|index - open arglist entry by index"
+  list[#list+1] = "workspace_diagnostics - diagnostics across all loaded buffers"
+  list[#list+1] = "file_diagnostics|path - diagnostics for a specific file"
+  list[#list+1] = "lsp_actions_at|path:line:col - list code actions at position"
+  list[#list+1] = "lsp_fix_at|path:line:col - apply first code action at position"
+  list[#list+1] = "lsp_fix_all|path - apply all fixable code actions in a file"
+  list[#list+1] = "chat_read - read the a4f://chat buffer"
+  list[#list+1] = "chat_write - replace the chat buffer (data)"
+  list[#list+1] = "chat_append - append text to the chat buffer (data)"
+  list[#list+1] = "ex|:cmd - run a Neovim ex-command (e.g. :e file, :bd, :set ...)"
+  list[#list+1] = "normal|keys - feed normal-mode keys (e.g. ggVG, dd)"
+  list[#list+1] = "feed|mode:keys - feed keys in mode n/v/i/t (e.g. n:gg)"
+  list[#list+1] = "selection - current/last visual selection text + range"
   return table.concat(list, "\n")
 end
 
@@ -377,7 +394,18 @@ local function send_message(msg, is_command_result, cb)
 
   http_request("POST", "/chats/" .. M.state.chat_id .. "/messages", data, function(res, err)
     if err then cb(nil, err) return end
-    cb(res.last_ai_message or "", nil)
+    if type(res) ~= "table" then
+      cb(nil, "malformed API response: " .. vim.inspect(res)); return
+    end
+    local reply = res.last_ai_message
+    if reply == nil then
+      reply = res.message or res.content or res.reply
+    end
+    if reply == nil then
+      cb(nil, "API response missing 'last_ai_message' field: " ..
+             vim.inspect(res):sub(1, 400)); return
+    end
+    cb(reply, nil)
   end)
 end
 
@@ -523,6 +551,51 @@ function M.chat(prompt)
   end)
 end
 
+-- Build a rich context prefix describing where the user is and what is selected.
+local function describe_context()
+  update_context()
+  local parts = {}
+  local buf = M.state.context_buf
+  local win = M.state.context_win
+  if buf and vim.api.nvim_buf_is_valid(buf) then
+    local name = vim.api.nvim_buf_get_name(buf)
+    if name ~= "" then parts[#parts+1] = "file=" .. name end
+    if win and vim.api.nvim_win_is_valid(win) then
+      local pos = vim.api.nvim_win_get_cursor(win)
+      parts[#parts+1] = string.format("cursor=%d:%d", pos[1], pos[2] + 1)
+    end
+  end
+  return #parts > 0 and ("[" .. table.concat(parts, " ") .. "]") or ""
+end
+
+-- Capture the last visual selection (works right after :'<,'>A4FDo too).
+local function capture_visual_selection()
+  local buf = M.state.context_buf or vim.api.nvim_get_current_buf()
+  if not vim.api.nvim_buf_is_valid(buf) then return nil end
+  local s = vim.fn.getpos("'<")
+  local e = vim.fn.getpos("'>")
+  if s[2] == 0 or e[2] == 0 then return nil end
+  local l1, c1, l2, c2 = s[2], s[3], e[2], e[3]
+  if l1 > l2 or (l1 == l2 and c1 > c2) then
+    l1, c1, l2, c2 = l2, c2, l1, c1
+  end
+  local ok, lines = pcall(vim.api.nvim_buf_get_lines, buf, l1 - 1, l2, false)
+  if not ok or #lines == 0 then return nil end
+  local text = table.concat(lines, "\n")
+  if l1 == l2 then
+    text = text:sub(c1, c2)
+  else
+    text = text:sub(c1)
+    local last = lines[#lines]
+    lines[#lines] = last:sub(1, c2)
+    text = table.concat(lines, "\n")
+  end
+  local name = vim.api.nvim_buf_get_name(buf)
+  return string.format(
+    "Selected text (%s:%d:%d-%d:%d):\n```\n%s\n```",
+    name, l1, c1, l2, c2, text)
+end
+
 function M.do_task(prompt)
   update_context()
   if not prompt or prompt == "" then
@@ -530,18 +603,33 @@ function M.do_task(prompt)
     return
   end
   if not busy_guard() then return end
+
+  -- Make sure the chat output is visible WITHOUT stealing focus.
+  M.show_chat_passive()
+
+  local full = prompt
+  local ctx = describe_context()
+  if ctx ~= "" then full = ctx .. "\n" .. full end
+  local sel = capture_visual_selection()
+  if sel then full = sel .. "\n\n" .. full end
+
   M.state.busy = true
   M.state.busy_since = vim.loop.now()
+  M.append_chat("You (A4FDo): " .. prompt .. "\n")
+  if sel then M.append_chat("[a4f] attached visual selection\n") end
+
   ensure_chat(function(ok)
     if not ok then M.state.busy = false; M.state.busy_since = nil return end
-    run_iteration(prompt, false, function(err)
+    run_iteration(full, false, function(err)
       M.state.busy = false
       M.state.busy_since = nil
       if err then
+        M.append_chat("[error] " .. err .. "\n")
         vim.notify("[a4f] " .. err, vim.log.levels.ERROR)
       else
         vim.notify("[a4f] done")
       end
+      M.append_chat("\n")
     end)
   end)
 end
@@ -568,45 +656,104 @@ end
 -- UI
 -- ============================================================
 function M.open_chat()
-  if M.state.chat_buf and vim.api.nvim_buf_is_valid(M.state.chat_buf) then
-    if M.state.chat_win and vim.api.nvim_win_is_valid(M.state.chat_win) then
-      vim.api.nvim_set_current_win(M.state.chat_win)
-    end
-    return
-  end
-
-  -- Capture context BEFORE opening chat
+  -- Capture context BEFORE opening chat (so agent knows where user was).
   local cur_win = vim.api.nvim_get_current_win()
   local cur_buf = vim.api.nvim_get_current_buf()
   local cur_name = vim.api.nvim_buf_get_name(cur_buf)
-  if not cur_name:find("^a4f://", 1, true) then
+  local on_chat = M.state.chat_win and vim.api.nvim_win_is_valid(M.state.chat_win)
+                 and cur_win == M.state.chat_win
+  if not on_chat and not cur_name:find("^a4f://", 1, true) then
     M.state.context_win = cur_win
     M.state.context_buf = cur_buf
   end
 
-  vim.cmd(M.config.chat.split == "bottom" and "botright split" or "botright vsplit")
-  M.state.chat_win = vim.api.nvim_get_current_win()
-  M.state.chat_buf = vim.api.nvim_get_current_buf()
+  if M.state.chat_buf and vim.api.nvim_buf_is_valid(M.state.chat_buf) then
+    if M.state.chat_win and vim.api.nvim_win_is_valid(M.state.chat_win) then
+      vim.api.nvim_set_current_win(M.state.chat_win)
+      return
+    end
+    -- buffer alive, window gone -> reopen it as a right split
+    M.open_chat_split()
+    return
+  end
 
-  vim.api.nvim_buf_set_option(M.state.chat_buf, "buftype", "nofile")
-  vim.api.nvim_buf_set_option(M.state.chat_buf, "bufhidden", "wipe")
-  vim.api.nvim_buf_set_option(M.state.chat_buf, "filetype", "a4f-chat")
-  vim.api.nvim_buf_set_name(M.state.chat_buf, "a4f://chat")
-  vim.api.nvim_win_set_width(M.state.chat_win, M.config.chat.size)
+  M.ensure_chat_buf()
+  M.open_chat_split()
+end
+
+-- Create (or reuse) the chat buffer WITHOUT opening a window or stealing focus.
+function M.ensure_chat_buf()
+  if M.state.chat_buf and vim.api.nvim_buf_is_valid(M.state.chat_buf) then
+    return M.state.chat_buf
+  end
+
+  local buf = vim.api.nvim_create_buf(false, true)
+  M.state.chat_buf = buf
+
+  vim.api.nvim_buf_set_option(buf, "buftype", "nofile")
+  vim.api.nvim_buf_set_option(buf, "bufhidden", "hide")
+  vim.api.nvim_buf_set_option(buf, "filetype", "a4f-chat")
+  vim.api.nvim_buf_set_option(buf, "modifiable", false)
+  vim.api.nvim_buf_set_name(buf, "a4f://chat")
+  pcall(function() vim.bo[buf].swapfile = false end)
 
   local function map(lhs, fn)
-    vim.keymap.set("n", lhs, fn, { buffer = M.state.chat_buf, silent = true })
+    vim.keymap.set("n", lhs, fn, { buffer = buf, silent = true })
   end
-  map("q", "<cmd>close<cr>")
+  map("q", function() M.close_chat() end)
+  map("<Esc>", function() M.close_chat() end)
   map("<cr>", function() M.chat() end)
   map("i", function() M.chat() end)
   map("<c-r>", function() M.reset() end)
   map("<c-b>", function() M.force_reset_busy() end)
 
-  vim.api.nvim_create_autocmd("BufWipeout", {
-    buffer = M.state.chat_buf,
-    callback = function() M.state.chat_buf = nil; M.state.chat_win = nil end,
-  })
+  return buf
+end
+
+-- Show the chat buffer in a vertical split on the right, focusing it.
+function M.open_chat_split()
+  local buf = M.ensure_chat_buf()
+
+  -- Focus the chat window if it is already visible.
+  for _, w in ipairs(vim.api.nvim_list_wins()) do
+    if vim.api.nvim_win_get_buf(w) == buf then
+      M.state.chat_win = w
+      vim.api.nvim_set_current_win(w)
+      return
+    end
+  end
+
+  local size = (M.config.chat and M.config.chat.size) or 70
+  vim.cmd("botright vsplit")
+  local win = vim.api.nvim_get_current_win()
+  M.state.chat_win = win
+  vim.api.nvim_win_set_buf(win, buf)
+  pcall(function() vim.api.nvim_win_set_width(win, size) end)
+  pcall(function() vim.wo[win].number = false; vim.wo[win].wrap = true end)
+end
+
+-- Ensure the chat buffer exists and, if a window is not already visible,
+-- show it WITHOUT moving focus away from the user's current window.
+function M.show_chat_passive()
+  local buf = M.ensure_chat_buf()
+  for _, w in ipairs(vim.api.nvim_list_wins()) do
+    if vim.api.nvim_win_get_buf(w) == buf then
+      M.state.chat_win = w
+      return
+    end
+  end
+  local cur_win = vim.api.nvim_get_current_win()
+  M.open_chat_split()
+  if vim.api.nvim_win_is_valid(cur_win) then
+    vim.api.nvim_set_current_win(cur_win)
+  end
+end
+
+function M.close_chat()
+  if M.state.chat_win and vim.api.nvim_win_is_valid(M.state.chat_win) then
+    vim.api.nvim_win_close(M.state.chat_win, true)
+  end
+  M.state.chat_win = nil
 end
 
 function M.append_chat(text)
@@ -623,7 +770,24 @@ function M.append_chat(text)
 
   if M.state.chat_win and vim.api.nvim_win_is_valid(M.state.chat_win) then
     vim.api.nvim_win_set_cursor(M.state.chat_win, { n + #lines, 0 })
+    -- keep chat pinned to the bottom while it streams
+    local ok = pcall(vim.api.nvim_win_call, M.state.chat_win, function()
+      vim.cmd("normal! G")
+    end)
+    if not ok then end
   end
+end
+
+-- Replace the whole chat buffer (used by the write-chat tool).
+function M.set_chat(text)
+  if not M.state.chat_buf or not vim.api.nvim_buf_is_valid(M.state.chat_buf) then
+    M.open_chat()
+  end
+  local lines = vim.split(text, "\n", { plain = true })
+  vim.api.nvim_buf_set_option(M.state.chat_buf, "modifiable", true)
+  vim.api.nvim_buf_set_lines(M.state.chat_buf, 0, -1, false, lines)
+  vim.api.nvim_buf_set_option(M.state.chat_buf, "modifiable", false)
+  return "Chat buffer replaced (" .. #lines .. " lines)"
 end
 
 

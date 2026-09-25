@@ -137,3 +137,6 @@ vim.keymap.set('n', '<leader>x', 'x', { noremap = true, desc = 'Cut' })
 vim.keymap.set({ 'n', 'v', 'i' }, '<C-c>', '<C-a>', { noremap = true, desc = 'Increase number' })
 
 vim.keymap.set('n', 'gb', ":ToggleBoolean<CR>", { desc = "Toggle boolean at cursor" })
+ 
+ -- Added: shortcut for args
+ vim.keymap.set('n', '<leader>a', ':args<CR>', { noremap = true, desc = 'Show args' })
